@@ -1,0 +1,49 @@
+# 비밀 (에이전트는 읽지도 쓰지도 않는다)
+.env
+.env.*
+# 변수 이름 목록은 env.example (점 없이 시작 — 위 패턴 · 권한 deny에 걸리지 않음)
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+id_rsa*
+id_ed25519*
+.aws/
+.netrc
+
+# Claude Code 로컬 설정
+.claude/settings.local.json
+.claude/runs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node (관리자 · 승인 화면을 만들 경우)
+node_modules/
+dist/
+build/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+
+# 평가 · 부하 테스트 임시 출력 (정리된 결과만 eval/reports 에 커밋)
+eval/out/
+load/out/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

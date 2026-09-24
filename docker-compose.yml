@@ -1,0 +1,47 @@
+# 로컬 개발용 인프라. 브로커 서비스(gateway · control 등)는 구현하면서 여기에 추가한다.
+# Keycloak(2단계), LocalStack(S3 · KMS, 2단계~)도 필요해지는 단계에서 추가한다.
+# 볼륨을 지우는 명령(`docker compose down -v`, `volume rm`, `prune`)은 사용자만 실행한다.
+services:
+  postgres:
+    image: postgres:16.15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-broker}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-broker}
+      POSTGRES_DB: ${POSTGRES_DB:-broker}
+    ports:
+      - "${POSTGRES_PORT:-5434}:5432"  # 5432 · 5433은 다른 프로젝트가 쓰므로 5434
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-broker} -d ${POSTGRES_DB:-broker}"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.4.11-alpine
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6380}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  opa:
+    # 설치 버전으로 고정함 (2026-09-24, 0. 개발 환경).
+    image: openpolicyagent/opa:1.20.2
+    restart: unless-stopped
+    command: ["run", "--server", "--addr=0.0.0.0:8181", "--watch", "/policies"]
+    ports:
+      - "${OPA_PORT:-8181}:8181"
+    volumes:
+      - ./policies:/policies:ro
+    healthcheck:
+      test: ["CMD", "/opa", "eval", "--fail",
+             "http.send({\"method\": \"get\", \"url\": \"http://localhost:8181/health\"}).status_code == 200"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  pgdata:
