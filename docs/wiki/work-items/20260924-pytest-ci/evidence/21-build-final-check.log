@@ -1,0 +1,20 @@
+# 증거 21-build-final-check.log
+시작: 2026-09-24T22:42:25+09:00
+끝:   2026-09-24T22:42:54+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-final-check.xml && .venv/Scripts/python .claude/runs/20260924-pytest-ci/checks/check_junit.py .claude/runs/20260924-pytest-ci/evidence/pytest-build-final-check.xml
+종료 코드: 0
+
+## stdout
+...........                                                              [100%]
+11 passed in 24.37s
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-build-final-check.xml all 11 planned tests present: 'missing=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-build-final-check.xml no failure/error/skipped: 'bad=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-build-final-check.xml at least one test: 'tests=11'
+OK  same test count across files: 'counts=[11]'
+summary: 4 ok, 0 bad
+
+## stderr
+

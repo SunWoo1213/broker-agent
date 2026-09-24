@@ -1,0 +1,36 @@
+# 증거 16-build-mut-e-red.log
+시작: 2026-09-24T22:40:33+09:00
+끝:   2026-09-24T22:41:02+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-e-red.xml
+종료 코드: 1
+
+## stdout
+706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012 *pytest.ini
+d46cceb65b548d13017c8e259e7550bbff7d4ee8fe163e0489d98bf63ba91038 *.github/workflows/ci.yml
+.F.........                                                              [100%]
+================================== FAILURES ===================================
+________________ test_ci_workflow_actions_pinned_to_commit_sha ________________
+
+request = <FixtureRequest for <Function test_ci_workflow_actions_pinned_to_commit_sha>>
+
+    def test_ci_workflow_actions_pinned_to_commit_sha(request):
+        text = _ci_text(request)
+        uses = USES_RE.findall(text)
+        assert uses, "no uses: lines found"
+        for ref, rest in uses:
+>           assert PINNED_RE.match(ref), f"not pinned to a 40-hex commit sha: {ref}"
+E           AssertionError: not pinned to a 40-hex commit sha: actions/checkout@v7
+E           assert None
+E            +  where None = <built-in method match of re.Pattern object at 0x000001A71C5DD540>('actions/checkout@v7')
+E            +    where <built-in method match of re.Pattern object at 0x000001A71C5DD540> = re.compile('^[\\w.-]+/[\\w.-]+@[0-9a-f]{40}$').match
+
+tests\test_ci_workflow.py:56: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_ci_workflow.py::test_ci_workflow_actions_pinned_to_commit_sha
+1 failed, 10 passed in 25.66s
+
+## stderr
+

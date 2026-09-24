@@ -1,0 +1,224 @@
+# 증거 05-build-red-initial.log
+시작: 2026-09-24T22:34:10+09:00
+끝:   2026-09-24T22:34:15+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 13
+명령: .venv/Scripts/python -m pytest tests -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-red-initial.xml
+종료 코드: 1
+
+## stdout
+FFFFEEEEEE.                                                              [100%]
+=================================== ERRORS ====================================
+___________ ERROR at setup of test_async_test_without_marker_fails ____________
+file C:\Portpolio\agent-broker\tests\test_pytest_config.py, line 19
+  def test_async_test_without_marker_fails(pytester, request):
+E       fixture 'pytester' not found
+>       available fixtures: _asyncio_loop_factory, _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:19
+_________ ERROR at setup of test_marked_async_test_body_actually_runs _________
+file C:\Portpolio\agent-broker\tests\test_pytest_config.py, line 32
+  def test_marked_async_test_body_actually_runs(pytester, request):
+E       fixture 'pytester' not found
+>       available fixtures: _asyncio_loop_factory, _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:32
+_____________ ERROR at setup of test_unregistered_marker_is_error _____________
+file C:\Portpolio\agent-broker\tests\test_pytest_config.py, line 50
+  def test_unregistered_marker_is_error(pytester, request):
+E       fixture 'pytester' not found
+>       available fixtures: _asyncio_loop_factory, _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:50
+_____________ ERROR at setup of test_unknown_ini_option_is_error ______________
+file C:\Portpolio\agent-broker\tests\test_pytest_config.py, line 68
+  def test_unknown_ini_option_is_error(pytester, request):
+E       fixture 'pytester' not found
+>       available fixtures: _asyncio_loop_factory, _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:68
+_____ ERROR at setup of test_integration_marker_not_deselected_by_default _____
+file C:\Portpolio\agent-broker\tests\test_pytest_config.py, line 82
+  def test_integration_marker_not_deselected_by_default(pytester, request):
+E       fixture 'pytester' not found
+>       available fixtures: _asyncio_loop_factory, _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:82
+_________________ ERROR at setup of test_pytest_ini_settings __________________
+file C:\Portpolio\agent-broker\tests\test_pytest_config.py, line 107
+  def test_pytest_ini_settings(pytester, request):
+E       fixture 'pytester' not found
+>       available fixtures: _asyncio_loop_factory, _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:107
+================================== FAILURES ===================================
+_________________ test_ci_workflow_does_not_swallow_failures __________________
+
+request = <FixtureRequest for <Function test_ci_workflow_does_not_swallow_failures>>
+
+    def test_ci_workflow_does_not_swallow_failures(request):
+>       text = _ci_text(request)
+               ^^^^^^^^^^^^^^^^^
+
+tests\test_ci_workflow.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_ci_workflow.py:28: in _ci_text
+    return path.read_text(encoding="utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Portpolio/agent-broker/.github/workflows/ci.yml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Portpolio\\agent-broker\\.github\\workflows\\ci.yml'
+
+C:\Python313\Lib\pathlib\_local.py:537: FileNotFoundError
+________________ test_ci_workflow_actions_pinned_to_commit_sha ________________
+
+request = <FixtureRequest for <Function test_ci_workflow_actions_pinned_to_commit_sha>>
+
+    def test_ci_workflow_actions_pinned_to_commit_sha(request):
+>       text = _ci_text(request)
+               ^^^^^^^^^^^^^^^^^
+
+tests\test_ci_workflow.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_ci_workflow.py:28: in _ci_text
+    return path.read_text(encoding="utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Portpolio/agent-broker/.github/workflows/ci.yml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Portpolio\\agent-broker\\.github\\workflows\\ci.yml'
+
+C:\Python313\Lib\pathlib\_local.py:537: FileNotFoundError
+________________ test_ci_workflow_runs_same_commands_as_local _________________
+
+request = <FixtureRequest for <Function test_ci_workflow_runs_same_commands_as_local>>
+
+    def test_ci_workflow_runs_same_commands_as_local(request):
+>       text = _ci_text(request)
+               ^^^^^^^^^^^^^^^^^
+
+tests\test_ci_workflow.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_ci_workflow.py:28: in _ci_text
+    return path.read_text(encoding="utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Portpolio/agent-broker/.github/workflows/ci.yml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Portpolio\\agent-broker\\.github\\workflows\\ci.yml'
+
+C:\Python313\Lib\pathlib\_local.py:537: FileNotFoundError
+_____________ test_ci_workflow_has_no_secrets_and_read_only_token _____________
+
+request = <FixtureRequest for <Function test_ci_workflow_has_no_secrets_and_read_only_token>>
+
+    def test_ci_workflow_has_no_secrets_and_read_only_token(request):
+>       text = _ci_text(request)
+               ^^^^^^^^^^^^^^^^^
+
+tests\test_ci_workflow.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_ci_workflow.py:28: in _ci_text
+    return path.read_text(encoding="utf-8")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Portpolio/agent-broker/.github/workflows/ci.yml')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Portpolio\\agent-broker\\.github\\workflows\\ci.yml'
+
+C:\Python313\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_ci_workflow.py::test_ci_workflow_does_not_swallow_failures
+FAILED tests/test_ci_workflow.py::test_ci_workflow_actions_pinned_to_commit_sha
+FAILED tests/test_ci_workflow.py::test_ci_workflow_runs_same_commands_as_local
+FAILED tests/test_ci_workflow.py::test_ci_workflow_has_no_secrets_and_read_only_token
+ERROR tests/test_pytest_config.py::test_async_test_without_marker_fails
+ERROR tests/test_pytest_config.py::test_marked_async_test_body_actually_runs
+ERROR tests/test_pytest_config.py::test_unregistered_marker_is_error
+ERROR tests/test_pytest_config.py::test_unknown_ini_option_is_error
+ERROR tests/test_pytest_config.py::test_integration_marker_not_deselected_by_default
+ERROR tests/test_pytest_config.py::test_pytest_ini_settings
+4 failed, 1 passed, 6 errors in 1.03s
+
+## stderr
+

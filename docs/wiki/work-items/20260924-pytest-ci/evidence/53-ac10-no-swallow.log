@@ -1,0 +1,14 @@
+# 증거 53-ac10-no-swallow.log
+시작: 2026-09-24T23:05:37+09:00
+끝:   2026-09-24T23:05:38+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: ! grep -nE "continue-on-error|\|\|[[:space:]]*(true|:|exit 0)|set \+e|secrets\." .github/workflows/ci.yml
+종료 코드: 0
+
+## stdout
+
+
+## stderr
+

@@ -1,0 +1,28 @@
+# 증거 55-ac11-action-shas.log
+시작: 2026-09-24T23:05:46+09:00
+끝:   2026-09-24T23:05:52+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/runs/20260924-pytest-ci/checks/ac11_action_shas.py
+종료 코드: 0
+
+## stdout
+ls-remote actions/checkout v7.0.1 exit=0
+3d3c42e5aac5ba805825da76410c181273ba90b1	refs/tags/v7.0.1
+ls-remote actions/setup-python v7.0.0 exit=0
+5fda3b95a4ea91299a34e894583c3862153e4b97	refs/tags/v7.0.0
+ls-remote actions/upload-artifact v7.0.1 exit=0
+043fb46d1a93c77aae656e7c1c64a875d1fc6a0a	refs/tags/v7.0.1
+ls-remote actions/checkout v7.0.1 exit=0
+3d3c42e5aac5ba805825da76410c181273ba90b1	refs/tags/v7.0.1
+OK  uses lines found: '4'
+OK  actions/checkout@v7.0.1 sha matches release commit: 'ci=3d3c42e5aac5ba805825da76410c181273ba90b1 remote=3d3c42e5aac5ba805825da76410c181273ba90b1'
+OK  actions/setup-python@v7.0.0 sha matches release commit: 'ci=5fda3b95a4ea91299a34e894583c3862153e4b97 remote=5fda3b95a4ea91299a34e894583c3862153e4b97'
+OK  actions/upload-artifact@v7.0.1 sha matches release commit: 'ci=043fb46d1a93c77aae656e7c1c64a875d1fc6a0a remote=043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
+OK  actions/checkout@v7.0.1 sha matches release commit: 'ci=3d3c42e5aac5ba805825da76410c181273ba90b1 remote=3d3c42e5aac5ba805825da76410c181273ba90b1'
+OK  all required actions pinned: "['actions/checkout', 'actions/setup-python', 'actions/upload-artifact']"
+summary: 6 ok, 0 bad
+
+## stderr
+

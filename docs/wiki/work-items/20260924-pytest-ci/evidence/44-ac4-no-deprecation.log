@@ -1,0 +1,15 @@
+# 증거 44-ac4-no-deprecation.log
+시작: 2026-09-24T23:04:13+09:00
+끝:   2026-09-24T23:04:38+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python -m pytest -q -W error::pytest.PytestDeprecationWarning --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-ac4-no-deprecation.xml
+종료 코드: 0
+
+## stdout
+...........                                                              [100%]
+11 passed in 21.09s
+
+## stderr
+

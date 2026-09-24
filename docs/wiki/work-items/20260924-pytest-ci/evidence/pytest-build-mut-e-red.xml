@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="25.570" timestamp="2026-09-24T22:40:36.607577+09:00" hostname="SunLaptop"><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_does_not_swallow_failures" time="0.002" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_actions_pinned_to_commit_sha" time="0.002"><failure message="AssertionError: not pinned to a 40-hex commit sha: actions/checkout@v7&#10;assert None&#10; +  where None = &lt;built-in method match of re.Pattern object at 0x000001A71C5DD540&gt;('actions/checkout@v7')&#10; +    where &lt;built-in method match of re.Pattern object at 0x000001A71C5DD540&gt; = re.compile('^[\\w.-]+/[\\w.-]+@[0-9a-f]{40}$').match">request = &lt;FixtureRequest for &lt;Function test_ci_workflow_actions_pinned_to_commit_sha&gt;&gt;
+
+    def test_ci_workflow_actions_pinned_to_commit_sha(request):
+        text = _ci_text(request)
+        uses = USES_RE.findall(text)
+        assert uses, "no uses: lines found"
+        for ref, rest in uses:
+&gt;           assert PINNED_RE.match(ref), f"not pinned to a 40-hex commit sha: {ref}"
+E           AssertionError: not pinned to a 40-hex commit sha: actions/checkout@v7
+E           assert None
+E            +  where None = &lt;built-in method match of re.Pattern object at 0x000001A71C5DD540&gt;('actions/checkout@v7')
+E            +    where &lt;built-in method match of re.Pattern object at 0x000001A71C5DD540&gt; = re.compile('^[\\w.-]+/[\\w.-]+@[0-9a-f]{40}$').match
+
+tests\test_ci_workflow.py:56: AssertionError</failure></testcase><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_runs_same_commands_as_local" time="0.002" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_has_no_secrets_and_read_only_token" time="0.002" /><testcase classname="tests.test_pytest_config" name="test_async_test_without_marker_fails" time="3.498" /><testcase classname="tests.test_pytest_config" name="test_marked_async_test_body_actually_runs" time="3.869" /><testcase classname="tests.test_pytest_config" name="test_unregistered_marker_is_error" time="3.171" /><testcase classname="tests.test_pytest_config" name="test_unknown_ini_option_is_error" time="3.062" /><testcase classname="tests.test_pytest_config" name="test_integration_marker_not_deselected_by_default" time="8.537" /><testcase classname="tests.test_pytest_config" name="test_pytest_ini_settings" time="3.011" /><testcase classname="tests.test_pytest_config" name="test_asyncio_smoke" time="0.004" /></testsuite></testsuites>

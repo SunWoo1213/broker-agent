@@ -1,0 +1,27 @@
+# 증거 41-ac3-compare.log
+시작: 2026-09-24T23:03:49+09:00
+끝:   2026-09-24T23:03:50+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/runs/20260924-pytest-ci/checks/check_junit.py .claude/runs/20260924-pytest-ci/evidence/pytest-ac1-pytest.xml .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-1.xml .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-2.xml .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-3.xml
+종료 코드: 0
+
+## stdout
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac1-pytest.xml all 11 planned tests present: 'missing=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac1-pytest.xml no failure/error/skipped: 'bad=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac1-pytest.xml at least one test: 'tests=11'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-1.xml all 11 planned tests present: 'missing=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-1.xml no failure/error/skipped: 'bad=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-1.xml at least one test: 'tests=11'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-2.xml all 11 planned tests present: 'missing=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-2.xml no failure/error/skipped: 'bad=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-2.xml at least one test: 'tests=11'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-3.xml all 11 planned tests present: 'missing=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-3.xml no failure/error/skipped: 'bad=[]'
+OK  .claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-3.xml at least one test: 'tests=11'
+OK  same test count across files: 'counts=[11, 11, 11, 11]'
+summary: 13 ok, 0 bad
+
+## stderr
+

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="11" time="23.092" timestamp="2026-09-24T22:35:57.491879+09:00" hostname="SunLaptop"><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_does_not_swallow_failures" time="0.002" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_actions_pinned_to_commit_sha" time="0.001" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_runs_same_commands_as_local" time="0.001" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_has_no_secrets_and_read_only_token" time="0.001" /><testcase classname="tests.test_pytest_config" name="test_async_test_without_marker_fails" time="2.993" /><testcase classname="tests.test_pytest_config" name="test_marked_async_test_body_actually_runs" time="3.011" /><testcase classname="tests.test_pytest_config" name="test_unregistered_marker_is_error" time="2.521"><failure message="assert &lt;ExitCode.OK: 0&gt; != 0&#10; +  where &lt;ExitCode.OK: 0&gt; = &lt;RunResult ret=0 len(stdout.lines)=17 len(stderr.lines)=0 duration=2.51s&gt;.ret">pytester = &lt;Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-274/test_unregistered_marker_is_error0')&gt;
+request = &lt;FixtureRequest for &lt;Function test_unregistered_marker_is_error&gt;&gt;
+
+    def test_unregistered_marker_is_error(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_bad_marker="""
+            import pytest
+    
+            @pytest.mark.integraton
+            def test_it():
+                pass
+            """
+        )
+        result = pytester.runpytest_subprocess("test_bad_marker.py")
+&gt;       assert result.ret != 0
+E       assert &lt;ExitCode.OK: 0&gt; != 0
+E        +  where &lt;ExitCode.OK: 0&gt; = &lt;RunResult ret=0 len(stdout.lines)=17 len(stderr.lines)=0 duration=2.51s&gt;.ret
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:62: AssertionError</failure></testcase><testcase classname="tests.test_pytest_config" name="test_unknown_ini_option_is_error" time="2.672"><failure message="AssertionError: assert &lt;ExitCode.OK: 0&gt; == &lt;ExitCode.USAGE_ERROR: 4&gt;&#10; +  where &lt;ExitCode.OK: 0&gt; = &lt;RunResult ret=0 len(stdout.lines)=18 len(stderr.lines)=0 duration=2.66s&gt;.ret&#10; +  and   &lt;ExitCode.USAGE_ERROR: 4&gt; = &lt;enum 'ExitCode'&gt;.USAGE_ERROR&#10; +    where &lt;enum 'ExitCode'&gt; = pytest.ExitCode">pytester = &lt;Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-274/test_unknown_ini_option_is_error0')&gt;
+request = &lt;FixtureRequest for &lt;Function test_unknown_ini_option_is_error&gt;&gt;
+
+    def test_unknown_ini_option_is_error(pytester, request):
+        _install_ini(pytester, request, extra_lines=["asyncio_mod = auto"])
+        pytester.makepyfile(
+            test_dummy="""
+            def test_it():
+                pass
+            """
+        )
+        result = pytester.runpytest_subprocess("test_dummy.py")
+&gt;       assert result.ret == pytest.ExitCode.USAGE_ERROR
+E       AssertionError: assert &lt;ExitCode.OK: 0&gt; == &lt;ExitCode.USAGE_ERROR: 4&gt;
+E        +  where &lt;ExitCode.OK: 0&gt; = &lt;RunResult ret=0 len(stdout.lines)=18 len(stderr.lines)=0 duration=2.66s&gt;.ret
+E        +  and   &lt;ExitCode.USAGE_ERROR: 4&gt; = &lt;enum 'ExitCode'&gt;.USAGE_ERROR
+E        +    where &lt;enum 'ExitCode'&gt; = pytest.ExitCode
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:77: AssertionError</failure></testcase><testcase classname="tests.test_pytest_config" name="test_integration_marker_not_deselected_by_default" time="8.398" /><testcase classname="tests.test_pytest_config" name="test_pytest_ini_settings" time="3.148"><failure message="AssertionError: assert {'errors': 0,...pped': 0, ...} == {'errors': 0,...pped': 0, ...}&#10;  &#10;  Omitting 4 identical items, use -vv to show&#10;  Differing items:&#10;  {'passed': 0} != {'passed': 1}&#10;  {'failed': 1} != {'failed': 0}&#10;  Use -v to get more diff">pytester = &lt;Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-274/test_pytest_ini_settings0')&gt;
+request = &lt;FixtureRequest for &lt;Function test_pytest_ini_settings&gt;&gt;
+
+    def test_pytest_ini_settings(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_introspect="""
+            def test_settings(pytestconfig):
+                assert pytestconfig.getini("asyncio_mode") == "strict"
+                assert pytestconfig.getini("strict") is True
+                assert pytestconfig.getini("asyncio_default_fixture_loop_scope") == "function"
+                markers = pytestconfig.getini("markers")
+                assert any(m.startswith("integration:") for m in markers)
+            """
+        )
+        result = pytester.runpytest_subprocess("test_introspect.py")
+&gt;       result.assert_outcomes(passed=1)
+E       AssertionError: assert {'errors': 0,...pped': 0, ...} == {'errors': 0,...pped': 0, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'passed': 0} != {'passed': 1}
+E         {'failed': 1} != {'failed': 0}
+E         Use -v to get more diff
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:120: AssertionError</failure></testcase><testcase classname="tests.test_pytest_config" name="test_asyncio_smoke" time="0.004" /></testsuite></testsuites>

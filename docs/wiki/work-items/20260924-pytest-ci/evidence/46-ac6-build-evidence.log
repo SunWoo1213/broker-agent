@@ -1,0 +1,49 @@
+# 증거 46-ac6-build-evidence.log
+시작: 2026-09-24T23:04:47+09:00
+끝:   2026-09-24T23:04:49+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/runs/20260924-pytest-ci/checks/ac6_build_evidence.py
+종료 코드: 0
+
+## stdout
+OK  red-initial exists (exit != 0): '[(5, 1)]'
+OK  green-initial exists (exit 0): '[(6, 0)]'
+OK  red-initial before green-initial: 'red=5 green=6'
+OK  baseline has both files: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  current files == baseline (all mutations reverted): "now={'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-a order baseline < red < green: 'baseline=7 red=8 green=9'
+OK  mut-a red exit != 0: 'exit=1'
+OK  mut-a green exit == 0: 'exit=0'
+OK  mut-a red log shows a changed file: "{'pytest.ini': '13b6555158dcbd0dc77c8c9a474ddbb428666407d0089c2d5f921241adcd89ef', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-a green log shows files restored: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-a planned tests failed: "expected=['test_pytest_ini_settings', 'test_unknown_ini_option_is_error', 'test_unregistered_marker_is_error'] failed=['test_pytest_ini_settings', 'test_unknown_ini_option_is_error', 'test_unregistered_marker_is_error']"
+OK  mut-b order baseline < red < green: 'baseline=7 red=10 green=11'
+OK  mut-b red exit != 0: 'exit=1'
+OK  mut-b green exit == 0: 'exit=0'
+OK  mut-b red log shows a changed file: "{'pytest.ini': 'fe6d65d6d0fc676b022c484c2f405f7d7b14ebdf562a05da515543682ea0c1c2', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-b green log shows files restored: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-b planned tests failed: "expected=['test_async_test_without_marker_fails', 'test_pytest_ini_settings'] failed=['test_async_test_without_marker_fails', 'test_pytest_ini_settings']"
+OK  mut-c order baseline < red < green: 'baseline=7 red=12 green=13'
+OK  mut-c red exit != 0: 'exit=1'
+OK  mut-c green exit == 0: 'exit=0'
+OK  mut-c red log shows a changed file: "{'pytest.ini': 'd3939f3e5616b19df7b332a6d51be73d899af850d835ab168629dc67f7c65b73', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-c green log shows files restored: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-c planned tests failed: "expected=['test_integration_marker_not_deselected_by_default'] failed=['test_integration_marker_not_deselected_by_default']"
+OK  mut-d order baseline < red < green: 'baseline=7 red=14 green=15'
+OK  mut-d red exit != 0: 'exit=1'
+OK  mut-d green exit == 0: 'exit=0'
+OK  mut-d red log shows a changed file: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': '4baa04dd0181ae027f646a06fc5355a6b5a1889870bc8fcc6398b910f4e8153c'}"
+OK  mut-d green log shows files restored: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-d planned tests failed: "expected=['test_ci_workflow_does_not_swallow_failures'] failed=['test_ci_workflow_does_not_swallow_failures']"
+OK  mut-e order baseline < red < green: 'baseline=7 red=16 green=17'
+OK  mut-e red exit != 0: 'exit=1'
+OK  mut-e green exit == 0: 'exit=0'
+OK  mut-e red log shows a changed file: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'd46cceb65b548d13017c8e259e7550bbff7d4ee8fe163e0489d98bf63ba91038'}"
+OK  mut-e green log shows files restored: "{'pytest.ini': '706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012', '.github/workflows/ci.yml': 'ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df'}"
+OK  mut-e planned tests failed: "expected=['test_ci_workflow_actions_pinned_to_commit_sha'] failed=['test_ci_workflow_actions_pinned_to_commit_sha']"
+summary: 35 ok, 0 bad
+
+## stderr
+

@@ -1,0 +1,45 @@
+# 증거 33-review-r2-verify.log
+시작: 2026-09-24T22:58:55+09:00
+끝:   2026-09-24T22:58:56+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/tools/evidence.py .claude/runs/20260924-pytest-ci --verify
+종료 코드: 0
+
+## stdout
+일치   01-build-00-env.log  (exit=0, 2026-09-24T22:31:12+09:00)
+일치   02-build-lsremote-checkout.log  (exit=0, 2026-09-24T22:31:26+09:00)
+일치   03-build-lsremote-setup-python.log  (exit=0, 2026-09-24T22:31:29+09:00)
+일치   04-build-lsremote-upload-artifact.log  (exit=0, 2026-09-24T22:31:32+09:00)
+일치   05-build-red-initial.log  (exit=1, 2026-09-24T22:34:10+09:00)
+일치   06-build-green-initial.log  (exit=0, 2026-09-24T22:35:13+09:00)
+일치   07-build-hash-baseline.log  (exit=0, 2026-09-24T22:35:44+09:00)
+일치   08-build-mut-a-red.log  (exit=1, 2026-09-24T22:35:54+09:00)
+일치   09-build-mut-a-green.log  (exit=0, 2026-09-24T22:36:30+09:00)
+일치   10-build-mut-b-red.log  (exit=1, 2026-09-24T22:37:04+09:00)
+일치   11-build-mut-b-green.log  (exit=0, 2026-09-24T22:37:39+09:00)
+일치   12-build-mut-c-red.log  (exit=1, 2026-09-24T22:38:13+09:00)
+일치   13-build-mut-c-green.log  (exit=0, 2026-09-24T22:38:42+09:00)
+일치   14-build-mut-d-red.log  (exit=1, 2026-09-24T22:39:21+09:00)
+일치   15-build-mut-d-green.log  (exit=0, 2026-09-24T22:39:55+09:00)
+일치   16-build-mut-e-red.log  (exit=1, 2026-09-24T22:40:33+09:00)
+일치   17-build-mut-e-green.log  (exit=0, 2026-09-24T22:41:12+09:00)
+일치   18-build-ac8.log  (exit=0, 2026-09-24T22:41:47+09:00)
+일치   19-build-ac9.log  (exit=0, 2026-09-24T22:41:50+09:00)
+일치   20-build-ac11.log  (exit=0, 2026-09-24T22:41:57+09:00)
+일치   21-build-final-check.log  (exit=0, 2026-09-24T22:42:25+09:00)
+일치   22-review-verify.log  (exit=0, 2026-09-24T22:45:35+09:00)
+일치   23-review-ac6-build-evidence.log  (exit=0, 2026-09-24T22:47:03+09:00)
+일치   24-review-ac13-forbidden-commands.log  (exit=0, 2026-09-24T22:47:04+09:00)
+일치   25-build-r2-sanity-green.log  (exit=0, 2026-09-24T22:52:04+09:00)
+일치   26-build-r2-mut-f-red.log  (exit=1, 2026-09-24T22:52:43+09:00)
+일치   27-build-r2-mut-f-green.log  (exit=0, 2026-09-24T22:53:16+09:00)
+일치   28-build-r2-mut-g-red.log  (exit=1, 2026-09-24T22:53:54+09:00)
+일치   29-build-r2-mut-g-green.log  (exit=0, 2026-09-24T22:54:30+09:00)
+일치   30-build-r2-mut-h-red.log  (exit=1, 2026-09-24T22:55:04+09:00)
+일치   31-build-r2-mut-h-green.log  (exit=0, 2026-09-24T22:55:40+09:00)
+일치   32-build-r2-final-check.log  (exit=0, 2026-09-24T22:56:13+09:00)
+
+## stderr
+

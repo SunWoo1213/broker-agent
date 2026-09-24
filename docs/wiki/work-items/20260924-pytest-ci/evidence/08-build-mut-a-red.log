@@ -1,0 +1,163 @@
+# 증거 08-build-mut-a-red.log
+시작: 2026-09-24T22:35:54+09:00
+끝:   2026-09-24T22:36:21+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-a-red.xml
+종료 코드: 1
+
+## stdout
+13b6555158dcbd0dc77c8c9a474ddbb428666407d0089c2d5f921241adcd89ef *pytest.ini
+ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df *.github/workflows/ci.yml
+......FF.F.                                                              [100%]
+================================== FAILURES ===================================
+______________________ test_unregistered_marker_is_error ______________________
+
+pytester = <Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-274/test_unregistered_marker_is_error0')>
+request = <FixtureRequest for <Function test_unregistered_marker_is_error>>
+
+    def test_unregistered_marker_is_error(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_bad_marker="""
+            import pytest
+    
+            @pytest.mark.integraton
+            def test_it():
+                pass
+            """
+        )
+        result = pytester.runpytest_subprocess("test_bad_marker.py")
+>       assert result.ret != 0
+E       assert <ExitCode.OK: 0> != 0
+E        +  where <ExitCode.OK: 0> = <RunResult ret=0 len(stdout.lines)=17 len(stderr.lines)=0 duration=2.51s>.ret
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:62: AssertionError
+---------------------------- Captured stdout call -----------------------------
+running: C:\Portpolio\agent-broker\.venv\Scripts\python.exe -mpytest --basetemp=C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unregistered_marker_is_error0\runpytest-0 test_bad_marker.py
+     in: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unregistered_marker_is_error0
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unregistered_marker_is_error0
+configfile: pytest.ini
+plugins: anyio-4.15.1, langsmith-0.14.0, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 1 item
+
+test_bad_marker.py .                                                     [100%]
+
+============================== warnings summary ===============================
+test_bad_marker.py:3
+  C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unregistered_marker_is_error0\test_bad_marker.py:3: PytestUnknownMarkWarning: Unknown pytest.mark.integraton - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.integraton
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 1 passed, 1 warning in 0.03s =========================
+______________________ test_unknown_ini_option_is_error _______________________
+
+pytester = <Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-274/test_unknown_ini_option_is_error0')>
+request = <FixtureRequest for <Function test_unknown_ini_option_is_error>>
+
+    def test_unknown_ini_option_is_error(pytester, request):
+        _install_ini(pytester, request, extra_lines=["asyncio_mod = auto"])
+        pytester.makepyfile(
+            test_dummy="""
+            def test_it():
+                pass
+            """
+        )
+        result = pytester.runpytest_subprocess("test_dummy.py")
+>       assert result.ret == pytest.ExitCode.USAGE_ERROR
+E       AssertionError: assert <ExitCode.OK: 0> == <ExitCode.USAGE_ERROR: 4>
+E        +  where <ExitCode.OK: 0> = <RunResult ret=0 len(stdout.lines)=18 len(stderr.lines)=0 duration=2.66s>.ret
+E        +  and   <ExitCode.USAGE_ERROR: 4> = <enum 'ExitCode'>.USAGE_ERROR
+E        +    where <enum 'ExitCode'> = pytest.ExitCode
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:77: AssertionError
+---------------------------- Captured stdout call -----------------------------
+running: C:\Portpolio\agent-broker\.venv\Scripts\python.exe -mpytest --basetemp=C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unknown_ini_option_is_error0\runpytest-0 test_dummy.py
+     in: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unknown_ini_option_is_error0
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_unknown_ini_option_is_error0
+configfile: pytest.ini
+plugins: anyio-4.15.1, langsmith-0.14.0, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 1 item
+
+test_dummy.py .                                                          [100%]
+
+============================== warnings summary ===============================
+..\..\..\..\..\..\..\..\Portpolio\agent-broker\.venv\Lib\site-packages\_pytest\config\__init__.py:1434
+  C:\Portpolio\agent-broker\.venv\Lib\site-packages\_pytest\config\__init__.py:1434: PytestConfigWarning: Unknown config option: asyncio_mod
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 1 passed, 1 warning in 0.03s =========================
+__________________________ test_pytest_ini_settings ___________________________
+
+pytester = <Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-274/test_pytest_ini_settings0')>
+request = <FixtureRequest for <Function test_pytest_ini_settings>>
+
+    def test_pytest_ini_settings(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_introspect="""
+            def test_settings(pytestconfig):
+                assert pytestconfig.getini("asyncio_mode") == "strict"
+                assert pytestconfig.getini("strict") is True
+                assert pytestconfig.getini("asyncio_default_fixture_loop_scope") == "function"
+                markers = pytestconfig.getini("markers")
+                assert any(m.startswith("integration:") for m in markers)
+            """
+        )
+        result = pytester.runpytest_subprocess("test_introspect.py")
+>       result.assert_outcomes(passed=1)
+E       AssertionError: assert {'errors': 0,...pped': 0, ...} == {'errors': 0,...pped': 0, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'passed': 0} != {'passed': 1}
+E         {'failed': 1} != {'failed': 0}
+E         Use -v to get more diff
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:120: AssertionError
+---------------------------- Captured stdout call -----------------------------
+running: C:\Portpolio\agent-broker\.venv\Scripts\python.exe -mpytest --basetemp=C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_pytest_ini_settings0\runpytest-0 test_introspect.py
+     in: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_pytest_ini_settings0
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-274\test_pytest_ini_settings0
+configfile: pytest.ini
+plugins: anyio-4.15.1, langsmith-0.14.0, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 1 item
+
+test_introspect.py F                                                     [100%]
+
+================================== FAILURES ===================================
+________________________________ test_settings ________________________________
+
+pytestconfig = <_pytest.config.Config object at 0x00000238FD4E02F0>
+
+    def test_settings(pytestconfig):
+        assert pytestconfig.getini("asyncio_mode") == "strict"
+>       assert pytestconfig.getini("strict") is True
+E       AssertionError: assert False is True
+E        +  where False = getini('strict')
+E        +    where getini = <_pytest.config.Config object at 0x00000238FD4E02F0>.getini
+
+test_introspect.py:3: AssertionError
+=========================== short test summary info ===========================
+FAILED test_introspect.py::test_settings - AssertionError: assert False is True
+============================== 1 failed in 0.39s ==============================
+=========================== short test summary info ===========================
+FAILED tests/test_pytest_config.py::test_unregistered_marker_is_error - asser...
+FAILED tests/test_pytest_config.py::test_unknown_ini_option_is_error - Assert...
+FAILED tests/test_pytest_config.py::test_pytest_ini_settings - AssertionError...
+3 failed, 8 passed in 23.18s
+
+## stderr
+

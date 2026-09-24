@@ -1,0 +1,64 @@
+# 증거 12-build-mut-c-red.log
+시작: 2026-09-24T22:38:13+09:00
+끝:   2026-09-24T22:38:35+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-c-red.xml
+종료 코드: 1
+
+## stdout
+d3939f3e5616b19df7b332a6d51be73d899af850d835ab168629dc67f7c65b73 *pytest.ini
+ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df *.github/workflows/ci.yml
+........F..                                                              [100%]
+================================== FAILURES ===================================
+______________ test_integration_marker_not_deselected_by_default ______________
+
+pytester = <Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-278/test_integration_marker_not_deselected_by_default0')>
+request = <FixtureRequest for <Function test_integration_marker_not_deselected_by_default>>
+
+    def test_integration_marker_not_deselected_by_default(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_mix="""
+            import pytest
+    
+            def test_normal():
+                pass
+    
+            @pytest.mark.integration
+            def test_needs_services():
+                pass
+            """
+        )
+    
+        result = pytester.runpytest_subprocess("test_mix.py")
+>       result.assert_outcomes(passed=2)
+E       AssertionError: assert {'errors': 0,...pped': 0, ...} == {'errors': 0,...pped': 0, ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'passed': 1} != {'passed': 2}
+E         Use -v to get more diff
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:98: AssertionError
+---------------------------- Captured stdout call -----------------------------
+running: C:\Portpolio\agent-broker\.venv\Scripts\python.exe -mpytest --basetemp=C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-278\test_integration_marker_not_deselected_by_default0\runpytest-0 test_mix.py
+     in: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-278\test_integration_marker_not_deselected_by_default0
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-278\test_integration_marker_not_deselected_by_default0
+configfile: pytest.ini
+plugins: anyio-4.15.1, langsmith-0.14.0, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 2 items / 1 deselected / 1 selected
+
+test_mix.py .                                                            [100%]
+
+======================= 1 passed, 1 deselected in 0.04s =======================
+=========================== short test summary info ===========================
+FAILED tests/test_pytest_config.py::test_integration_marker_not_deselected_by_default
+1 failed, 10 passed in 18.25s
+
+## stderr
+

@@ -1,0 +1,14 @@
+# 증거 43-ac4-header.log
+시작: 2026-09-24T23:04:03+09:00
+끝:   2026-09-24T23:04:07+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python -m pytest --collect-only | grep -E "^asyncio: " | grep -i "strict" | grep "asyncio_default_fixture_loop_scope=function"
+종료 코드: 0
+
+## stdout
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+
+## stderr
+

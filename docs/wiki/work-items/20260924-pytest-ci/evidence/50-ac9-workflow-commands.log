@@ -1,0 +1,18 @@
+# 증거 50-ac9-workflow-commands.log
+시작: 2026-09-24T23:05:11+09:00
+끝:   2026-09-24T23:05:12+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/runs/20260924-pytest-ci/checks/ac9_workflow_commands.py
+종료 코드: 0
+
+## stdout
+OK  pytest job run commands: "['python -m pip install -r requirements-dev.txt', 'python -m pip check', 'python -m pytest -q --junitxml=test-results/pytest-junit.xml']"
+OK  opa-test job run commands: '[\'out="$(docker compose run --rm opa test /policies -v)"\\nprintf "%s\\\\n" "$out"\\ngrep -Eq "^PASS: [1-9][0-9]*/[1-9][0-9]*" <<<"$out"\']'
+OK  setup-python with == local .venv version: "ci=[{'python-version': '3.13.7'}] local=3.13.7"
+OK  local python is 3.13.7: '3.13.7'
+summary: 4 ok, 0 bad
+
+## stderr
+

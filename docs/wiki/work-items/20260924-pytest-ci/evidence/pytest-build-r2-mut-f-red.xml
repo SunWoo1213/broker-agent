@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="20.308" timestamp="2026-09-24T22:52:46.455003+09:00" hostname="SunLaptop"><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_does_not_swallow_failures" time="0.002" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_actions_pinned_to_commit_sha" time="0.001" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_runs_same_commands_as_local" time="0.001" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_has_no_secrets_and_read_only_token" time="0.001"><failure message="AssertionError: permissions block must be exactly ['contents: read'], got ['contents: read', 'pull-requests: write']&#10;assert ['contents: r...uests: write'] == ['contents: read']&#10;  &#10;  Left contains one more item: 'pull-requests: write'&#10;  Use -v to get more diff">request = &lt;FixtureRequest for &lt;Function test_ci_workflow_has_no_secrets_and_read_only_token&gt;&gt;
+
+    def test_ci_workflow_has_no_secrets_and_read_only_token(request):
+        text = _ci_text(request)
+        assert "secrets." not in text
+    
+        lines = text.splitlines()
+        permissions_idx = [i for i, line in enumerate(lines) if line.strip() == "permissions:"]
+        assert len(permissions_idx) == 1, "expected exactly one permissions: block (no job-level permissions:)"
+        idx = permissions_idx[0]
+        base_indent = len(lines[idx]) - len(lines[idx].lstrip(" "))
+    
+        # permissions: 바로 아래, 더 깊이 들여쓰기된 연속 줄을 전부 모은다.
+        # 한 줄이라도 더 있으면(예: pull-requests: write) 여기서 걸린다.
+        block = []
+        for line in lines[idx + 1 :]:
+            if not line.strip():
+                continue
+            cur_indent = len(line) - len(line.lstrip(" "))
+            if cur_indent &lt;= base_indent:
+                break
+            block.append(line.strip())
+&gt;       assert block == ["contents: read"], f"permissions block must be exactly ['contents: read'], got {block}"
+E       AssertionError: permissions block must be exactly ['contents: read'], got ['contents: read', 'pull-requests: write']
+E       assert ['contents: r...uests: write'] == ['contents: read']
+E         
+E         Left contains one more item: 'pull-requests: write'
+E         Use -v to get more diff
+
+tests\test_ci_workflow.py:107: AssertionError</failure></testcase><testcase classname="tests.test_pytest_config" name="test_async_test_without_marker_fails" time="2.516" /><testcase classname="tests.test_pytest_config" name="test_marked_async_test_body_actually_runs" time="2.753" /><testcase classname="tests.test_pytest_config" name="test_unregistered_marker_is_error" time="2.651" /><testcase classname="tests.test_pytest_config" name="test_unknown_ini_option_is_error" time="2.387" /><testcase classname="tests.test_pytest_config" name="test_integration_marker_not_deselected_by_default" time="7.346" /><testcase classname="tests.test_pytest_config" name="test_pytest_ini_settings" time="2.378" /><testcase classname="tests.test_pytest_config" name="test_asyncio_smoke" time="0.003" /></testsuite></testsuites>

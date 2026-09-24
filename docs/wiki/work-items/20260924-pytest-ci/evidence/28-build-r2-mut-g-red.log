@@ -1,0 +1,49 @@
+# 증거 28-build-r2-mut-g-red.log
+시작: 2026-09-24T22:53:54+09:00
+끝:   2026-09-24T22:54:20+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-g-red.xml
+종료 코드: 1
+
+## stdout
+706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012 *pytest.ini
+78857ea91612e5db361f0d29b9dadcd62338814d5375272633fc1c615cddbd9b *.github/workflows/ci.yml
+F..........                                                              [100%]
+================================== FAILURES ===================================
+_________________ test_ci_workflow_does_not_swallow_failures __________________
+
+request = <FixtureRequest for <Function test_ci_workflow_does_not_swallow_failures>>
+
+    def test_ci_workflow_does_not_swallow_failures(request):
+        text = _ci_text(request)
+        assert "continue-on-error" not in text
+        for bad in ("|| true", "|| :", "|| exit 0"):
+            assert bad not in text
+        assert "set +e" not in text
+    
+        if_lines = [line.strip() for line in text.splitlines() if line.strip().startswith("if:")]
+        assert if_lines == ["if: always()"]
+    
+        assert "shell: bash" in text
+    
+        blocks = _job_blocks(text)
+        assert blocks, "no jobs found"
+        assert REQUIRED_JOBS <= blocks.keys(), f"missing required jobs: {REQUIRED_JOBS - blocks.keys()}"
+        missing_timeout = [
+            name
+            for name, block in blocks.items()
+            if not re.search(r"^\s*timeout-minutes:\s*\d+\s*$", block, flags=re.M)
+        ]
+>       assert not missing_timeout, f"jobs without timeout-minutes: {missing_timeout}"
+E       AssertionError: jobs without timeout-minutes: ['smoke']
+E       assert not ['smoke']
+
+tests\test_ci_workflow.py:65: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_ci_workflow.py::test_ci_workflow_does_not_swallow_failures
+1 failed, 10 passed in 21.58s
+
+## stderr
+

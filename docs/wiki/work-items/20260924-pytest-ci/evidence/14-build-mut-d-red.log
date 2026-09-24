@@ -1,0 +1,39 @@
+# 증거 14-build-mut-d-red.log
+시작: 2026-09-24T22:39:21+09:00
+끝:   2026-09-24T22:39:47+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-d-red.xml
+종료 코드: 1
+
+## stdout
+706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012 *pytest.ini
+4baa04dd0181ae027f646a06fc5355a6b5a1889870bc8fcc6398b910f4e8153c *.github/workflows/ci.yml
+F..........                                                              [100%]
+================================== FAILURES ===================================
+_________________ test_ci_workflow_does_not_swallow_failures __________________
+
+request = <FixtureRequest for <Function test_ci_workflow_does_not_swallow_failures>>
+
+    def test_ci_workflow_does_not_swallow_failures(request):
+        text = _ci_text(request)
+>       assert "continue-on-error" not in text
+E       assert 'continue-on-error' not in 'name: ci\no... <<<"$out"\n'
+E         
+E         'continue-on-error' is contained here:
+E           l
+E                   continue-on-error: true
+E                 - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+E                   if: always()
+E                   with:...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests\test_ci_workflow.py:33: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_ci_workflow.py::test_ci_workflow_does_not_swallow_failures
+1 failed, 10 passed in 22.73s
+
+## stderr
+

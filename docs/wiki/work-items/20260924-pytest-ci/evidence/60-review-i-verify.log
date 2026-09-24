@@ -1,0 +1,72 @@
+# 증거 60-review-i-verify.log
+시작: 2026-09-24T23:11:56+09:00
+끝:   2026-09-24T23:11:57+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/tools/evidence.py .claude/runs/20260924-pytest-ci --verify
+종료 코드: 0
+
+## stdout
+일치   01-build-00-env.log  (exit=0, 2026-09-24T22:31:12+09:00)
+일치   02-build-lsremote-checkout.log  (exit=0, 2026-09-24T22:31:26+09:00)
+일치   03-build-lsremote-setup-python.log  (exit=0, 2026-09-24T22:31:29+09:00)
+일치   04-build-lsremote-upload-artifact.log  (exit=0, 2026-09-24T22:31:32+09:00)
+일치   05-build-red-initial.log  (exit=1, 2026-09-24T22:34:10+09:00)
+일치   06-build-green-initial.log  (exit=0, 2026-09-24T22:35:13+09:00)
+일치   07-build-hash-baseline.log  (exit=0, 2026-09-24T22:35:44+09:00)
+일치   08-build-mut-a-red.log  (exit=1, 2026-09-24T22:35:54+09:00)
+일치   09-build-mut-a-green.log  (exit=0, 2026-09-24T22:36:30+09:00)
+일치   10-build-mut-b-red.log  (exit=1, 2026-09-24T22:37:04+09:00)
+일치   11-build-mut-b-green.log  (exit=0, 2026-09-24T22:37:39+09:00)
+일치   12-build-mut-c-red.log  (exit=1, 2026-09-24T22:38:13+09:00)
+일치   13-build-mut-c-green.log  (exit=0, 2026-09-24T22:38:42+09:00)
+일치   14-build-mut-d-red.log  (exit=1, 2026-09-24T22:39:21+09:00)
+일치   15-build-mut-d-green.log  (exit=0, 2026-09-24T22:39:55+09:00)
+일치   16-build-mut-e-red.log  (exit=1, 2026-09-24T22:40:33+09:00)
+일치   17-build-mut-e-green.log  (exit=0, 2026-09-24T22:41:12+09:00)
+일치   18-build-ac8.log  (exit=0, 2026-09-24T22:41:47+09:00)
+일치   19-build-ac9.log  (exit=0, 2026-09-24T22:41:50+09:00)
+일치   20-build-ac11.log  (exit=0, 2026-09-24T22:41:57+09:00)
+일치   21-build-final-check.log  (exit=0, 2026-09-24T22:42:25+09:00)
+일치   22-review-verify.log  (exit=0, 2026-09-24T22:45:35+09:00)
+일치   23-review-ac6-build-evidence.log  (exit=0, 2026-09-24T22:47:03+09:00)
+일치   24-review-ac13-forbidden-commands.log  (exit=0, 2026-09-24T22:47:04+09:00)
+일치   25-build-r2-sanity-green.log  (exit=0, 2026-09-24T22:52:04+09:00)
+일치   26-build-r2-mut-f-red.log  (exit=1, 2026-09-24T22:52:43+09:00)
+일치   27-build-r2-mut-f-green.log  (exit=0, 2026-09-24T22:53:16+09:00)
+일치   28-build-r2-mut-g-red.log  (exit=1, 2026-09-24T22:53:54+09:00)
+일치   29-build-r2-mut-g-green.log  (exit=0, 2026-09-24T22:54:30+09:00)
+일치   30-build-r2-mut-h-red.log  (exit=1, 2026-09-24T22:55:04+09:00)
+일치   31-build-r2-mut-h-green.log  (exit=0, 2026-09-24T22:55:40+09:00)
+일치   32-build-r2-final-check.log  (exit=0, 2026-09-24T22:56:13+09:00)
+일치   33-review-r2-verify.log  (exit=0, 2026-09-24T22:58:55+09:00)
+일치   34-review-r2-ac13-forbidden-commands.log  (exit=0, 2026-09-24T22:58:56+09:00)
+일치   35-ac0-env.log  (exit=0, 2026-09-24T23:01:41+09:00)
+일치   36-ac1-pytest.log  (exit=0, 2026-09-24T23:01:51+09:00)
+일치   37-ac2-junit.log  (exit=0, 2026-09-24T23:02:22+09:00)
+일치   38-ac3-flaky-1.log  (exit=0, 2026-09-24T23:02:30+09:00)
+일치   39-ac3-flaky-2.log  (exit=0, 2026-09-24T23:02:57+09:00)
+일치   40-ac3-flaky-3.log  (exit=0, 2026-09-24T23:03:21+09:00)
+일치   41-ac3-compare.log  (exit=0, 2026-09-24T23:03:49+09:00)
+일치   42-ac4-markers.log  (exit=0, 2026-09-24T23:03:57+09:00)
+일치   43-ac4-header.log  (exit=0, 2026-09-24T23:04:03+09:00)
+일치   44-ac4-no-deprecation.log  (exit=0, 2026-09-24T23:04:13+09:00)
+일치   45-ac5-integration-none.log  (exit=5, 2026-09-24T23:04:39+09:00)
+일치   46-ac6-build-evidence.log  (exit=0, 2026-09-24T23:04:47+09:00)
+일치   47-ac7-opa-test.log  (exit=0, 2026-09-24T23:04:57+09:00)
+일치   48-ac7-opa-guard-negative.log  (exit=0, 2026-09-24T23:05:01+09:00)
+일치   49-ac8-workflow-structure.log  (exit=0, 2026-09-24T23:05:09+09:00)
+일치   50-ac9-workflow-commands.log  (exit=0, 2026-09-24T23:05:11+09:00)
+일치   51-ac9-local-install.log  (exit=0, 2026-09-24T23:05:19+09:00)
+일치   52-ac9-pip-check.log  (exit=0, 2026-09-24T23:05:27+09:00)
+일치   53-ac10-no-swallow.log  (exit=0, 2026-09-24T23:05:37+09:00)
+일치   54-ac10-persist-cred.log  (exit=0, 2026-09-24T23:05:40+09:00)
+일치   55-ac11-action-shas.log  (exit=0, 2026-09-24T23:05:46+09:00)
+일치   56-ac12-scope.log  (exit=1, 2026-09-24T23:05:57+09:00)
+일치   57-ac13-forbidden-commands.log  (exit=0, 2026-09-24T23:06:05+09:00)
+일치   58-ac14-xml-hashes.log  (exit=0, 2026-09-24T23:06:12+09:00)
+일치   59-ac14-verify.log  (exit=0, 2026-09-24T23:06:20+09:00)
+
+## stderr
+

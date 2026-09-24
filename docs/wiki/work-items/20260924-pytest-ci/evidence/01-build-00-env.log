@@ -1,0 +1,53 @@
+# 증거 01-build-00-env.log
+시작: 2026-09-24T22:31:12+09:00
+끝:   2026-09-24T22:31:16+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 11
+명령: pwd; git rev-parse --show-toplevel; git rev-parse --short HEAD; .venv/Scripts/python --version; docker info --format "{{.ServerVersion}}"; sha256sum .claude/runs/20260924-pytest-ci/checks/*.py; echo "--- status begin"; git status --porcelain --untracked-files=all; echo "--- status end"; echo "--- hashes begin"; sha256sum requirements.txt requirements-dev.txt docker-compose.yml .gitignore README.md env.example docs/plan.md docs/decisions.md docs/stage1-plan.md docs/architecture.md policies/authz.rego policies/authz_test.rego; echo "--- hashes end"
+종료 코드: 0
+
+## stdout
+/c/Portpolio/agent-broker
+C:/Portpolio/agent-broker
+780b009
+Python 3.13.7
+29.3.0
+657e5285cee547af27b289ff82248533ca8e72c73cb2e692ad8d91bbd57ec236 *.claude/runs/20260924-pytest-ci/checks/_ev.py
+6b4783803def69991be56aeea1d46bcd9d794106b63412831f037c4a07cbb14a *.claude/runs/20260924-pytest-ci/checks/ac11_action_shas.py
+0627a8c1901425df4c569ce1298f84f7ee122f9850323a127682f50016299f6a *.claude/runs/20260924-pytest-ci/checks/ac12_scope.py
+e2dc59dfd1a3a513ca9080ffde392dadc9e512822359ed0571a052da50c0cdca *.claude/runs/20260924-pytest-ci/checks/ac13_forbidden_commands.py
+fa0c99e8dff9485c5e27f92619a5eb8167eea43710a7484ee5910cd4cafda399 *.claude/runs/20260924-pytest-ci/checks/ac6_build_evidence.py
+d08484317574895a1f758eb8b0feebe2f00d5787fc6906758e86c0acf84212ca *.claude/runs/20260924-pytest-ci/checks/ac8_workflow_structure.py
+a5cf698845485a8226975cf66b62970cdd8fc3aae7297e4df3be72b25d5651cb *.claude/runs/20260924-pytest-ci/checks/ac9_workflow_commands.py
+f89ff4cb34821e843c645d16885266c97b434401c4e5da080ed655e6972a7c87 *.claude/runs/20260924-pytest-ci/checks/check_junit.py
+--- status begin
+ M .claude/agents/broker-builder.md
+ M .claude/agents/planner.md
+ M .claude/agents/test-verifier.md
+ M .claude/harness-notes.md
+ M .claude/skills/code-review-invariants/SKILL.md
+ M .claude/skills/dev-wiki/SKILL.md
+ M .claude/skills/improvement-review/SKILL.md
+ M .claude/skills/plan-review/SKILL.md
+ M .claude/skills/test-gate/SKILL.md
+?? .claude/tools/evidence.py
+?? .claudesettings.local.json
+--- status end
+--- hashes begin
+26ba9ae5c9a4e5a8c2e0483e7a7284bfe4d9c02b185e82ba607eec18d7c86773 *requirements.txt
+9247ededf7ae1fd64eff0d7c2be8c66a3ee21eedb7683930256e98f16ff17b40 *requirements-dev.txt
+2cc9eb67255865a15ebb73edfe32b4f8c670856f5623ca9eae2f0a0a1f0f1d1f *docker-compose.yml
+f8f8a1de25c208383666032abc60e5dab3b56bb79a9401e44b0bea76b2bc495a *.gitignore
+e745f92cec6e03f9044c1a4380c1023540a5ddd5a2be367bc98783f20643a4d3 *README.md
+35037d575671a9de35f69413bba69b347cf6b2ca8cb1161c7db57800a440fbaa *env.example
+6eeaaf713af1341e560e3dbfa56d6ef2fe6508830b18e5e6d90862048c9b0811 *docs/plan.md
+f695a9e7b32b0918bb470da428a3603c3ff42fa2521cb0c7989f08a4a5275c1e *docs/decisions.md
+16d511fb51ae52b2aa454f332759bb279f76b792c8a3ab06e7010e62db6bdd44 *docs/stage1-plan.md
+65e1610589555842bfe0c820c96c83c521768b8aada243d80dbf709e18fadea9 *docs/architecture.md
+6b3b528314754c92b7890e3085cf67000073a410d91e3d5d7f05d20c08ab7610 *policies/authz.rego
+b36ef894781f02c040ab0970d209e77565e4d4d06b2d9c8b826888ceee82d687 *policies/authz_test.rego
+--- hashes end
+
+## stderr
+

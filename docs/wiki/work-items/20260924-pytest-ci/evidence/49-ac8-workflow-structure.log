@@ -1,0 +1,30 @@
+# 증거 49-ac8-workflow-structure.log
+시작: 2026-09-24T23:05:09+09:00
+끝:   2026-09-24T23:05:10+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python .claude/runs/20260924-pytest-ci/checks/ac8_workflow_structure.py
+종료 코드: 0
+
+## stdout
+OK  jobs: "actual=['opa-test', 'pytest'] expected=['opa-test', 'pytest']"
+OK  triggers: "actual=['pull_request', 'push', 'workflow_dispatch'] expected=['pull_request', 'push', 'workflow_dispatch']"
+OK  push: "actual={'branches': ['main']} expected={'branches': ['main']}"
+OK  permissions: "actual={'contents': 'read'} expected={'contents': 'read'}"
+OK  defaults.run.shell: "actual='bash' expected='bash'"
+OK  opa-test.runs-on: "actual='ubuntu-24.04' expected='ubuntu-24.04'"
+OK  opa-test.timeout-minutes int 1..30: '10'
+OK  opa-test checkout.with: "actual={'persist-credentials': False} expected={'persist-credentials': False}"
+OK  pytest.runs-on: "actual='ubuntu-24.04' expected='ubuntu-24.04'"
+OK  pytest.timeout-minutes int 1..30: '10'
+OK  pytest checkout.with: "actual={'persist-credentials': False} expected={'persist-credentials': False}"
+OK  pytest upload-artifact step count: 'actual=1 expected=1'
+OK  upload.if: "actual='always()' expected='always()'"
+OK  upload.with: "actual={'name': 'pytest-junit', 'path': 'test-results/pytest-junit.xml', 'if-no-files-found': 'error'} expected={'name': 'pytest-junit', 'path': 'test-results/pytest-junit.xml', 'if-no-files-found': 'error'}"
+OK  upload is last step of pytest job: 'actual=True expected=True'
+OK  only 'if' in workflow is upload always(): "actual=['always()'] expected=['always()']"
+summary: 16 ok, 0 bad
+
+## stderr
+

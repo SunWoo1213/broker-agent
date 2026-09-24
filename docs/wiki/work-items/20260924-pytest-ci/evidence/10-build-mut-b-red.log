@@ -1,0 +1,116 @@
+# 증거 10-build-mut-b-red.log
+시작: 2026-09-24T22:37:04+09:00
+끝:   2026-09-24T22:37:32+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-b-red.xml
+종료 코드: 1
+
+## stdout
+fe6d65d6d0fc676b022c484c2f405f7d7b14ebdf562a05da515543682ea0c1c2 *pytest.ini
+ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df *.github/workflows/ci.yml
+....F....F.                                                              [100%]
+================================== FAILURES ===================================
+____________________ test_async_test_without_marker_fails _____________________
+
+pytester = <Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-276/test_async_test_without_marker_fails0')>
+request = <FixtureRequest for <Function test_async_test_without_marker_fails>>
+
+    def test_async_test_without_marker_fails(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_unmarked="""
+            async def test_it():
+                pass
+            """
+        )
+        result = pytester.runpytest_subprocess("test_unmarked.py")
+>       result.assert_outcomes(failed=1, passed=0)
+E       AssertionError: assert {'errors': 0,...pped': 0, ...} == {'errors': 0,...pped': 0, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'passed': 1} != {'passed': 0}
+E         {'failed': 0} != {'failed': 1}
+E         Use -v to get more diff
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:28: AssertionError
+---------------------------- Captured stdout call -----------------------------
+running: C:\Portpolio\agent-broker\.venv\Scripts\python.exe -mpytest --basetemp=C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-276\test_async_test_without_marker_fails0\runpytest-0 test_unmarked.py
+     in: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-276\test_async_test_without_marker_fails0
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-276\test_async_test_without_marker_fails0
+configfile: pytest.ini
+plugins: anyio-4.15.1, langsmith-0.14.0, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 1 item
+
+test_unmarked.py .                                                       [100%]
+
+============================== 1 passed in 0.05s ==============================
+__________________________ test_pytest_ini_settings ___________________________
+
+pytester = <Pytester WindowsPath('C:/Users/swsj1/AppData/Local/Temp/pytest-of-swsj1/pytest-276/test_pytest_ini_settings0')>
+request = <FixtureRequest for <Function test_pytest_ini_settings>>
+
+    def test_pytest_ini_settings(pytester, request):
+        _install_ini(pytester, request)
+        pytester.makepyfile(
+            test_introspect="""
+            def test_settings(pytestconfig):
+                assert pytestconfig.getini("asyncio_mode") == "strict"
+                assert pytestconfig.getini("strict") is True
+                assert pytestconfig.getini("asyncio_default_fixture_loop_scope") == "function"
+                markers = pytestconfig.getini("markers")
+                assert any(m.startswith("integration:") for m in markers)
+            """
+        )
+        result = pytester.runpytest_subprocess("test_introspect.py")
+>       result.assert_outcomes(passed=1)
+E       AssertionError: assert {'errors': 0,...pped': 0, ...} == {'errors': 0,...pped': 0, ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'passed': 0} != {'passed': 1}
+E         {'failed': 1} != {'failed': 0}
+E         Use -v to get more diff
+
+C:\Portpolio\agent-broker\tests\test_pytest_config.py:120: AssertionError
+---------------------------- Captured stdout call -----------------------------
+running: C:\Portpolio\agent-broker\.venv\Scripts\python.exe -mpytest --basetemp=C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-276\test_pytest_ini_settings0\runpytest-0 test_introspect.py
+     in: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-276\test_pytest_ini_settings0
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\Users\swsj1\AppData\Local\Temp\pytest-of-swsj1\pytest-276\test_pytest_ini_settings0
+configfile: pytest.ini
+plugins: anyio-4.15.1, langsmith-0.14.0, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 1 item
+
+test_introspect.py F                                                     [100%]
+
+================================== FAILURES ===================================
+________________________________ test_settings ________________________________
+
+pytestconfig = <_pytest.config.Config object at 0x000001E8187C02F0>
+
+    def test_settings(pytestconfig):
+>       assert pytestconfig.getini("asyncio_mode") == "strict"
+E       AssertionError: assert 'auto' == 'strict'
+E         
+E         - strict
+E         + auto
+
+test_introspect.py:2: AssertionError
+=========================== short test summary info ===========================
+FAILED test_introspect.py::test_settings - AssertionError: assert 'auto' == '...
+============================== 1 failed in 0.37s ==============================
+=========================== short test summary info ===========================
+FAILED tests/test_pytest_config.py::test_async_test_without_marker_fails - As...
+FAILED tests/test_pytest_config.py::test_pytest_ini_settings - AssertionError...
+2 failed, 9 passed in 24.32s
+
+## stderr
+

@@ -1,0 +1,15 @@
+# 증거 36-ac1-pytest.log
+시작: 2026-09-24T23:01:51+09:00
+끝:   2026-09-24T23:02:17+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-ac1-pytest.xml
+종료 코드: 0
+
+## stdout
+...........                                                              [100%]
+11 passed in 21.38s
+
+## stderr
+

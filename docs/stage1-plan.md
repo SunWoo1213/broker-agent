@@ -14,16 +14,21 @@
 
 여기에 시연 1개를 더한다: "어제 거래처 저녁 식사 18만 원 청구해 줘"가 데모 에이전트 → 브로커 → 모의 경비 시스템까지 끝까지 돈다.
 
-## 2. 현재 상태 (2026-09-24)
+## 2. 현재 상태 (2026-09-24 밤 갱신)
+
+> 진행 상황의 원본은 이 절과 4장 표의 "상태" 열이다. 작업이 끝날 때마다 갱신한다. 체크박스는 `docs/plan.md`, 작업별 상세는 `docs/wiki/Home.md`.
 
 | 항목 | 상태 |
 |---|---|
-| 하네스 (agents · skills · hooks) | 완료 |
-| `docker-compose.yml` | PostgreSQL 16 · Redis 7 · OPA 정의만 있음. OPA 이미지는 `latest` (고정 필요) |
-| `requirements*.txt` | fastapi 등 일부만 버전 고정. `mcp` · `redis` · `PyJWT` · `langgraph` · `langchain-openai` · `pytest-asyncio`는 미고정 |
-| `policies/` | 기본값 거부 규칙 + 테스트 1개 |
-| 파이썬 코드 · 테스트 · CI | 없음 |
+| 하네스 (agents · skills · hooks) | 완료. 오늘 규칙 추가: 권한 우회 금지, 증거 도구 `.claude/tools/evidence.py`(권한 필터 포함), 계획 검증 P10 · P11, 승인 기록 `00-approval.md`, 변이 확인 · 탐침 (`.claude/harness-notes.md`) |
+| `docker-compose.yml` | 이미지 고정(postgres 16.15 · redis 7.4.11-alpine · opa 1.20.2), OPA healthcheck, postgres 호스트 포트 5434 — 작업 A |
+| `requirements*.txt` | 전부 `==` 고정 — 작업 A |
+| `policies/` | 기본값 거부 규칙 + 테스트 1개 (변경 없음) |
+| pytest · CI | `pytest.ini`, 테스트 11개, `.github/workflows/ci.yml` — 작업 B, **로컬 완료 · 원격 첫 실행 대기** |
+| 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). 푸시 전 |
+| 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
 | 로컬 도구 | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
+| 결정 D15~D20 | **아직 미승인** — C · E · G 이전에 사용자 승인 필요 |
 
 ## 3. 코드 전에 정할 결정 (초안)
 
@@ -79,20 +84,20 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
                                                         └ L 6 1단계 완료 판정
 ```
 
-| 순서 | `/work-item` 인자 | 범위 | 선행 |
-|---|---|---|---|
-| A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — |
-| B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A |
-| C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A |
-| D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) |
-| E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A |
-| F | `3. 게이트웨이 — 뼈대` | MCP 서버 기동, `tools/list`, **`tools/call`은 무조건 거부**로 시작 | C, E |
-| G | `3. 게이트웨이 — ① 에이전트 인증` | D15 서명 검증, nonce 재사용 차단 | F |
-| H | `3. 게이트웨이 — ② 위임 확인` | D16 · D18의 DB 확인 | G |
-| I | `3. 게이트웨이 — ③ 정책 판단` | OPA 호출, D18 계약 검증, 판단 로그(JSON 구조화, 결정 ID · 이유) | H, D |
-| J | `3. 게이트웨이 — ⑦ 도구 호출` | allow일 때만 도구 호출. 도구 오류 · 타임아웃은 에이전트에 실패로 반환 | I |
-| K | `5. 데모 에이전트` | LangGraph 에이전트가 브로커 주소 · 자기 개인키만 가지고 시연 문장을 끝까지 처리 | J |
-| L | `6. 1단계 완료 판정` | 완료 판정 4개를 통합 테스트로 묶어 compose 환경에서 실행 | J (시연은 K) |
+| 순서 | `/work-item` 인자 | 범위 | 선행 | 상태 |
+|---|---|---|---|---|
+| A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — | 완료 (커밋 780b009) |
+| B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 로컬 완료 · 푸시 · Actions 확인 대기 |
+| C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | 대기 |
+| D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 대기 |
+| E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A | 대기 |
+| F | `3. 게이트웨이 — 뼈대` | MCP 서버 기동, `tools/list`, **`tools/call`은 무조건 거부**로 시작 | C, E | 대기 |
+| G | `3. 게이트웨이 — ① 에이전트 인증` | D15 서명 검증, nonce 재사용 차단 | F | 대기 |
+| H | `3. 게이트웨이 — ② 위임 확인` | D16 · D18의 DB 확인 | G | 대기 |
+| I | `3. 게이트웨이 — ③ 정책 판단` | OPA 호출, D18 계약 검증, 판단 로그(JSON 구조화, 결정 ID · 이유) | H, D | 대기 |
+| J | `3. 게이트웨이 — ⑦ 도구 호출` | allow일 때만 도구 호출. 도구 오류 · 타임아웃은 에이전트에 실패로 반환 | I | 대기 |
+| K | `5. 데모 에이전트` | LangGraph 에이전트가 브로커 주소 · 자기 개인키만 가지고 시연 문장을 끝까지 처리 | J | 대기 |
+| L | `6. 1단계 완료 판정` | 완료 판정 4개를 통합 테스트로 묶어 compose 환경에서 실행 | J (시연은 K) | 대기 |
 
 **순서를 이렇게 잡은 이유**
 - 게이트웨이는 **처음부터 "전부 거부"로 시작**하고, 검사를 하나씩 붙인 뒤 마지막에 허용 경로(⑦)를 연다. 중간 어느 시점에 멈춰도 기본값이 허용인 코드가 남지 않는다 (원칙 1).

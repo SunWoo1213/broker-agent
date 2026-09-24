@@ -1,0 +1,52 @@
+# 증거 26-build-r2-mut-f-red.log
+시작: 2026-09-24T22:52:43+09:00
+끝:   2026-09-24T22:53:07+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-f-red.xml
+종료 코드: 1
+
+## stdout
+706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012 *pytest.ini
+4c4a495d3f3c10d1f6609411391af76e8279bc7ef7e5208920d8d22b553c6f78 *.github/workflows/ci.yml
+...F.......                                                              [100%]
+================================== FAILURES ===================================
+_____________ test_ci_workflow_has_no_secrets_and_read_only_token _____________
+
+request = <FixtureRequest for <Function test_ci_workflow_has_no_secrets_and_read_only_token>>
+
+    def test_ci_workflow_has_no_secrets_and_read_only_token(request):
+        text = _ci_text(request)
+        assert "secrets." not in text
+    
+        lines = text.splitlines()
+        permissions_idx = [i for i, line in enumerate(lines) if line.strip() == "permissions:"]
+        assert len(permissions_idx) == 1, "expected exactly one permissions: block (no job-level permissions:)"
+        idx = permissions_idx[0]
+        base_indent = len(lines[idx]) - len(lines[idx].lstrip(" "))
+    
+        # permissions: �ٷ� �Ʒ�, �� ���� �鿩����� ���� ���� ���� ������.
+        # �� ���̶� �� ������(��: pull-requests: write) ���⼭ �ɸ���.
+        block = []
+        for line in lines[idx + 1 :]:
+            if not line.strip():
+                continue
+            cur_indent = len(line) - len(line.lstrip(" "))
+            if cur_indent <= base_indent:
+                break
+            block.append(line.strip())
+>       assert block == ["contents: read"], f"permissions block must be exactly ['contents: read'], got {block}"
+E       AssertionError: permissions block must be exactly ['contents: read'], got ['contents: read', 'pull-requests: write']
+E       assert ['contents: r...uests: write'] == ['contents: read']
+E         
+E         Left contains one more item: 'pull-requests: write'
+E         Use -v to get more diff
+
+tests\test_ci_workflow.py:107: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_ci_workflow.py::test_ci_workflow_has_no_secrets_and_read_only_token
+1 failed, 10 passed in 20.40s
+
+## stderr
+

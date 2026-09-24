@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="22.640" timestamp="2026-09-24T22:39:24.289766+09:00" hostname="SunLaptop"><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_does_not_swallow_failures" time="0.003"><failure message="assert 'continue-on-error' not in 'name: ci\no... &lt;&lt;&lt;&quot;$out&quot;\n'&#10;  &#10;  'continue-on-error' is contained here:&#10;    l&#10;            continue-on-error: true&#10;          - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1&#10;            if: always()&#10;            with:...&#10;  &#10;  ...Full output truncated (14 lines hidden), use '-vv' to show">request = &lt;FixtureRequest for &lt;Function test_ci_workflow_does_not_swallow_failures&gt;&gt;
+
+    def test_ci_workflow_does_not_swallow_failures(request):
+        text = _ci_text(request)
+&gt;       assert "continue-on-error" not in text
+E       assert 'continue-on-error' not in 'name: ci\no... &lt;&lt;&lt;"$out"\n'
+E         
+E         'continue-on-error' is contained here:
+E           l
+E                   continue-on-error: true
+E                 - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+E                   if: always()
+E                   with:...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests\test_ci_workflow.py:33: AssertionError</failure></testcase><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_actions_pinned_to_commit_sha" time="0.001" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_runs_same_commands_as_local" time="0.002" /><testcase classname="tests.test_ci_workflow" name="test_ci_workflow_has_no_secrets_and_read_only_token" time="0.002" /><testcase classname="tests.test_pytest_config" name="test_async_test_without_marker_fails" time="2.635" /><testcase classname="tests.test_pytest_config" name="test_marked_async_test_body_actually_runs" time="3.196" /><testcase classname="tests.test_pytest_config" name="test_unregistered_marker_is_error" time="3.143" /><testcase classname="tests.test_pytest_config" name="test_unknown_ini_option_is_error" time="2.645" /><testcase classname="tests.test_pytest_config" name="test_integration_marker_not_deselected_by_default" time="8.066" /><testcase classname="tests.test_pytest_config" name="test_pytest_ini_settings" time="2.598" /><testcase classname="tests.test_pytest_config" name="test_asyncio_smoke" time="0.004" /></testsuite></testsuites>

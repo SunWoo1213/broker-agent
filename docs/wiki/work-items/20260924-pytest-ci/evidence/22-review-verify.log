@@ -1,0 +1,34 @@
+# 증거 22-review-verify.log
+시작: 2026-09-24T22:45:35+09:00
+끝:   2026-09-24T22:45:36+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 16
+명령: .venv/Scripts/python .claude/tools/evidence.py .claude/runs/20260924-pytest-ci --verify
+종료 코드: 0
+
+## stdout
+일치   01-build-00-env.log  (exit=0, 2026-09-24T22:31:12+09:00)
+일치   02-build-lsremote-checkout.log  (exit=0, 2026-09-24T22:31:26+09:00)
+일치   03-build-lsremote-setup-python.log  (exit=0, 2026-09-24T22:31:29+09:00)
+일치   04-build-lsremote-upload-artifact.log  (exit=0, 2026-09-24T22:31:32+09:00)
+일치   05-build-red-initial.log  (exit=1, 2026-09-24T22:34:10+09:00)
+일치   06-build-green-initial.log  (exit=0, 2026-09-24T22:35:13+09:00)
+일치   07-build-hash-baseline.log  (exit=0, 2026-09-24T22:35:44+09:00)
+일치   08-build-mut-a-red.log  (exit=1, 2026-09-24T22:35:54+09:00)
+일치   09-build-mut-a-green.log  (exit=0, 2026-09-24T22:36:30+09:00)
+일치   10-build-mut-b-red.log  (exit=1, 2026-09-24T22:37:04+09:00)
+일치   11-build-mut-b-green.log  (exit=0, 2026-09-24T22:37:39+09:00)
+일치   12-build-mut-c-red.log  (exit=1, 2026-09-24T22:38:13+09:00)
+일치   13-build-mut-c-green.log  (exit=0, 2026-09-24T22:38:42+09:00)
+일치   14-build-mut-d-red.log  (exit=1, 2026-09-24T22:39:21+09:00)
+일치   15-build-mut-d-green.log  (exit=0, 2026-09-24T22:39:55+09:00)
+일치   16-build-mut-e-red.log  (exit=1, 2026-09-24T22:40:33+09:00)
+일치   17-build-mut-e-green.log  (exit=0, 2026-09-24T22:41:12+09:00)
+일치   18-build-ac8.log  (exit=0, 2026-09-24T22:41:47+09:00)
+일치   19-build-ac9.log  (exit=0, 2026-09-24T22:41:50+09:00)
+일치   20-build-ac11.log  (exit=0, 2026-09-24T22:41:57+09:00)
+일치   21-build-final-check.log  (exit=0, 2026-09-24T22:42:25+09:00)
+
+## stderr
+

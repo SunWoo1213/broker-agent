@@ -1,0 +1,40 @@
+# 증거 58-ac14-xml-hashes.log
+시작: 2026-09-24T23:06:12+09:00
+끝:   2026-09-24T23:06:13+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: sha256sum .claude/runs/20260924-pytest-ci/evidence/*.xml
+종료 코드: 0
+
+## stdout
+51fe62b241ef494367403e16eb7ac0868568d5084ff2b1c08487f8838433eae6 *.claude/runs/20260924-pytest-ci/evidence/pytest-ac1-pytest.xml
+33056294ddc1faa31c7a6d751f08791b11ab878d765f218ec43c04cbad1a97d6 *.claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-1.xml
+61838c00d45ba67eeb319115b0cc9eef6c9efd3059cae3286f698f6b501ac3c2 *.claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-2.xml
+707f16f8686fde33e3c0f9c2b55af51f7d9a2d9a03e08d27c04f8b603000c044 *.claude/runs/20260924-pytest-ci/evidence/pytest-ac3-flaky-3.xml
+6271b855836f68e825f76db8167919683f24d2bf53acc363a0a92fea0d53d0ea *.claude/runs/20260924-pytest-ci/evidence/pytest-ac4-no-deprecation.xml
+74dd37a31c5e5add4dda83d89e88c7d64efd4a9f6b82a98176119fc26d9601dc *.claude/runs/20260924-pytest-ci/evidence/pytest-ac5-integration-none.xml
+f2b37504500f44ef5438220030318d8fedd8f1797124fb2975d4c61ccc993cfc *.claude/runs/20260924-pytest-ci/evidence/pytest-build-final-check.xml
+ef5115e0883056b70bd637448d321a67e4b9197cdad4226f5e4ee375caf03953 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-green-initial.xml
+ab1b5ca24cdda57dbf1c671a04512888b5fff5fc4a70185feb96e635dd58d4f0 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-a-green.xml
+7476559156616d46b613cd28513d91bd0a3e94cccde45d938a3f82d4a6e768ee *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-a-red.xml
+43f5880899f3af0c6af4ac0b9cd9f33c2b49e238d63017b744fb2f1c33279c3a *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-b-green.xml
+a591f9b4effe6e1703ca31b1000c230c8280b92f8173579fce8fc77d8b755b7e *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-b-red.xml
+0eb7002049e467b0a4d4d81886c8324105f7bf494a42ba0bf8f6256a19474cf9 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-c-green.xml
+5b087b1a7f72d85cb7ea609019d3ace0c07bf4b59393c4a82c2ed1191f477713 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-c-red.xml
+34ed3f856fac8679c6695885be92be49d701522b623ed41086748a1bb34e3f92 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-d-green.xml
+64fd64358dd1424390580eabc1eb13e231b427ebfa5ab17a363ec9f4361c2652 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-d-red.xml
+361ab8b5ea65c7d5fb115a9f1c062d9489a19c6db111d739c85b977bd0a08d8c *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-e-green.xml
+66acac3fefa31287e652a04c1ced481e2adbc93e9a86b5e0da3dc3a0d6bd67ed *.claude/runs/20260924-pytest-ci/evidence/pytest-build-mut-e-red.xml
+58e2391ca5bc93e916ea1c6e2a20040660b10a6f99f32f38b9e74f7c76f95f93 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-final-check.xml
+d681ebde1543fc293908e62e3f89c1c6424b8292eda79a646f653a7c151e4132 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-f-green.xml
+d7fa383b91984db26d77f8997509d3bf9cedac84eac5b1698e7fa61f0c3f47bd *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-f-red.xml
+37339334dbf744a3081da4282f8aed7c70ee7c1d2ea6fa01a4621c05376bd331 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-g-green.xml
+7b29a9734e4ccad6261dfd4405803aaba5f26fa08e94bc46479c6fd6db790260 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-g-red.xml
+de7ab4fcb986a804487876c35570102d3e351d40bcda2b7fd1ff5a8aedda4ff3 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-h-green.xml
+5817f19913c9baa7a3a31cf48666b645cbb05cba1274e34f7ddd60d872348b6f *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-h-red.xml
+c59e46e6dd2e66d106df9db42f4d74a25d9104e2c9bf10e2d11494db7a8b8955 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-sanity-green.xml
+4356055b2ec6b3c24c8d00565c26b6a2ea0d817b84bf14996f2f898555210f96 *.claude/runs/20260924-pytest-ci/evidence/pytest-build-red-initial.xml
+
+## stderr
+

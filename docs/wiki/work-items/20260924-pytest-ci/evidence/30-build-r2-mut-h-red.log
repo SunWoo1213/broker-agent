@@ -1,0 +1,32 @@
+# 증거 30-build-r2-mut-h-red.log
+시작: 2026-09-24T22:55:04+09:00
+끝:   2026-09-24T22:55:30+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 780b009
+변경 파일 수(git status --porcelain): 20
+명령: sha256sum pytest.ini .github/workflows/ci.yml; .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260924-pytest-ci/evidence/pytest-build-r2-mut-h-red.xml
+종료 코드: 1
+
+## stdout
+706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012 *pytest.ini
+e34c56218f26084d228911814db909f05d242a750c0c6681b136745b8d8ec35d *.github/workflows/ci.yml
+..F........                                                              [100%]
+================================== FAILURES ===================================
+________________ test_ci_workflow_runs_same_commands_as_local _________________
+
+request = <FixtureRequest for <Function test_ci_workflow_runs_same_commands_as_local>>
+
+    def test_ci_workflow_runs_same_commands_as_local(request):
+        text = _ci_text(request)
+        for cmd in EXPECTED_PYTEST_RUNS:
+            assert cmd in text
+>       assert EXPECTED_OPA_RUN in text
+E       assert '          out="$(docker compose run --rm opa test /policies -v)"\n          printf "%s\\n" "$out"\n          grep -Eq "^PASS: [1-9][0-9]*/[1-9][0-9]*" <<<"$out"' in 'name: ci\non:\n  push:\n    branches: [main]\n  pull_request:\n  workflow_dispatch:\npermissions:\n  contents: read\n... test /policies -v)"\n          printf "%s\\n" "$out"\n          grep -Eq "^PASS: [0-9][0-9]*/[0-9][0-9]*" <<<"$out"\n'
+
+tests\test_ci_workflow.py:81: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_ci_workflow.py::test_ci_workflow_runs_same_commands_as_local
+1 failed, 10 passed in 21.47s
+
+## stderr
+
