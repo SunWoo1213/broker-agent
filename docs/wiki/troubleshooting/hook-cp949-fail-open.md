@@ -1,5 +1,10 @@
 # 승인 훅이 Windows 인코딩 오류로 죽으면서 명령을 그대로 통과시킴 (fail-open)
 
+> 요약
+> - 한 줄 해결: 훅 출력을 `ensure_ascii=True`로 내보내고, 입력 해석 실패와 최상위 예외를 전부 `permissionDecision: "ask"`로 처리한다.
+> - 원인: cp949 콘솔에 없는 문자(em dash)를 출력하려다 `UnicodeEncodeError`가 나고, Claude Code는 훅이 예외로 끝나면 차단 신호로 보지 않고 도구 호출을 그대로 진행한다.
+> - 재발 방지: `guard_paths.py`도 처음부터 ASCII 출력·"예외=deny" 구조로 작성. `settings.json`의 `permissions.ask`를 두 번째 방어선으로 추가.
+
 | 발생일 | 분류 | 상태 | 발견 경로 | 관련 원칙 |
 |---|---|---|---|---|
 | 2026-09-24 | 하네스 | 해결 | 훅 파이프 테스트 (직접 발견) | 원칙 1 (fail-closed) |

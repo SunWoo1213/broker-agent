@@ -1,5 +1,10 @@
 # 검증 기록 — 0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동
 
+> 요약
+> - 결론: ② 3차(r1 APPROVE → r2 REVISE → r3 APPROVE), ④ 1차 BLOCK → 사람 확인 3건으로 해제, ⑦ APPROVE.
+> - 바뀐 것: ② r2 REVISE(주석 지시와 AC13 문자열 검사 모순) 때문에 AC13 패턴이 `POSTGRES_PORT:-5433/5434` 매핑 기본값만 보도록 좁혀졌다.
+> - 다음에 알아야 할 것: ④ BLOCK 사유 4건 중 하나(서브에이전트의 권한 거부 우회)는 하네스 문제로 이어져 별도 트러블슈팅 페이지가 됐다.
+
 > 근거: `.claude/runs/20260924-dev-env/02-plan-review.md` · `.r2.md` · `.r3.md`, `04-code-review.md`, `07-improvement-review.md`
 
 ## 요약

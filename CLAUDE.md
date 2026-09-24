@@ -12,6 +12,7 @@ AI 에이전트가 사람 대신 사내 시스템(경비, 메일, 고객 DB)을 
 목표 직군은 AI 에이전트 · AX 개발이고, 이 프로젝트로 **백엔드 · 인프라 역량**을 보강한다.
 
 설계 전체: `docs/architecture.md` · 결정 기록: `docs/decisions.md` · 진행 계획: `docs/plan.md`
+**현재 진행 상황 · 다음 할 일: `docs/stage1-plan.md` 2장(현재 상태) · 4장 표의 "상태" 열** — 세션을 시작하면 여기부터 읽는다. 작업별 상세 기록은 `docs/wiki/Home.md`.
 
 ## 불변 원칙
 

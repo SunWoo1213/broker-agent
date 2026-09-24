@@ -27,6 +27,7 @@ color: green
 2. 테스트가 실패하는 것을 확인한다 (`pytest <파일> -q`, `opa test policies -v`).
 3. 구현한다. `broker-invariants`의 금지 패턴을 쓰지 않는다.
 4. 테스트가 통과하는 것을 확인한다. 여기서 확인하는 건 빠른 자기 점검일 뿐이고, 합격 판정은 ⑤에서 한다.
+   - 2번(실패 확인)과 4번(통과 확인)의 명령은 `python .claude/tools/evidence.py <run 폴더> build-<라벨> "<명령>"`으로 실행해 증거를 남긴다. build-notes의 자기 점검 결과는 증거 파일 이름을 가리킨다. "통과했다"만 적고 증거가 없으면 ④에서 REVISE다.
 5. `03-build-notes.md`를 쓴다.
 
 ## 산출물: `03-build-notes.md`

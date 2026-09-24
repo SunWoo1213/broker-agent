@@ -27,3 +27,4 @@ description: ⑦ 개선 계획 검증 체크리스트. reviewer가 06-improvemen
 | I5 | "코드 수정 없음" 판정이면 04 · 05가 모두 APPROVE다 | REVISE |
 | I6 | 하네스 개선안이 구체적 문장이다 (어느 Skill의 어느 절에 무엇을 추가) | REVISE |
 | I7 | 개선 사이클이 2회를 넘지 않았다 | 넘으면 BLOCK (사람 판단) |
+| I8 | 06이 인용한 테스트 결과가 05의 증거 파일과 일치하고, `evidence.py <run 폴더> --verify`가 전부 "일치"다 (직접 실행) | 불일치면 REVISE, 변조됨이면 BLOCK |

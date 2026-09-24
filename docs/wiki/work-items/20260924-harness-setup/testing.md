@@ -1,5 +1,10 @@
 # 테스트 기록 — 개발 하네스 구성
 
+> 요약
+> - 결론: `guard_critical.py` 1차 실패(fail-open) → 수정 후 55/55 통과. `guard_paths.py` 처음부터 9/9 통과.
+> - 바뀐 것: 인코딩 오류로 훅이 예외 종료하며 통과시키던 결함을 고쳤다(상세: [hook-cp949-fail-open.md](../../troubleshooting/hook-cp949-fail-open.md)).
+> - 다음에 알아야 할 것: Claude Code 세션 안에서 훅이 실제로 발동하는지는 미확인 — 세션 재시작 또는 `/hooks` 확인이 필요하다.
+
 ## 요약
 
 | 회차 | 대상 | 결과 | 비고 |

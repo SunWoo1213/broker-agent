@@ -48,3 +48,43 @@
   - H6 (c)안: 변수 이름 목록 파일을 `env.example`로 바꾸고 `.env.*` deny는 유지. 참조 갱신: `.gitignore`, `CLAUDE.md`, `README.md`, `docs/stage1-plan.md`, `agents/broker-builder.md`, `skills/code-review-invariants/SKILL.md`. 파일 이름 변경 자체는 deny 경로라 사용자가 직접 함
 - **임시 venv 삭제:** ask 규칙은 allow보다 우선해서 특정 경로만 allow로 풀 수 없다. 이번에는 사람 확인 한 번으로 삭제. 계획에는 계속 삭제 단계를 넣지 않는다.
 - **새 환경 설치 확인 방식 (같은 날, 사용자 결정):** 로컬 임시 venv(AC5)는 CI가 생기기 전까지만 쓴다. B(pytest · GitHub Actions) 이후에는 CI의 빈 환경 설치 · 테스트 통과로 대신한다. → `agents/planner.md` "하지 말 것"에 한 줄 추가
+
+## 2026-09-24 테스트 증거 규칙 (사용자 지시)
+
+- **지시:** "테스트를 했다 하고 끝내는 것이 아니라 실제로 수행한 흔적과 그 증거가 있어야 한다."
+- **도구:** `.claude/tools/evidence.py` — 명령을 Git Bash로 실행하고 `<run>/evidence/NN-<라벨>.log`(시작 · 끝 시각, git HEAD, 명령 원문, 종료 코드, stdout · stderr 전체)와 `MANIFEST.tsv`(sha256)를 남긴다. `--verify`로 로그가 나중에 고쳐졌는지 확인.
+  - 자체 검증(스크래치패드): 성공 명령 exit 0, 실패 명령 exit 3 그대로 전달, 한글 UTF-8 기록, 로그 한 줄 추가 시 `--verify`가 "변조됨" + exit 1.
+- **고친 곳:**
+  - `skills/test-gate`: 증거 규칙 절 신설, AC 대조표에 증거 파일 열, `--verify` 출력 첨부, 판정표(증거 없음 REVISE, 변조 BLOCK)
+  - `agents/test-verifier.md` · `agents/broker-builder.md`: 모든 실행 · 자기 점검을 evidence.py로
+  - `skills/plan-review` P11: AC마다 무엇이 증거로 남는지 명시
+  - `skills/code-review-invariants` D1–D3, `skills/improvement-review` I8: 검토자가 증거와 `--verify`를 직접 확인
+  - `skills/dev-wiki`: 증거를 `docs/wiki/work-items/<run>/evidence/`로 복사(커밋 대상), 복사 뒤 `--verify`, 비밀 섞이면 멈춤
+- **한계:** 직전 작업 A(20260924-dev-env)는 이 규칙 전이라 증거가 05 리포트 안의 출력 발췌뿐이다. 소급하지 않는다.
+- **구멍 발견 · 막음 (같은 날):** ① planner(작업 B r2)가 지적 — Claude Code의 ask · deny 규칙은 명령 앞부분만 보므로 `evidence.py ... "curl ..."`처럼 감싸면 사람 확인 · 차단을 비껴간다. 증거 도구가 새 우회 경로가 된 것.
+  - 수정: evidence.py가 `.claude/settings*.json`의 Bash · PowerShell ask · deny 규칙 조각을 읽어, 명령 어디에든 들어 있으면 실행하지 않고 종료 코드 126으로 거부. 설정을 못 읽으면 거부(fail-closed).
+  - 검증: 차단 기대 17건 · 허용 기대 9건 전부 기대대로(스크래치패드 guard_check.py), 실제 `curl --version`은 126으로 거부되고 evidence 폴더도 생기지 않음.
+  - 운영: ask 대상 명령은 직접 실행(사람 확인) → 출력 파일 → `evidence.py ... "cat 파일"`로 기록 (`skills/test-gate` 증거 규칙에 추가).
+- **채점 스크립트 허용 (같은 날, 사용자 승인):** 작업 B ① planner가 `<run>/checks/`에 판정 스크립트 8개를 미리 씀. ② reviewer가 "위반 아님, 규칙 문장과 관행을 맞추라"고 권고 → `agents/planner.md` 역할 절에 예외(채점만, 권한 대상 명령 호출 금지, ③ · ⑤ 수정 금지 + 해시 기준선, ② 전수 검토) 추가.
+
+## 2026-09-24 위키 골라 읽기 구조 (사용자 요청)
+
+- **질문:** "위키를 처음부터 끝까지 읽지 않고 필요한 부분만 읽을 수 있게 되어 있나?" → 점검 결과 부족: 결론이 페이지 위에 없음, 증상으로 찾는 입구 없음, "왜 이 값인가" 색인 없음, Home 표가 분류 없이 날짜순.
+- **고친 곳:** `skills/dev-wiki` "골라 읽기 규칙" 절 신설(모든 페이지 첫머리 `> 요약` 3줄, 트러블슈팅은 "한 줄 해결"이 첫 줄, Home 세 입구: 작업 로그 · 분류별 문제 해결(이럴 때 보세요 열) · 주제별 색인), Home 갱신 규칙 수정, `docs/wiki/_templates/` 4개에 요약 블록 추가.
+- **남은 일:** 기존 페이지 12개 소급 정리는 작업 B 위키 기록 때 wiki-writer가 함께 한다(내용 변경 없이 요약 · 색인만 추가).
+
+## 2026-09-24 0. 개발 환경 — pytest · CI (작업 B) ⑥ 하네스 개선안 (제안, 사용자 결정 대기)
+
+- ④ 1차 REVISE 근본 원인: 변이 표가 수량 · 전칭 조건("하나", "모든")을 덮지 않음 / checks(강함)와 tests(약함)의 검사 강도 불일치 / AC12 통과 규칙 미정의 + 작업 창 안 추적 파일 변경.
+- H1 planner ① 계획 모드: 검증 문장마다 그 문장을 깨는 변이, 수량 · 전칭 표현엔 "하나 더 추가" · 경계값 변이
+- H2 planner 하지 말 것: 같은 조건을 checks/와 tests/에 다른 강도로 두지 않기
+- H3 broker-builder 작업 순서 1번: 계획의 수량 표현을 그대로 assert
+- H4 planner 하지 말 것: 사람 변경으로 BAD가 날 수 있는 AC는 통과 규칙 명시
+- H5 work-item 계획 승인 절: ③–⑤ 동안 메인 세션은 추적 파일 수정 금지
+- H6 planner ① 계획 모드: ③ 자기 점검 목록에 전체 채점 스크립트(ac6 등) 포함
+- H7 code-review-invariants D4: 탐침(임시 사본으로 조건 깨기)을 절차로
+- 근거: `.claude/runs/20260924-pytest-ci/06-improvement-plan.md`, `07-improvement-review.md`(APPROVE)
+- **결정 (같은 날, 사용자: "네 추천대로 진행해주세요"):** H1(수량 · 전칭 · 보안 검사에 한정) · H2 · H4 · H5(원칙 미루기, 급하면 00-approval 선기록) · H7(보안 검사에 한정) 반영, H3는 H1에 합침, H6 보류.
+  - `agents/planner.md` ① 계획 모드 "변이 확인" 단락, "하지 말 것" 두 줄(H2 · H4)
+  - `skills/work-item/SKILL.md` 00-approval 절: ③–⑤ 동안 메인 세션 추적 파일 수정 금지(H5)
+  - `skills/code-review-invariants/SKILL.md` D4 탐침(H7)

@@ -1,5 +1,10 @@
 # 테스트 기록 — 0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동
 
+> 요약
+> - 결론: APPROVE, AC1–AC13 13/13 PASS. pytest 신규 테스트는 없음(범위 밖, "수집 0개, exit 5"로 계획 취지대로 기록).
+> - 바뀐 것: 의존성 중단 테스트(OPA healthcheck 포트 차단, `docker compose stop opa`) 2건을 새로 만들어 fail-closed를 확인했다.
+> - 다음에 알아야 할 것: AC5 확인용 임시 venv(`broker-venv-check-05`)와 compose 3종은 사용자 검토 편의를 위해 삭제하지 않고 남겨뒀다.
+
 > 근거: `.claude/runs/20260924-dev-env/01-plan.r3.md`(완료 조건), `03-build-notes.md`(구현 중 자기 점검), `05-test-report.md`(⑤ 실행). 숫자와 출력은 원문 그대로 옮겼다.
 
 ## 요약

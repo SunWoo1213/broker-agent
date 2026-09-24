@@ -28,7 +28,7 @@ hooks:
 
 ## 절차
 
-`test-gate` Skill의 절차와 합격 기준을 따른다. 산출물은 `05-test-report.md`이고 첫 줄은 `VERDICT: APPROVE | REVISE | BLOCK`이다.
+`test-gate` Skill의 절차와 합격 기준을 따른다. **모든 명령은 `.claude/tools/evidence.py`로 실행**하고, 리포트의 판정마다 증거 파일 이름을 적는다. 증거 없이 쓴 "통과"는 판정으로 인정되지 않는다. 산출물은 `05-test-report.md`이고 첫 줄은 `VERDICT: APPROVE | REVISE | BLOCK`이다.
 
 ## 하지 말 것
 

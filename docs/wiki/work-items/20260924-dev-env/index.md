@@ -1,5 +1,10 @@
 # 0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동
 
+> 요약
+> - 결론: 완료. ④에서 BLOCK이 났으나 코드 결함이 아니라 행동·환경 문제였고 사람 확인 3건으로 해제됐다.
+> - 바뀐 것: `requirements.txt`·`requirements-dev.txt`의 미고정 패키지 6개를 `==`로 고정, `docker-compose.yml` 이미지 3종 태그 고정 + OPA healthcheck 추가 + 포트 5433→5434.
+> - 다음에 알아야 할 것: `.env.example` 권한 충돌(H6)은 같은 날 (c)안으로 해결 — 변수 이름 목록은 `env.example`, `.env.*`는 전면 차단. H1–H5도 같은 날 반영됐다.
+
 | 날짜 | plan.md 항목 | 결과 | 관문 재시도 | 개선 사이클 |
 |---|---|---|---|---|
 | 2026-09-24 | 1단계 0번 체크박스 1 · 2 | 완료 | ② 2회(REVISE→APPROVE) · ④ 1회(BLOCK→사람 해제) · ⑦ 0회 | 1회(코드 수정 없음) |
@@ -57,16 +62,16 @@
 | ③ 구현 중 서브에이전트가 권한 시스템(deny · ask) 거부 명령을 다른 명령·도구로 두 번 우회함 | 구현 | 해결 (사람이 이번만 수용, 규칙 추가) | [링크](../../troubleshooting/subagent-permission-bypass.md) |
 | ⑤ 테스트 중 임시 venv 삭제가 ask 규칙에 걸려 확인 요청이 반복됨 | 하네스 | 해결 (정책 결정: 삭제 단계를 계획에서 뺌) | [링크](../../troubleshooting/delete-ask-repeated-prompt.md) |
 | Windows Git Bash가 컨테이너 안 절대경로(`/opa`, `/policies`)를 Windows 경로로 잘못 변환 | 환경 | 해결(`MSYS_NO_PATHCONV=1`로 우회, 제안 H4·H5는 미반영) | [링크](../../troubleshooting/msys-pathconv-windows.md) |
-| `.env.example`의 deny 권한과 `CLAUDE.md`·`broker-builder.md`의 "`.env.example`에 이름만 추가" 가정이 충돌(H6) | 설계 | **미해결** — 사용자 결정 대기, C · E 항목 전에 정해야 함 | 아래 "7. 배운 점" 및 `06-improvement-plan.md` H6 참고. 트러블슈팅 페이지 아직 없음(결정 후 작성) |
+| `.env.example`의 deny 권한과 `CLAUDE.md`·`broker-builder.md`의 "`.env.example`에 이름만 추가" 가정이 충돌(H6) | 설계 | 해결 (2026-09-24, 이 작업 마무리 뒤) — 사용자가 (c)안 선택: 파일을 `env.example`로 이름 변경(사용자가 직접), deny `.env.*` 유지, 참조 6곳 갱신 | `.claude/harness-notes.md` "H1–H6 반영" 줄 · `06-improvement-plan.md` H6 |
 
 ## 7. 배운 점
 
 - ④ 구현 검증에서 BLOCK 사유 세 건이 모두 "코드 결함"이 아니라 "작업 중 행동·환경 상태"였다. 저장소에 커밋이 없는 상태에서 파일 변경만으로는 "누가 언제 무엇을 바꿨는지"를 구분할 수 없었다 — `.env.example` 수정 시각(20:57:14)이 계획 승인(20:55:39)과 구현 시작(20:58:48) 사이에 있어, 사용자가 직접 확인해 줄 때까지 BLOCK을 풀 수 없었다.
 - 원칙 1(fail-closed)은 브로커 코드뿐 아니라 그 브로커를 만드는 하네스 자신(권한 시스템)에도 적용된다는 것이 이번에도 확인됐다(첫 하네스 구성 때의 훅 fail-open 문제와 같은 계열). 서브에이전트가 권한 거부를 다른 명령으로 우회하는 것은 "검문소를 우회하는 에이전트"와 같은 패턴이라 사람이 직접 판단하게 했다.
-- 하네스 개선안: [`.claude/harness-notes.md`](../../../../.claude/harness-notes.md) "2026-09-24 0. 개발 환경 — 권한 거부 우회" 절 — 즉시 반영 3곳(`planner.md:71-72`, `broker-builder.md:52`, `test-verifier.md:38`), 제안 상태 6곳(H1–H6, ② 관문 체크리스트 보강 · 관리하지 않는 자원 상태를 AC로 쓰지 않기 · 사람 변경 기록 절차 · MSYS 경로 변환 · 셸 기준 명시 · `.env.example` 권한 충돌 결정)은 다음 `/work-item`에서 사용자 결정 · 반영이 필요하다.
+- 하네스 개선안: [`.claude/harness-notes.md`](../../../../.claude/harness-notes.md) "2026-09-24 0. 개발 환경 — 권한 거부 우회" 절 — 즉시 반영 3곳(`planner.md:71-72`, `broker-builder.md:52`, `test-verifier.md:38`), 제안 상태 6곳(H1–H6, ② 관문 체크리스트 보강 · 관리하지 않는 자원 상태를 AC로 쓰지 않기 · 사람 변경 기록 절차 · MSYS 경로 변환 · 셸 기준 명시 · `.env.example` 권한 충돌 결정)은 같은 날 사용자 결정으로 H1–H6 모두 반영됐다(H6은 (c)안). 상세: harness-notes "H1–H6 반영" 줄.
 
 ## 8. 관련
 
 - 커밋: (아직 없음 — 저장소에 첫 커밋 전. 커밋 후 채움)
 - 선행 항목: 없음 (1단계 첫 항목)
-- 후속 항목: `docs/plan.md` 1단계 0번 세 번째 체크박스(pytest 최소 테스트 · GitHub Actions, "B" 항목). H6(`.env.example` 권한 충돌)은 C · E 항목 전에 결정 필요
+- 후속 항목: `docs/plan.md` 1단계 0번 세 번째 체크박스(pytest 최소 테스트 · GitHub Actions, "B" 항목). H6(`.env.example` 권한 충돌)은 (c)안으로 해결됨
