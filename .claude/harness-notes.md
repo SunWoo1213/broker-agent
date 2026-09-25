@@ -107,3 +107,16 @@
   - H12 무효 실행 처리: 시작 · 재개 때 `docker compose ps` 증거, 요약 줄 없는 red · 탐침 로그는 무효, reviewer · code-review-invariants D4에 `MSYS_NO_PATHCONV=1` 안내
   - H13 evidence.py가 자식에 `PYTHONIOENCODING=utf-8` 전달 + 채점 스크립트 stdout UTF-8(도구 변경, F-D9)
   - H14 work-item 마무리 1-0 뒤: README 최신화 단계
+- **결정 (같은 날, 사용자: "1,2,3,4번을 진행해주세요"):** 전부 반영. 제안 원문 문장을 그대로 넣고 끝에 `(작업 D Hn)` 표시를 붙였다. 후속 항목 F-D1–F-D9는 `docs/plan.md`에 넣었다(F-D9 완료).
+  - `agents/planner.md` — ① "변이 확인" 단락 끝: H1(58행) · H9(59행) · H11 planner 문장(60행) / ⑥ 개선 모드 템플릿 아래: H8(76행) / "하지 말 것": H7(91행) · H13 planner 문장(92행)
+  - `agents/broker-builder.md` — "작업 순서": 0번 H12-1(26행), 1번 아래 H3(28행), 2번 아래 H11(30행) · H12-2(31행) / 03 템플릿 아래 "자기 점검 실행 결과" 작성 규칙: H10(51행) · H5(52행) / "하지 말 것": H4(59행)
+  - `agents/test-verifier.md` — "절차" 끝: H12-1(33행)
+  - `agents/reviewer.md` — "Bash 사용 범위" 끝: H12-3(65행)
+  - `agents/wiki-writer.md` — 절차 4번 아래: H10(38행)
+  - `skills/plan-review/SKILL.md` — 표에 P12(H2, 24행) · P13(H9, 25행) 추가, APPROVE 조건을 P1–P13으로(27행). P12 · P13은 빈 번호였다
+  - `skills/code-review-invariants/SKILL.md` — A 표에 A4(H4, 17행; 원문 끝 "없으면 REVISE"는 표의 "실패하면" 열로 옮김) / D4 끝에 H12-2 · H12-3(47행)
+  - `skills/test-gate/SKILL.md` — 증거 규칙: H5(21행) / 절차 5번 아래: H10(34행)
+  - `skills/work-item/SKILL.md` — "흐름과 분기" 아래: H6(64행) / 마무리 1-0 뒤 1-0-1: H14(89행)
+  - `.claude/tools/evidence.py` — H5: `--verify` 끝 `합계 N  일치 A  변조됨 B  없음 C` 요약 줄(126행, 판정 반환값은 그대로 `bad` 기준) / H13: 자식 `subprocess.run`에 `env={**os.environ, "PYTHONIOENCODING": "utf-8"}`(163행). 권한 필터 코드는 바꾸지 않음
+  - 중복으로 건너뛴 것: 없음. 작업 B 반영분(planner "변이 확인" 첫 문장, broker-builder · test-verifier의 `MSYS_NO_PATHCONV=1` 예외, test-gate 절차 1번의 `docker compose ps`, D4 탐침)과 취지는 이어지지만 새 문장이 다루는 내용(출력 분기별 변이, exact 여부, 재개 시 healthy 확인 · 무효 실행, reviewer · D4의 경로 안내)이 달라 보강으로 넣었다
+  - **효과 확인(H13 · H5):** 스크래치 run 폴더에서 `enc-check`(`print('한글')`) → 로그 stdout에 `한글` 그대로, exit 0. 대조: 환경 변수 없이 파이프 캡처하면 `c7 d1 b1 db`(cp949), 있으면 `ed 95 9c ea b8 80`(UTF-8). `curl --version` → 126 거부, 로그 생성 없음. `--verify` 요약 줄 출력, 기존 증거 폴더 4곳(위키 pytest-ci 60 · 위키 rego-policy 268 · run pytest-ci 62 · run rego-policy 268) 전부 일치. 트러블슈팅 `evidence-log-cp949-garbled-output.md`를 `해결`로 바꿈

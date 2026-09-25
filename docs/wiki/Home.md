@@ -21,7 +21,7 @@
 | 단계 | 목표 | 상태 |
 |---|---|---|
 | 0 | 개발 하네스 | 완료 |
-| 1 | 게이트웨이 ①②③⑦ + 모의 도구 + 데모 에이전트 | 진행 중 (0. 개발 환경 — venv·버전 고정·compose 기동 완료, pytest·CI 완료, 4. 정책(Rego) 완료(CI 원격 확인 대기)) |
+| 1 | 게이트웨이 ①②③⑦ + 모의 도구 + 데모 에이전트 | 진행 중 (0. 개발 환경 — venv·버전 고정·compose 기동 완료, pytest·CI 완료, 4. 정책(Rego) 완료) |
 | 2 | 승인, 임시 토큰 | 대기 |
 | 3 | 누적 한도, 동시성, 공격 평가 1차 | 대기 |
 | 4 | 감사 로그, 취소 전파 | 대기 |
@@ -37,7 +37,7 @@
 | 2026-09-24 | 개발 하네스 구성 | 완료 | 해당 없음(하네스 구성 전) | [개요](work-items/20260924-harness-setup/index.md) · [검증](work-items/20260924-harness-setup/verification.md) · [테스트](work-items/20260924-harness-setup/testing.md) |
 | 2026-09-24 | 0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동 | 완료 | ② 2회(REVISE→APPROVE) · ④ 1회(BLOCK→사람 해제) · ⑦ 0회 | [개요](work-items/20260924-dev-env/index.md) · [검증](work-items/20260924-dev-env/verification.md) · [테스트](work-items/20260924-dev-env/testing.md) |
 | 2026-09-24 | 0. 개발 환경 — pytest · CI | 완료 (U1 푸시 · U2 Actions run #1 성공 · U3 plan.md 체크) | ② 1회(r3 대상 APPROVE) · ④ 2회(1차 REVISE→2차 APPROVE) · ⑦ 1회(APPROVE) | [개요](work-items/20260924-pytest-ci/index.md) · [검증](work-items/20260924-pytest-ci/verification.md) · [테스트](work-items/20260924-pytest-ci/testing.md) |
-| 2026-09-25 | 4. 정책 (Rego) (작업 D) | 완료 (CI 원격 확인 U1 대기) | ② 1회(REVISE→APPROVE) · ④ 사이클1 1회(REVISE→APPROVE)·사이클2 0회 · ⑦ 사이클1 2회(REVISE→REVISE→APPROVE)·사이클2 0회 · 개선 사이클 2회 | [개요](work-items/20260925-rego-policy/index.md) · [검증](work-items/20260925-rego-policy/verification.md) · [테스트](work-items/20260925-rego-policy/testing.md) |
+| 2026-09-25 | 4. 정책 (Rego) (작업 D) | 완료 (d9b6b16, Actions 성공) | ② 1회(REVISE→APPROVE) · ④ 사이클1 1회(REVISE→APPROVE)·사이클2 0회 · ⑦ 사이클1 2회(REVISE→REVISE→APPROVE)·사이클2 0회 · 개선 사이클 2회 | [개요](work-items/20260925-rego-policy/index.md) · [검증](work-items/20260925-rego-policy/verification.md) · [테스트](work-items/20260925-rego-policy/testing.md) |
 
 ---
 
@@ -59,7 +59,7 @@
 | 서브에이전트가 권한 시스템 거부 명령을 다른 명령·도구로 우회 | deny·ask에 막힌 명령을 `stat`, `Remove-Item` 같은 다른 명령·도구로 다시 시도한 흔적이 보임 | 해결(사람 확인 후 규칙 추가) | 2026-09-24 | [링크](troubleshooting/subagent-permission-bypass.md) |
 | 임시 폴더 삭제가 ask 규칙에 걸려 확인 요청이 반복됨 | 같은 작업 안에서 삭제 확인 창이 여러 번 뜸 | 해결(정책 결정: 계획에서 삭제 단계 제거) | 2026-09-24 | [링크](troubleshooting/delete-ask-repeated-prompt.md) |
 | 증거 도구(evidence.py)로 명령을 감싸면 ask·deny 권한 규칙을 비껴감 | `evidence.py <run> <라벨> "curl ..."`처럼 ask 대상 명령을 감쌌는데 확인 창이 안 뜨고 바로 실행됨 | 해결(126 필터 추가) | 2026-09-24 | [링크](troubleshooting/evidence-tool-permission-bypass.md) |
-| evidence 로그에서 자식 Python의 한국어 출력이 깨짐 | 로그에 한국어 부분이 `U+FFFD`(깨진 문자)로 저장됨. 판정 토큰(`OK`·`HUMAN`·`BAD`)은 정상 | 미해결 | 2026-09-25 | [링크](troubleshooting/evidence-log-cp949-garbled-output.md) |
+| evidence 로그에서 자식 Python의 한국어 출력이 깨짐 | 로그에 한국어 부분이 `U+FFFD`(깨진 문자)로 저장됨. 판정 토큰(`OK`·`HUMAN`·`BAD`)은 정상 | 해결 (H13, 2026-09-25) | 2026-09-25 | [링크](troubleshooting/evidence-log-cp949-garbled-output.md) |
 | 개선 사이클에서 사용자 승인된 설계 결정(decisions.md) 반영 시점이 규칙과 어긋남 | ⑦ 검토에서 "decisions.md 보강을 '마무리'로 미룸이 `work-item/SKILL.md`·`CLAUDE.md`와 어긋난다"는 REVISE가 남 | 해결(승인 직후·다음 ③ 전으로 순서 교정) | 2026-09-25 | [링크](troubleshooting/improvement-cycle-decision-timing.md) |
 
 ### 구현

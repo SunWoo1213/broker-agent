@@ -26,18 +26,21 @@
 - [ ] Alembic 초기화
 - [ ] `agents`, `tools`, `tool_actions`, `delegations` 테이블 (나머지는 해당 단계에서 추가)
 - [ ] 시드 데이터: 데모 에이전트 1개, 도구 3개와 작업 목록, 직원 2명의 위임
+- [ ] **F-D4** (작업 D 후속): `tool_actions.risk` = `low`/`medium`/`high`, `delegations.per_tx_limit NOT NULL DEFAULT 0`, 범위 = 작업 이름, `expense.create` 위험도 `low`, 시드 이메일 `@example.com` (D18 계약에 맞춤)
 
 ### 2. 모의 도구 (MCP 서버 3개)
 - [ ] `tools/expense`: `expense.create`, `expense.list`
 - [ ] `tools/mail`: `mail.send`
 - [ ] `tools/crm`: `customer.lookup` (응답에 전화번호 · 계좌번호 같은 민감 필드 포함 → 7번 응답 필터 확인용)
 - [ ] 1단계에서는 브로커가 넣는 공유 비밀 헤더로 호출자 확인 → 2단계에서 서명 토큰으로 교체
+- [ ] **F-D5** (작업 D 후속): `mail.send` 인자 스키마 `{to: string[] (minItems 1), subject: string, body: string}`, **`required: [to, subject, body]`**, `additionalProperties: false` (K10 A안)
 
 ### 3. 게이트웨이 최소 형태
 - [ ] 에이전트에게는 MCP 서버로 보이고, 등록된 도구 작업을 `tools/list`로 노출
 - [ ] ① 에이전트 인증: 등록된 에이전트 키로 서명된 요청만 받음
 - [ ] ② 위임 확인: 요청한 사용자가 이 에이전트에게 이 작업을 위임했는지, 만료 · 취소 여부
 - [ ] ③ 정책 판단: OPA에 요청 정보를 보내 허용 / 거부 / 승인 필요 + 이유를 받음. **OPA 연결 실패 = 거부** (D1)
+  - [ ] **F-D3** (작업 D 후속, 작업 I에서): 질의 경로 `POST /v1/data/broker/authz/decision`, 응답 `{"result": {...}}`의 안쪽 키가 정확히 `result` · `reason`인지 검사, `require_approval` → 거부(가짜 OPA), 실제 OPA 서버 통합 테스트
 - [ ] ⑦ 허용이면 실제 도구 호출, 결과 반환
 - [ ] 판단 결과를 로그로 남김 (감사 로그 정식 구현은 4단계)
 
@@ -46,7 +49,7 @@
 - [x] 위험도 낮음 + 위임 범위 안 → 허용
 - [x] `expense.create` 건당 한도 초과 → 거부
 - [x] 위험도 높음(`mail.send` 외부 수신자 등) → 승인 필요 (2단계 전까지는 거부로 처리)
-- [x] `opa test` 로 규칙별 단위 테스트 — *opa test 54개 · 변이 25종 · 정적 pytest 2개. 로컬 완료 · CI 원격 확인(U1) 대기. 상세 `docs/wiki/work-items/20260925-rego-policy/`*
+- [x] `opa test` 로 규칙별 단위 테스트 — *opa test 54개 · 변이 25종 · 정적 pytest 2개. 완료 (d9b6b16, Actions opa-test · pytest 성공). 상세 `docs/wiki/work-items/20260925-rego-policy/`*
 
 ### 5. 데모 에이전트
 - [ ] LangGraph 경비 정산 에이전트가 브로커 주소 하나만 알고 도구를 사용
@@ -75,6 +78,9 @@
 - [ ] 승인은 한 번만 실행된다 (실행됨 상태에서 재사용 시 거부)
 - [ ] 만료 처리: 기한이 지난 대기 · 승인 건을 만료로 바꿈 (로컬은 주기 작업, AWS는 EventBridge Scheduler)
 - [ ] 정책: 위험도 높음 → "승인 필요" 활성화 (1단계의 임시 거부 규칙 교체)
+  - [ ] **F-D6** (작업 D 후속): `approval_result` 한 줄 교체 + 변이 m 정확 집합 8개 테스트의 기대값 교체. 우선순위 · 이유 코드는 그대로. 사이클 2의 변이 y(승인 분기 키 추가)도 그때 FAIL 집합을 다시 추적한다. **변이 n · u도 그때 다시 추적한다**(`approval_result` 교체가 n의 승인 분기 순서 테스트에 영향을 줄 수 있음)
+  - [ ] **F-D7** (작업 D 후속, 다음에 `policies/authz_test.rego`를 건드리는 항목에서 — 이 8번보다 먼저 오는 항목이 있으면 그 항목): G 그룹에 `subject: ""` · `body: ""` 허용 경우 1개를 더해 K10의 "빈 문자열 허용"을 테스트로 고정. 이 허용 테스트를 더하면 **변이 u · y의 FAIL 집합이 바뀐다**(허용 분기 테스트 +1). 같은 작업에서 두 변이를 다시 추적한다
+  - [ ] **F-D8** (작업 D 후속, F-D6 또는 F-D7과 같은 작업에서): 그 작업의 ①이 변이 n · r · u의 FAIL 집합을 **실행 전에 손 추적으로** 정하고, `plan_tests.py`의 해당 작업 사본에 `exact=True`로 고정한다. ②는 따로 추적해 확인한다. 작업 D 사이클 2 관측값(n 5 · r 3 · u 7)은 대조용으로만 쓴다. 추적과 관측이 어긋나면 원인을 분석한다. 관측값을 기대값으로 옮겨 적지 않는다(원칙 7)
 
 ### 9. 승인 화면 (최소)
 - [ ] Keycloak을 Compose에 추가, 직원 2명 계정 · OIDC 로그인
@@ -180,6 +186,7 @@
 - [ ] GitHub Actions: 테스트 → `opa test` → 이미지 빌드 → ECR → ECS 배포 (OIDC 인증, 장기 키 없음)
 - [ ] Alembic 마이그레이션을 배포 단계에 포함
 - [ ] OPA 정책 묶음을 S3에서 받아오고 `policy_versions`에 기록 (D5)
+- [ ] **F-D1** (작업 D 후속, CI를 손보는 항목이 이보다 먼저 오면 그 항목에서): CI `opa-test` job에 `opa check --strict /policies` · `opa fmt --fail --list /policies` 추가 + 작업 B의 F1(`JOB_HEADER_RE` `_` 허용 · 헤더 누락 검출 · 변이 i)을 합쳐 처리
 
 ### 24. 모니터링
 - [ ] CloudWatch 지표: 판단별 건수, 거부율, 게이트웨이 지연, outbox 지연, 취소 반영 시간
@@ -211,6 +218,13 @@
 - [ ] README: 문제, 구조 그림, 핵심 결정(D1–D14), 수치, 실행 방법
 - [ ] 시연 영상 (3분 내외): 정상 청구 → 승인 → 공격 시나리오 차단 → 감사 로그 검증
 - [ ] `decisions.md` 열린 질문 정리, 위키 Home 갱신
+
+---
+
+## 하네스 후속 항목 (`.claude/` 규칙 · 도구)
+
+- [ ] **F-D2** (작업 D 후속): `.claude/skills/rego-policy/SKILL.md` 예시(24–28행)를 D18 모양(`action: {name, risk}`, `per_tx_limit`, `per_tx_limit_exceeded`)으로 바꾼다
+- [x] **F-D9** (작업 D 후속): H13 적용 — `.claude/tools/evidence.py`가 자식 프로세스에 `PYTHONIOENCODING=utf-8`을 넘긴다. *2026-09-25 적용 · 확인(로그 stdout 한글 보존, 권한 필터 126 유지). 적용 전 로그의 한국어 깨짐은 "기존 현상"으로 기록만 한다. 상세 `docs/wiki/troubleshooting/evidence-log-cp949-garbled-output.md`*
 
 ---
 

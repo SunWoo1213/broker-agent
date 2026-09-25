@@ -30,6 +30,8 @@ hooks:
 
 `test-gate` Skill의 절차와 합격 기준을 따른다. **모든 명령은 `.claude/tools/evidence.py`로 실행**하고, 리포트의 판정마다 증거 파일 이름을 적는다. 증거 없이 쓴 "통과"는 판정으로 인정되지 않는다. 산출물은 `05-test-report.md`이고 첫 줄은 `VERDICT: APPROVE | REVISE | BLOCK`이다.
 
+세션을 시작하거나 재개할 때, 파일 해시 확인과 함께 `docker compose ps`를 evidence.py로 기록한다. 서비스가 healthy가 아니면 변이 · 테스트를 실행하지 않는다. 환경을 복구하는 명령(Docker Desktop 기동 등)을 evidence 밖에서 실행했다면 원문을 03 · 05에 적는다. (작업 D H12-1)
+
 ## 하지 말 것
 
 - 소스 · 테스트 파일 수정 (쓰기는 `.claude/runs/` 아래만 허용됨)

@@ -23,28 +23,31 @@
 | 하네스 (agents · skills · hooks) | 완료. 오늘 규칙 추가: 권한 우회 금지, 증거 도구 `.claude/tools/evidence.py`(권한 필터 포함), 계획 검증 P10 · P11, 승인 기록 `00-approval.md`, 변이 확인 · 탐침 (`.claude/harness-notes.md`) |
 | `docker-compose.yml` | 이미지 고정(postgres 16.15 · redis 7.4.11-alpine · opa 1.20.2), OPA healthcheck, postgres 호스트 포트 5434 — 작업 A |
 | `requirements*.txt` | 전부 `==` 고정 — 작업 A |
-| `policies/` | D18 계약 정책(`policies/authz.rego`) + `opa test` 54개 · 정적 pytest 2개 — 작업 D, 완료(CI 원격 확인 대기) |
+| `policies/` | D18 계약 정책(`policies/authz.rego`) + `opa test` 54개 · 정적 pytest 2개 — 작업 D, 완료 (d9b6b16, Actions 성공) |
 | pytest · CI | `pytest.ini`, 테스트 13개(작업 D에서 정책 정적 검사 2개 추가), `.github/workflows/ci.yml` — 작업 B, 완료 (Actions run #1 성공, 7c0ad0d) |
 | 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). main 푸시 완료 |
 | 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
 | 로컬 도구 | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
-| 결정 D15~D20 | **D18 승인(2026-09-25, K10 보강 포함)**, D15 · D16 · D17 · D19 · D20 미승인 — C · E · G 전에 승인 필요 |
+| 결정 D15~D20 | **전부 승인(2026-09-25)** — `docs/decisions.md` D15~D20. D18은 K10 보강 포함 |
 
 ## 3. 코드 전에 정할 결정 (초안)
 
-아래 결정은 모두 제안 상태다. 승인받으면 `docs/decisions.md`에 D15~D20으로 옮긴 뒤 코드를 시작한다.
+아래 결정은 2026-09-25에 모두 권장안대로 승인됐고 `docs/decisions.md` D15~D20으로 옮겼다. 이 절은 제안 당시의 설명으로 남긴다(확정 문구는 decisions.md가 기준).
 
 ### D15 에이전트 인증 방식 (①)
+**승인됨 (2026-09-25). 확정 문구는 `docs/decisions.md` D15**
 - **권장안:** 에이전트마다 Ed25519 키 쌍을 둔다. 공개키는 `agents` 테이블에 둔다. 에이전트는 HTTP 요청마다 헤더 4개(`X-Agent-Id`, `X-Timestamp`, `X-Nonce`, `X-Signature`)를 붙인다. 서명 대상: 메서드 · 경로 · 타임스탬프 · nonce · 본문 SHA-256.
 - 타임스탬프는 ±60초까지만 받는다. nonce는 Redis `SET NX`(TTL 120초)로 재사용을 막는다. **Redis에 닿지 않으면 거부**한다.
 - 대안: 에이전트가 직접 서명한 짧은 JWT를 Bearer로 보내는 방식. 구현은 쉽지만 본문과 묶이지 않는다.
 - 이유: MCP Streamable HTTP는 한 세션으로 여러 요청을 보낸다. 세션 단위 인증이면 요청 본문을 바꿔치기해도 알 수 없다.
 
 ### D16 "누구를 대신한" 요청인지 전달하는 방식
+**승인됨 (2026-09-25). 확정 문구는 `docs/decisions.md` D16**
 - **권장안(1단계 한정):** 에이전트가 서명된 헤더 `X-On-Behalf-Of: <user_id>`로 보낸다. 게이트웨이는 그 사용자가 이 에이전트에게 위임했는지만 확인한다.
 - **알려진 한계:** 에이전트가 손상되면 "자기에게 위임한 다른 사용자"를 사칭할 수 있다. Keycloak이 들어오는 단계에서 사용자 토큰과 묶는다. 이 한계는 평가 시나리오 "남의 데이터 접근"의 원인 분석에 그대로 적는다.
 
 ### D17 게이트웨이 · 도구의 MCP 구성
+**승인됨 (2026-09-25). 확정 문구는 `docs/decisions.md` D17**
 - 게이트웨이는 에이전트에게 MCP 서버(Streamable HTTP)이고, 도구 3종에게는 MCP 클라이언트다.
 - **도구 이름:** `expense.create`처럼 점을 쓴다. 0번에서 고정한 MCP SDK가 점을 허용하지 않으면 `expense_create`로 바꾸고, 그 사실을 기록한다.
 - **`tools/list`:** 등록된 작업 중, 요청한 사용자가 이 에이전트에게 위임한 것만 보여 준다. 보여 주는 것과 별개로, 실제 판단은 항상 `tools/call`에서 한다.
@@ -60,11 +63,13 @@
 - **아래 경우는 모두 거부:** OPA 응답 형식이 다름, 알 수 없는 result 값, 타임아웃(200ms), 연결 실패. `require_approval`도 1단계에서는 거부로 처리한다.
 
 ### D19 도구 호출자 확인 (1단계 임시)
+**승인됨 (2026-09-25). 확정 문구는 `docs/decisions.md` D19**
 - 게이트웨이만 아는 공유 비밀을 `X-Broker-Secret` 헤더로 보낸다. 도구는 이 헤더가 없거나 다르면 거부하고, 비교는 `hmac.compare_digest`로 한다.
 - 비밀 값은 환경 변수로만 받는다. `env.example`에는 이름만 둔다.
 - 2단계에서 서명 토큰으로 교체한다.
 
 ### D20 비동기 DB 접근
+**승인됨 (2026-09-25). 확정 문구는 `docs/decisions.md` D20**
 - SQLAlchemy asyncio + psycopg 3를 쓴다. 게이트웨이 지연 목표(p95 20ms)를 고려한 선택이다.
 - **Windows 주의:** psycopg 비동기는 기본 이벤트 루프(Proactor)에서 동작하지 않는다. 로컬 실행과 pytest에서 Selector 이벤트 루프를 쓰도록 설정한다.
 
@@ -91,7 +96,7 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 | A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — | 완료 (커밋 780b009) |
 | B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 완료 (커밋 7c0ad0d, Actions run #1 성공) |
 | C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | 대기 |
-| D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 완료 (로컬 · CI 원격 확인 U1 대기) |
+| D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 완료 (커밋 d9b6b16, Actions opa-test · pytest 성공) |
 | E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A | 대기 |
 | F | `3. 게이트웨이 — 뼈대` | MCP 서버 기동, `tools/list`, **`tools/call`은 무조건 거부**로 시작 | C, E | 대기 |
 | G | `3. 게이트웨이 — ① 에이전트 인증` | D15 서명 검증, nonce 재사용 차단 | F | 대기 |
@@ -127,4 +132,4 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 - `env.example`을 복사해 `.env` 만들기. Claude는 `.env`를 읽거나 쓰지 않는다. D19 공유 비밀 값도 여기에 직접 넣는다.
 - `docker compose up -d` 실행 (A에서 Claude가 해도 된다).
 - 데모 에이전트용 `OPENAI_API_KEY`는 K 전까지만 준비하면 된다.
-- 3번 결정 D15~D20을 승인 · 수정해 주기.
+- ~~3번 결정 D15~D20을 승인 · 수정해 주기.~~ → 2026-09-25 전부 승인

@@ -62,6 +62,8 @@ VERDICT: BLOCK
 
 읽기 전용 명령만 쓴다: `git diff`, `git status`, `git log`, `git show`. 파일을 바꾸거나 테스트를 돌리는 명령은 쓰지 않는다 (테스트는 ⑤ test-verifier가 맡는다).
 
+Git Bash에서 컨테이너 안 절대경로(`/policies`, 탐침 사본 경로 등)를 넘길 때는 `MSYS_NO_PATHCONV=1`을 붙인다. 경로 변환을 끄는 설정이지 권한 우회가 아니다. (작업 D H12-3)
+
 ## 하지 말 것
 
 - 코드 · 테스트 · 계획 문서 수정. 지적만 한다

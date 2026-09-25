@@ -1,9 +1,9 @@
 # 4. 정책 (Rego) — 작업 D
 
 > 요약
-> - 결론: 완료. `opa test` 54개(계획 53 + 개선 사이클 2에서 1개 추가) · 정적 pytest 2개 · 변이 25종(a–y) 전부 통과, `evidence.py --verify` 268개 전부 "일치".
+> - 결론: 완료 (커밋 d9b6b16, GitHub Actions opa-test · pytest 성공). `opa test` 54개(계획 53 + 개선 사이클 2에서 1개 추가) · 정적 pytest 2개 · 변이 25종(a–y) 전부 통과, `evidence.py --verify` 268개 전부 "일치".
 > - 바뀐 것: `policies/authz.rego`(D18 계약 정책 새로 작성) · `policies/authz_test.rego`(54개) · `tests/test_policy_static.py`(새 파일, S1·S2) · `docs/decisions.md`(D18 확정) · `docs/plan.md` · `docs/stage1-plan.md` · `README.md`.
-> - 다음에 알아야 할 것: 변이 n·r·u의 초과 FAIL(관측값, F-D8에서 사전 추적 후 확정 예정), evidence 로그의 자식 Python 한국어 출력이 cp949로 깨지는 문제(미해결), 하네스 개선안 H1–H14 및 후속 F-D1–F-D9는 전부 사용자 결정 대기.
+> - 다음에 알아야 할 것: 변이 n·r·u의 초과 FAIL(관측값, F-D8에서 사전 추적 후 확정 예정), evidence 로그의 자식 Python 한국어 출력이 cp949로 깨지는 문제(2026-09-25 H13으로 해결, 그 전 로그는 깨진 채 보존), 하네스 개선안 H1–H14는 2026-09-25 전부 반영, 후속 F-D1–F-D8은 `docs/plan.md` 해당 작업 아래에 등록(F-D9 완료).
 
 | 날짜 | plan.md 항목 | 결과 | 관문 재시도 | 개선 사이클 |
 |---|---|---|---|---|
@@ -63,7 +63,7 @@
 | 계획이 "완전 비교"로 정한 기대값 표기를, 구현이 46개 테스트에서 개별 필드 비교로 약하게 구현 | 구현 | 해결 | [링크](../../troubleshooting/ci-test-spec-quantifier-weakening.md) (재발 기록) |
 | 계획 밖에 추가한 엄격한 규칙(`mail.send` subject·body 필수)에 거부 테스트가 없음 | 설계/구현 | 해결 | [링크](../../troubleshooting/strict-rule-without-deny-test.md) |
 | 개선 사이클에서 사용자 승인된 설계 결정(decisions.md)을 언제 반영할지 순서가 규칙과 어긋남 | 하네스 | 해결 | [링크](../../troubleshooting/improvement-cycle-decision-timing.md) |
-| evidence 로그에서 자식 Python의 한국어 출력이 cp949로 깨짐 | 하네스 | 미해결 | [링크](../../troubleshooting/evidence-log-cp949-garbled-output.md) |
+| evidence 로그에서 자식 Python의 한국어 출력이 cp949로 깨짐 | 하네스 | 해결 (2026-09-25, H13 적용) | [링크](../../troubleshooting/evidence-log-cp949-garbled-output.md) |
 | Windows Git Bash 경로 변환 문제가 reviewer 탐침에서 재발 | 환경 | 해결 | [링크](../../troubleshooting/msys-pathconv-windows.md) (재발 기록) |
 | 변이 되돌림 Edit이 파일 끝 개행 문자를 함께 지움 | 구현 | 해결 | [링크](../../troubleshooting/mutation-revert-edit-strips-trailing-newline.md) |
 | 세션 재개 시 Docker Desktop이 꺼져 있어 무효 red 로그가 남음 | 환경 | 해결 | [링크](../../troubleshooting/session-resume-docker-down-invalid-red-log.md) |
@@ -74,7 +74,7 @@
 - 계획 밖에 규칙(더 엄격한 검사 포함)을 추가하면 그 규칙의 거부 테스트도 함께 써야 한다. "계획의 테스트 목록에 없다"는 이유로 테스트 없이 두면 안 된다.
 - 개선 사이클에서 사용자 확인을 받은 설계 결정은 다음 구현(③) 시작 **전에** 반영한다. "범위 검사(AC6)의 해시 보호"는 미룰 이유가 아니라 `00-approval.md`에 사람 변경으로 기록할 대상이다.
 - 결과를 본 뒤에 채점 기준(exact 집합 등)을 그 결과에 맞춰 고정하면, 더 엄격한 방향이라도 원칙 7(재현성) 위반이다. 관측값은 다음 작업의 사전 추적을 위한 대조용으로만 남긴다.
-- 하네스 개선안: [`.claude/harness-notes.md`](../../../../.claude/harness-notes.md) "2026-09-25 4. 정책 (Rego) (작업 D)" 절(H1–H14, 사용자 결정 대기).
+- 하네스 개선안: [`.claude/harness-notes.md`](../../../../.claude/harness-notes.md) "2026-09-25 4. 정책 (Rego) (작업 D)" 절(H1–H14, 2026-09-25 사용자 승인 · 전부 반영).
 
 ## 8. 관련
 

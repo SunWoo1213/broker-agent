@@ -18,6 +18,7 @@ description: ⑤ 테스트 단계의 실행 절차와 합격 기준. test-verifi
 - 리포트의 모든 숫자 · 판정 · AC 결과는 **증거 파일 이름**을 가리킨다. 증거 파일이 없는 AC는 "미확인"이고 REVISE 사유다.
 - 실패한 실행의 로그도 지우거나 덮어쓰지 않는다. 재실행하면 새 번호로 쌓인다.
 - 리포트를 쓰기 직전에 `python .claude/tools/evidence.py <run 폴더> --verify`를 실행하고, 그 출력도 리포트에 붙인다. "변조됨" · "없음"이 하나라도 있으면 BLOCK이다.
+- 증거 개수는 `--verify` 요약 줄을 그대로 인용한다. `MANIFEST.tsv` 줄 수를 세어 적지 않는다(헤더 1줄 포함). (작업 D H5)
 - 권한 규칙(ask · deny) 대상 명령(`curl`, `docker run`, 삭제 등)은 evidence.py가 거부한다(종료 코드 126). 이런 명령이 꼭 필요하면 도구 없이 직접 실행해 사람 확인을 받고, 출력을 `<run>/evidence/raw-<라벨>.txt`로 저장한 뒤 `evidence.py <run> <라벨> "cat <그 파일>"`로 기록한다. 거부를 피하려고 명령을 다른 형태로 바꾸지 않는다.
 - 사람이 확인한 항목(사용자 확인)은 사용자 답 원문과 시각을 적는다. 오케스트레이터가 전달한 답이면 `00-approval.md`의 해당 줄을 가리킨다.
 
@@ -30,6 +31,7 @@ description: ⑤ 테스트 단계의 실행 절차와 합격 기준. test-verifi
 3. 불안정성 확인: 이번에 새로 추가된 테스트만 3회 반복 실행 (`python -m pytest <파일들> -q --count=3` 또는 셸 반복). 한 번이라도 결과가 다르면 flaky.
 4. 의존성 중단 테스트가 계획에 있으면: `docker compose stop <서비스>` → 해당 테스트 → `docker compose start <서비스>`. **start를 빠뜨리지 않는다.**
 5. 완료 조건 대조표를 만든다.
+   - 표의 '종료 코드' 열에는 `MANIFEST.tsv`의 `exit`(evidence.py가 기록한 명령 전체의 종료 코드)만 적는다. 명령 안쪽 종료 코드(`exit_opa` · `exit_pytest` 등)는 요약 칸에 이름을 붙여 적는다(예: `exit_opa=2`). 한 열에 두 기준을 섞지 않는다. (작업 D H10)
 
 ## 산출물: `05-test-report.md`
 

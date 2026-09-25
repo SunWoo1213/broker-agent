@@ -35,6 +35,7 @@ hooks:
    - `index.md` ← 01 · 03 · 06 중심
    - `verification.md` ← 02 · 04 · 07 (모든 차수)
    - `testing.md` ← 01의 테스트 계획 · 03의 테스트 대응 · 05 (모든 회차)
+   - 표의 '종료 코드' 열에는 `MANIFEST.tsv`의 `exit`(evidence.py가 기록한 명령 전체의 종료 코드)만 적는다. 명령 안쪽 종료 코드(`exit_opa` · `exit_pytest` 등)는 요약 칸에 이름을 붙여 적는다(예: `exit_opa=2`). 한 열에 두 기준을 섞지 않는다. (작업 D H10)
 5. `docs/wiki/Home.md` 표를 갱신한다.
 6. 오케스트레이터에게 만든 · 고친 페이지 경로 목록을 돌려준다.
 

@@ -12,6 +12,7 @@
 - MANIFEST.tsv  : 로그마다 순번 · 라벨 · 종료 코드 · 시작 시각 · sha256 (한 줄씩 추가만 함)
 
 --verify 는 MANIFEST의 sha256과 실제 로그 파일을 대조해, 나중에 로그가 고쳐졌는지 보여 준다.
+마지막 줄에 `합계 N  일치 A  변조됨 B  없음 C` 요약을 출력한다(증거 개수는 이 줄을 인용한다).
 이 도구는 명령의 종료 코드를 그대로 돌려준다. 판정은 사람이 아니라 로그 원문으로 한다.
 
 권한 규칙 보호: Claude Code의 ask · deny 규칙은 명령 앞부분만 본다. 이 도구로 감싸면
@@ -106,17 +107,23 @@ def verify(evidence_dir: Path) -> int:
         print("MANIFEST.tsv 없음")
         return 1
     bad = 0
+    total = ok = tampered = missing = 0  # 요약 줄용 집계. 판정은 아래 bad로만 한다
     for line in manifest.read_text(encoding="utf-8").splitlines()[1:]:
         seq, label, code, started, digest, name = line.split("\t")
         path = evidence_dir / name
+        total += 1
         if not path.exists():
             print(f"없음   {name}")
             bad += 1
+            missing += 1
         elif sha256(path) != digest:
             print(f"변조됨 {name}")
             bad += 1
+            tampered += 1
         else:
             print(f"일치   {name}  (exit={code}, {started})")
+            ok += 1
+    print(f"합계 {total}  일치 {ok}  변조됨 {tampered}  없음 {missing}")
     return 1 if bad else 0
 
 
@@ -149,8 +156,11 @@ def main() -> int:
     name = f"{seq:02d}-{label}.log"
 
     started = now()
+    # 자식 Python의 stdout · stderr가 파이프에서도 UTF-8로 쓰이게 한다(한국어 Windows 기본은 cp949).
+    # PYTHONUTF8=1보다 범위가 좁다: 표준 입출력만 바뀌고 open() 기본값은 그대로다.
     proc = subprocess.run([find_bash(), "-lc", command], capture_output=True,
-                          text=True, encoding="utf-8", errors="replace")
+                          text=True, encoding="utf-8", errors="replace",
+                          env={**os.environ, "PYTHONIOENCODING": "utf-8"})
     finished = now()
 
     dirty = git("status", "--porcelain")
