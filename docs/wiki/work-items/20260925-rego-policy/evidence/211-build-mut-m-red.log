@@ -1,0 +1,20 @@
+# 증거 211-build-mut-m-red.log
+시작: 2026-09-25T21:43:10+09:00
+끝:   2026-09-25T21:43:19+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: export MSYS_NO_PATHCONV=1; sha256sum policies/authz.rego policies/authz_test.rego tests/test_policy_static.py; docker compose run --rm opa test /policies -v; a=$?; .venv/Scripts/python -m pytest -q tests/test_policy_static.py --junitxml=.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-m-red.xml; b=$?; sha256sum .claude/runs/20260925-rego-policy/evidence/pytest-build-mut-m-red.xml; echo "exit_opa=$a exit_pytest=$b"; test "$a" = 0 && test "$b" = 0
+종료 코드: 1
+
+## stdout
+3c535b0c9ac9b5e610318b1cc0364e8b7a7980381d6e66f2a6e9c63cfbb07b40 *policies/authz.rego
+22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d *policies/authz_test.rego
+0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e *tests/test_policy_static.py
+..                                                                       [100%]
+2 passed in 0.20s
+aa008becec7217cbb28d4989070dab4614cb0b881f0b7c404f7c78623e84f4a3 *.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-m-red.xml
+exit_opa=1 exit_pytest=0
+
+## stderr
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.

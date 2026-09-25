@@ -1,0 +1,17 @@
+# 증거 257-ac3-pytest.log
+시작: 2026-09-25T22:09:53+09:00
+끝:   2026-09-25T22:10:22+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python -m pytest -q --junitxml=.claude/runs/20260925-rego-policy/evidence/pytest-ac3-pytest.xml; c=$?; sha256sum .claude/runs/20260925-rego-policy/evidence/pytest-ac3-pytest.xml; echo "exit_pytest=$c"; test "$c" = 0
+종료 코드: 0
+
+## stdout
+.............                                                            [100%]
+13 passed in 23.14s
+0e968e55d96e736c8017ee279d9f36e172aed2aa3d633c20345fa308f8f2ad4d *.claude/runs/20260925-rego-policy/evidence/pytest-ac3-pytest.xml
+exit_pytest=0
+
+## stderr
+

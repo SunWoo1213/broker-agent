@@ -48,7 +48,9 @@ Windows에서 Bash 도구는 Git Bash(MSYS)인데, `docker compose exec opa /opa
 
 | 날짜 | 작업 항목 | 메모 |
 |---|---|---|
+| 2026-09-25 | 4. 정책 (Rego) (작업 D) · ④ 탐침 로그 248 | reviewer가 개선 사이클2에서 정책 약화 탐침(scratchpad 사본 마운트)을 `docker compose run --rm -v <사본>:/probe:ro`로 실행했는데, Git Bash가 `/probe`를 `C:/Program Files/Git/probe`로 변환해 OPA가 파일을 못 읽고 무효 실행(로그 248)이 됐다. `MSYS_NO_PATHCONV=1`을 붙여 249로 재실행해 정상 동작. 원인은 `MSYS_NO_PATHCONV=1` 안내가 `agents/broker-builder.md`·`test-verifier.md`에만 있고 `agents/reviewer.md`·`skills/code-review-invariants/SKILL.md`(탐침 D4)에는 없었기 때문(하네스 문서 확산 누락). 하네스 개선안 H12-3(제안, 사용자 결정 대기): reviewer 문서와 code-review-invariants D4에 같은 안내를 추가. 상세: [work-items/20260925-rego-policy](../work-items/20260925-rego-policy/testing.md#변이별-결과-사이클2-라벨-build-mut-x-redgreen) |
 
 ## 관련
 
 - 작업 페이지: [개요](../work-items/20260924-dev-env/index.md) · [검증 기록](../work-items/20260924-dev-env/verification.md)
+- 재발: [4. 정책 (Rego) (작업 D)](../work-items/20260925-rego-policy/index.md)

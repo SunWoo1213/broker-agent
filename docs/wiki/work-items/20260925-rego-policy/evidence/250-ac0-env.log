@@ -1,0 +1,66 @@
+# 증거 250-ac0-env.log
+시작: 2026-09-25T22:08:21+09:00
+끝:   2026-09-25T22:08:24+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: pwd; git rev-parse --show-toplevel; git rev-parse --short HEAD; .venv/Scripts/python --version; docker info --format "{{.ServerVersion}}"; grep -n "openpolicyagent/opa:" docker-compose.yml; echo "--- checks begin"; sha256sum .claude/runs/20260925-rego-policy/checks/*.py; echo "--- checks end"; echo "--- d18 begin"; grep -n "^| D18 " docs/decisions.md; echo "--- d18 end"; echo "--- policy begin"; sha256sum policies/authz.rego policies/authz_test.rego; echo "--- policy end"; echo "--- status begin"; git status --porcelain --untracked-files=all; echo "--- status end"; echo "--- hashes begin"; sha256sum requirements.txt requirements-dev.txt docker-compose.yml .gitignore README.md CLAUDE.md env.example pytest.ini .github/workflows/ci.yml tests/README.md tests/test_ci_workflow.py tests/test_pytest_config.py docs/plan.md docs/decisions.md docs/stage1-plan.md docs/architecture.md docs/wiki/Home.md docs/wiki/work-items/20260924-pytest-ci/index.md docs/wiki/work-items/20260924-pytest-ci/testing.md .claude/skills/work-item/SKILL.md .claude/skills/rego-policy/SKILL.md .claude/tools/evidence.py; echo "--- hashes end"
+종료 코드: 0
+
+## stdout
+/c/Portpolio/agent-broker
+C:/Portpolio/agent-broker
+7a40f19
+Python 3.13.7
+29.3.0
+33:    image: openpolicyagent/opa:1.20.2
+--- checks begin
+b36649e7b937723a267e2ae44c3a6430330f90851afb8dcde8030507bc43fbaa *.claude/runs/20260925-rego-policy/checks/_ev.py
+287bb79f426543910a9cfb0e88bbf6697b9fe40ea99a2cc9be15d5473947de06 *.claude/runs/20260925-rego-policy/checks/ac_build_evidence.py
+0b0c8c62487d2b346f1e151ff8d963f4c0b5b84f9d878552e3b30a5bb51f5678 *.claude/runs/20260925-rego-policy/checks/ac_forbidden_commands.py
+8c84e31dc3c8c921543e0f4bda1568825a3c23276caa39f5b46b7c61dac783b4 *.claude/runs/20260925-rego-policy/checks/ac_scope.py
+9b91e9391280b393cbfeb2e060c0f06fcbcb4c22b49272d1fe4d26a7355b1150 *.claude/runs/20260925-rego-policy/checks/ac0_env.py
+3c44191c2cdc9dfe04d59a51b8a4e5d218c25cfc0c40c9a8594cbfe457e2c0dd *.claude/runs/20260925-rego-policy/checks/check_junit.py
+fa5fbca3d2cd612040ccadc9ee100d1a20c34e90278b97dadffb98762c4caffe *.claude/runs/20260925-rego-policy/checks/check_opa.py
+42fa7ad65b1def1a3d08538ff7ad7ec5b9e8ec765a97904bf958da713db71d0f *.claude/runs/20260925-rego-policy/checks/plan_tests.py
+--- checks end
+--- d18 begin
+16:| D18 | OPA 입력 · 출력 계약과 역할 분담. 게이트웨이 ②가 DB로 위임(존재 · 범위 · 만료 · 취소)을 먼저 확인하고, OPA(`data.broker.authz.decision`)는 입력 형식 · 범위 · 만료(②와 이중 방어) · 건당 한도 · 위험도를 판단한다. 입력 `{agent, user, action:{name, risk}, delegation:{scopes, per_tx_limit, expires_at}, args}`, 출력 `{result: allow \| deny \| require_approval, reason}`. 입력이 없거나 필드가 빠지거나 타입이 틀리면 OPA가 `deny`(`invalid_input`). 1단계에서는 승인이 필요한 요청도 정책이 `deny`(`approval_required_*`)를 낸다(상수 `approval_result` 하나, 2단계 8번에서 교체). 게이트웨이는 응답 형식 오류 · 알 수 없는 result · 타임아웃(200ms) · 연결 실패 · (1단계) `require_approval`을 모두 거부로 처리 | 위임 상태의 원본은 DB라 게이트웨이가 확인하고, 정책(D5)은 위험 판단에 집중한다. 입력 계약을 정책 안에서 다시 검사해 게이트웨이 버그가 허용으로 새지 않게 한다(D1). 1단계에는 승인 흐름이 없으므로 정책이 직접 거부해 게이트웨이 해석과 무관하게 막는다 | `opa test` 53개(필드 누락 · 타입 오류 · 경계값 · 우선순위 · 1단계 승인 경로 거부) + 변이 21종(작업 D). 게이트웨이 쪽은 작업 I(3-d) | 확정 |
+--- d18 end
+--- policy begin
+e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723 *policies/authz.rego
+22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d *policies/authz_test.rego
+--- policy end
+--- status begin
+ M docs/decisions.md
+ M policies/authz.rego
+ M policies/authz_test.rego
+?? tests/test_policy_static.py
+--- status end
+--- hashes begin
+26ba9ae5c9a4e5a8c2e0483e7a7284bfe4d9c02b185e82ba607eec18d7c86773 *requirements.txt
+9247ededf7ae1fd64eff0d7c2be8c66a3ee21eedb7683930256e98f16ff17b40 *requirements-dev.txt
+2cc9eb67255865a15ebb73edfe32b4f8c670856f5623ca9eae2f0a0a1f0f1d1f *docker-compose.yml
+f8f8a1de25c208383666032abc60e5dab3b56bb79a9401e44b0bea76b2bc495a *.gitignore
+e745f92cec6e03f9044c1a4380c1023540a5ddd5a2be367bc98783f20643a4d3 *README.md
+754fb38219112748f865846cf6a2716f66aaf8a72b0c0e6aca3e3bd2f6d8064e *CLAUDE.md
+35037d575671a9de35f69413bba69b347cf6b2ca8cb1161c7db57800a440fbaa *env.example
+706f7fed59c9093f504276af9c69ebab73c0c07b2c90b85741a3f6cb99cb9012 *pytest.ini
+ef15003cff464451b01dd8ef0ee28d330f8c22611eb23eb33ffcd592be3363df *.github/workflows/ci.yml
+a65e158805e34261a7e7ee2d74780315d216ff79d61fd588f3b889ea8bdbe39d *tests/README.md
+d66d8d3f2071beb0fda4861d07557eb5ebd490dc819fa0ecf687b549546dd569 *tests/test_ci_workflow.py
+47e4d5d12fb32198325f5dfa87286e78af27adf9d2f4413fff20f758836f4093 *tests/test_pytest_config.py
+f80842f0db23a4ac7e0394f95fd498fde9fa25f5ccbedfbf8ef603a9bda898b8 *docs/plan.md
+f961dad53790f5a5332de6e21acf26ca23baa11af8ef4119bf753f6a0c9ae6bb *docs/decisions.md
+094e2df352ef5fd76275506fe3736da2285fae50e6f3e73a595adf4401405de0 *docs/stage1-plan.md
+65e1610589555842bfe0c820c96c83c521768b8aada243d80dbf709e18fadea9 *docs/architecture.md
+1f0a932362192c7ffc90e67450d76ce75c5039e07a91a355d2a7bf3ac217eb27 *docs/wiki/Home.md
+783220893e08a545601548c0e4bbaecf7cee8751f29089c44fa843e71bcf0c7f *docs/wiki/work-items/20260924-pytest-ci/index.md
+e32188e3b0bb95ac4ce879dd0f47d3e0fb286d30cff7b2d5bccfb83a98ca2fee *docs/wiki/work-items/20260924-pytest-ci/testing.md
+10b1af043675a3f45c39fdb9fcce36925cef71c202c9374f21da9a7b2fddb6d9 *.claude/skills/work-item/SKILL.md
+2fda18d4fd628eac0ba70ed03ff344ef84103f71c3d1781369d55974bfadae8d *.claude/skills/rego-policy/SKILL.md
+f56c43cf1aee9e1a41feaf40b97210334c152801b3c0c6f50ffc59bd2d52cbde *.claude/tools/evidence.py
+--- hashes end
+
+## stderr
+

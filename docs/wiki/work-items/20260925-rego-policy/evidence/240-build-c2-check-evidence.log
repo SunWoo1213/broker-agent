@@ -1,0 +1,268 @@
+# 증거 240-build-c2-check-evidence.log
+시작: 2026-09-25T21:56:55+09:00
+끝:   2026-09-25T21:56:57+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python .claude/runs/20260925-rego-policy/checks/ac_build_evidence.py
+종료 코드: 0
+
+## stdout
+INFO red-initial test file hash: b28fee70bff0b958bff4844ded92c3bb27b303d5867398c2d073542755067b9d
+OK  build-00-env policy section has authz.rego: "{'policies/authz.rego': '6b3b528314754c92b7890e3085cf67000073a410d91e3d5d7f05d20c08ab7610', 'policies/authz_test.rego': 'b36ef894781f02c040ab0970d209e77565e4d4d06b2d9c8b826888ceee82d687'}"
+OK  red-initial (exit != 0) between build-00-env and first green-initial: 'env=1 green=3 reds=[(2, 1)]'
+OK  red-initial ran against the original policy: 'red=6b3b528314754c92b7890e3085cf67000073a410d91e3d5d7f05d20c08ab7610 orig=6b3b528314754c92b7890e3085cf67000073a410d91e3d5d7f05d20c08ab7610'
+OK  red-initial: all 6 allow tests FAIL: 'not FAIL=[]'
+OK  red-initial: test_default_deny PASS: 'PASS'
+OK  first green-initial: all 53 PASS: 'missing=[] not_pass=[]'
+OK  baseline has all 3 files: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e'}"
+OK  current files == baseline (all mutations reverted): "now={'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e'}"
+OK  policy actually changed from original: 'base=e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723 orig=6b3b528314754c92b7890e3085cf67000073a410d91e3d5d7f05d20c08ab7610'
+OK  mut-a order baseline < red < green: 'baseline=186 red=187 green=188'
+OK  mut-a red exit != 0: 'exit=1'
+OK  mut-a green exit == 0: 'exit=0'
+OK  mut-a red: only the policy file differs from baseline: "{'policies/authz.rego': 'ac525c7f15c032d02606f18a0e3f3ad8d66309b6b87161d36fdcef5211c15b47', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-a-red.xml': 'a0cbffe4c2af3f849e38646e8f52eff978e3930932d6d9d50e5e49fc40edd9fa'}"
+OK  mut-a green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-a-green.xml': 'bb2879eb6b7cb7dec1f776ff5874fae84bae0019b4bf495b90d7ae530405796d'}"
+OK  mut-a red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-a red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-a red: safety tests still PASS: 'broken=[]'
+OK  mut-a red junit verified against log hash + exit_pytest: 'ok'
+OK  mut-a red: planned pytest tests failed: "planned=['test_policy_default_lines_are_deny_only'] failed=['test_policy_default_lines_are_deny_only']"
+OK  mut-a green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-a green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-a green: static pytest no failure: '[]'
+OK  mut-b order baseline < red < green: 'baseline=186 red=189 green=190'
+OK  mut-b red exit != 0: 'exit=1'
+OK  mut-b green exit == 0: 'exit=0'
+OK  mut-b red: only the policy file differs from baseline: "{'policies/authz.rego': '488163ba9459fd8bd2cf6ce11b7c07a67c96191772b5b3b62aa5b978ef507bcb', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-b-red.xml': '690c8c26d0c25f72e950498a689cb764bcde3a0bdaa0bda0d7be9a3ea5e33a53'}"
+OK  mut-b green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-b-green.xml': 'd2f80fc96a6b81bb0e350dcf72e52349176d056af7396f541f1f2e7b56e6c440'}"
+OK  mut-b red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-b red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-b red: safety tests still PASS: 'broken=[]'
+OK  mut-b red junit verified against log hash + exit_pytest: 'ok'
+OK  mut-b red: planned pytest tests failed: "planned=['test_policy_default_lines_are_deny_only'] failed=['test_policy_default_lines_are_deny_only']"
+OK  mut-b green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-b green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-b green: static pytest no failure: '[]'
+OK  mut-c order baseline < red < green: 'baseline=186 red=191 green=192'
+OK  mut-c red exit != 0: 'exit=1'
+OK  mut-c green exit == 0: 'exit=0'
+OK  mut-c red: only the policy file differs from baseline: "{'policies/authz.rego': 'e8d767ce4e44d92bd7ae403f1994f0eb220b28bf35695e053c6847f2d7b67530', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-c-red.xml': '4f1223ce19ad4c07c4576782603ff892aa2ee4d39267e129772618f7b62b5db0'}"
+OK  mut-c green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-c-green.xml': 'beec21c77c92b549be3cadf2fa2fca27064c3987a40332ebd5b3c25ff9621a37'}"
+OK  mut-c red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-c red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-c red: safety tests still PASS: 'broken=[]'
+OK  mut-c green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-c green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-c green: static pytest no failure: '[]'
+OK  mut-d order baseline < red < green: 'baseline=186 red=193 green=194'
+OK  mut-d red exit != 0: 'exit=1'
+OK  mut-d green exit == 0: 'exit=0'
+OK  mut-d red: only the policy file differs from baseline: "{'policies/authz.rego': '93ee95416d4798362ef40f2a6be844aae2dbf76aace7763e5c57104d008d4646', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-d-red.xml': 'a695c78e558cbd33dca5e63331e549e8815901c47384eec0700248acafd32286'}"
+OK  mut-d green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-d-green.xml': '3792117b3b0d9fefcb67cc79be30834e46fd099afbfba63f30e0e3e71b109322'}"
+OK  mut-d red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-d red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-d red: safety tests still PASS: 'broken=[]'
+OK  mut-d green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-d green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-d green: static pytest no failure: '[]'
+OK  mut-e order baseline < red < green: 'baseline=186 red=195 green=196'
+OK  mut-e red exit != 0: 'exit=1'
+OK  mut-e green exit == 0: 'exit=0'
+OK  mut-e red: only the policy file differs from baseline: "{'policies/authz.rego': '740c2291aa54f5605218d9cfc7135d6bc13654dd90168c503f4efb62d283b704', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-e-red.xml': 'd908236f2b8628d7cfb83b7d81199bfe7cda5c405c65713b0e978dae5b6f0492'}"
+OK  mut-e green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-e-green.xml': 'ad9c88bc1c2460fe4d4822e3934d2f6647698f8cea01b2cd6f9e364f89323588'}"
+OK  mut-e red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-e red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-e red: safety tests still PASS: 'broken=[]'
+OK  mut-e green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-e green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-e green: static pytest no failure: '[]'
+OK  mut-f order baseline < red < green: 'baseline=186 red=197 green=198'
+OK  mut-f red exit != 0: 'exit=1'
+OK  mut-f green exit == 0: 'exit=0'
+OK  mut-f red: only the policy file differs from baseline: "{'policies/authz.rego': '212f964b2781d6f4e48db37c00f20dc4951ccc71bce3460df4985f849fa40dcb', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-f-red.xml': 'b9e6470ba1909c7a5df52f5cc62351aed59dc34d665f4117f42b8204b4aedfa9'}"
+OK  mut-f green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-f-green.xml': '6a5a7afe55f1da1736219fdff69a6b613df94eb612e2435587e7727df131950c'}"
+OK  mut-f red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-f red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-f red: safety tests still PASS: 'broken=[]'
+OK  mut-f green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-f green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-f green: static pytest no failure: '[]'
+OK  mut-g order baseline < red < green: 'baseline=186 red=199 green=200'
+OK  mut-g red exit != 0: 'exit=1'
+OK  mut-g green exit == 0: 'exit=0'
+OK  mut-g red: only the policy file differs from baseline: "{'policies/authz.rego': 'cf5ac6eaf1f93d8edcf9cd5690962f4bd9a88cf14b58f260df6012d335dbdd71', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-g-red.xml': '8541d04bb20b42a44f8b1ff1218c8deb835bc87e180a0f513ca588ddc8a6cf30'}"
+OK  mut-g green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-g-green.xml': '385e2a5f1ab9f04a512ad82325223477d2f4294ef6e807664b5a01875e7902c4'}"
+OK  mut-g red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-g red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-g red: safety tests still PASS: 'broken=[]'
+OK  mut-g green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-g green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-g green: static pytest no failure: '[]'
+OK  mut-h order baseline < red < green: 'baseline=186 red=201 green=202'
+OK  mut-h red exit != 0: 'exit=1'
+OK  mut-h green exit == 0: 'exit=0'
+OK  mut-h red: only the policy file differs from baseline: "{'policies/authz.rego': '45077729fbfdb1dc95c6630f6ef156afcc332d1d66c06d3a327d037bbdd1645f', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-h-red.xml': '65d0cda983390f51fc8026eda4507e2680276dd253b13d3e68b66108f1a4f812'}"
+OK  mut-h green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-h-green.xml': '60e1141a93e86e06eec9d5eb4a383edec6cac22d238abe8853e49d9583156632'}"
+OK  mut-h red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-h red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-h red: safety tests still PASS: 'broken=[]'
+OK  mut-h green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-h green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-h green: static pytest no failure: '[]'
+OK  mut-i order baseline < red < green: 'baseline=186 red=203 green=204'
+OK  mut-i red exit != 0: 'exit=1'
+OK  mut-i green exit == 0: 'exit=0'
+OK  mut-i red: only the policy file differs from baseline: "{'policies/authz.rego': '9362603dae4362cd2f58ddcd14f13342ea50a122ea389a400707eedb5c237f84', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-i-red.xml': '0b3a5bf216ad28825b09304d1a6b86974678ba247256aecc916fd84096e9e4c1'}"
+OK  mut-i green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-i-green.xml': 'ea937cff5d6e7cc329be43b6b7f0a9ed61adf7e5877d9588ecf466d0138b94c6'}"
+OK  mut-i red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-i red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-i red: safety tests still PASS: 'broken=[]'
+OK  mut-i green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-i green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-i green: static pytest no failure: '[]'
+OK  mut-j order baseline < red < green: 'baseline=186 red=205 green=206'
+OK  mut-j red exit != 0: 'exit=1'
+OK  mut-j green exit == 0: 'exit=0'
+OK  mut-j red: only the policy file differs from baseline: "{'policies/authz.rego': '77d6b8b0b0c9e0c7377196e451051962b974ba235490bac8681692908fcb4d6f', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-j-red.xml': '0327a30a78a3fe6a4f7da7aa2e6b446a1d760a8dd154c4d437b19322e051cfa0'}"
+OK  mut-j green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-j-green.xml': 'be266348628bf0eab6b6045688c193c8de6252225a4339a9c03fced8349128c6'}"
+OK  mut-j red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-j red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-j red: safety tests still PASS: 'broken=[]'
+OK  mut-j green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-j green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-j green: static pytest no failure: '[]'
+OK  mut-k order baseline < red < green: 'baseline=186 red=207 green=208'
+OK  mut-k red exit != 0: 'exit=1'
+OK  mut-k green exit == 0: 'exit=0'
+OK  mut-k red: only the policy file differs from baseline: "{'policies/authz.rego': 'aa1119e82296a0898fd1135f2e5189d16bc09ca43e9d40a4e032686d3691090a', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-k-red.xml': '764d72538d74b8ed0acbbfe0bbed0ae1e3d3d723964e606dace70f45cd4869f5'}"
+OK  mut-k green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-k-green.xml': '363b51c8f282a4c10a9e1c23edbd238e3ce6dcd3700ef0bfb8c819e415ca0461'}"
+OK  mut-k red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-k red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-k red: safety tests still PASS: 'broken=[]'
+OK  mut-k green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-k green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-k green: static pytest no failure: '[]'
+OK  mut-l order baseline < red < green: 'baseline=186 red=209 green=210'
+OK  mut-l red exit != 0: 'exit=1'
+OK  mut-l green exit == 0: 'exit=0'
+OK  mut-l red: only the policy file differs from baseline: "{'policies/authz.rego': '40541c422ed07f62b2931b92680c493bafbf8d0fa9ceb88221e5d1a8eb5ec564', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-l-red.xml': '68bd2ca0fdfaaaef92617c833e32bafe9b2878ba8c0c41f7bb1b90f74505c387'}"
+OK  mut-l green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-l-green.xml': '358adce0ee762fce59e3ebccd6c4bc102e0a23a877bc968c1e22bee9987009d9'}"
+OK  mut-l red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-l red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-l red: safety tests still PASS: 'broken=[]'
+OK  mut-l green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-l green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-l green: static pytest no failure: '[]'
+OK  mut-m order baseline < red < green: 'baseline=186 red=212 green=213'
+OK  mut-m red exit != 0: 'exit=1'
+OK  mut-m green exit == 0: 'exit=0'
+OK  mut-m red: only the policy file differs from baseline: "{'policies/authz.rego': '3c535b0c9ac9b5e610318b1cc0364e8b7a7980381d6e66f2a6e9c63cfbb07b40', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-m-red.xml': '703bc7ad6d8b9dc3cc0b975b988d986659d3a0608f2da8e948c5043320e4c236'}"
+OK  mut-m green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-m-green.xml': '4ead2ca2e926852ff6229f317ec8f8edaeb6c5679fd6893fbf928aaab5974e84'}"
+OK  mut-m red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-m red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-m red: safety tests still PASS: 'broken=[]'
+OK  mut-m red: non-PASS set == planned exactly: "non_pass=['test_external_mail_never_allowed', 'test_extra_top_level_field_ignored', 'test_high_risk_denied_stage1', 'test_mail_external_recipient_denied_stage1', 'test_mail_lookalike_domain_is_external', 'test_mail_one_external_among_internal_denied', 'test_medium_risk_denied_stage1', 'test_stage1_never_returns_require_approval'] planned=['test_external_mail_never_allowed', 'test_extra_top_level_field_ignored', 'test_high_risk_denied_stage1', 'test_mail_external_recipient_denied_stage1', 'test_mail_lookalike_domain_is_external', 'test_mail_one_external_among_internal_denied', 'test_medium_risk_denied_stage1', 'test_stage1_never_returns_require_approval']"
+OK  mut-m green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-m green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-m green: static pytest no failure: '[]'
+OK  mut-n order baseline < red < green: 'baseline=186 red=214 green=215'
+OK  mut-n red exit != 0: 'exit=1'
+OK  mut-n green exit == 0: 'exit=0'
+OK  mut-n red: only the policy file differs from baseline: "{'policies/authz.rego': '2fb25bf2039068e8b7fc9ba4500859fa2b140d3d7d5eb5779f8031e6bc2d25b5', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-n-red.xml': '70c7afcf8fab201c96ef5c388b538f7c794e8932229049cfa6f7159ed1298696'}"
+OK  mut-n green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-n-green.xml': 'e46f22aab7270ae5e43fb023eda5b1f6023edddde83b8f588d66ec52d8d20e5f'}"
+OK  mut-n red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-n red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-n red: safety tests still PASS: 'broken=[]'
+OK  mut-n green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-n green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-n green: static pytest no failure: '[]'
+OK  mut-o order baseline < red < green: 'baseline=186 red=216 green=217'
+OK  mut-o red exit != 0: 'exit=1'
+OK  mut-o green exit == 0: 'exit=0'
+OK  mut-o red: only the policy file differs from baseline: "{'policies/authz.rego': 'd6347c581087f4d73f8df882976111ed28a10168067094e2c5cc866a3f87e0d5', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-o-red.xml': '7bf1821a0f0fe72c5501242fb683f32b0df75b881c47aab823c74434acc9cc8b'}"
+OK  mut-o green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-o-green.xml': 'a3bf06f2dcf737139f930da2607b693a791a95ed23243341e0ccc3eeb93f3257'}"
+OK  mut-o red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-o red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-o red: safety tests still PASS: 'broken=[]'
+OK  mut-o green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-o green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-o green: static pytest no failure: '[]'
+OK  mut-p order baseline < red < green: 'baseline=186 red=218 green=219'
+OK  mut-p red exit != 0: 'exit=1'
+OK  mut-p green exit == 0: 'exit=0'
+OK  mut-p red: only the policy file differs from baseline: "{'policies/authz.rego': 'e0668aedf877fe1dc99c622748c15856f4b2b1825074e528c645d5a290414db8', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-p-red.xml': '2da81fa2376b499de79ff84ef1211e36f0bfb72c4f89fdd4a3e06c17018b3a9b'}"
+OK  mut-p green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-p-green.xml': '7edd705f0ffdcb225104452f3454f320e060c6b079ad50be29ac2b44e718b4a0'}"
+OK  mut-p red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-p red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-p red: safety tests still PASS: 'broken=[]'
+OK  mut-p red: non-PASS set == planned exactly: "non_pass=['test_not_expired_boundary_allowed'] planned=['test_not_expired_boundary_allowed']"
+OK  mut-p green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-p green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-p green: static pytest no failure: '[]'
+OK  mut-q order baseline < red < green: 'baseline=186 red=220 green=221'
+OK  mut-q red exit != 0: 'exit=1'
+OK  mut-q green exit == 0: 'exit=0'
+OK  mut-q red: only the policy file differs from baseline: "{'policies/authz.rego': '9a605e124a4e20bb9b2a158106bbbf5afa37f74b041a4a8b5fa13dd859ca988f', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-q-red.xml': 'fd0143ac32d851d438dd61e102cf2bc8c8d905fb161e817aa8a138acba679bfc'}"
+OK  mut-q green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-q-green.xml': 'ca9fb421abf7f0852a7754ef26d19418f91e1cc8c6f60a7c2f25d131621ac598'}"
+OK  mut-q red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-q red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-q red: safety tests still PASS: 'broken=[]'
+OK  mut-q green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-q green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-q green: static pytest no failure: '[]'
+OK  mut-r order baseline < red < green: 'baseline=186 red=222 green=223'
+OK  mut-r red exit != 0: 'exit=1'
+OK  mut-r green exit == 0: 'exit=0'
+OK  mut-r red: only the policy file differs from baseline: "{'policies/authz.rego': '62f0c4e91963dfe37e88c3c4e3eca5d8fc868c65b04ef0fc4d15a8b38e75136e', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-r-red.xml': 'fdbd8a3667ba08b8e1ecfc7eecf3a1cfa58c3fbdb027af0bf02313081521348c'}"
+OK  mut-r green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-r-green.xml': 'f40368b673782b876af95fae6cea34ce172e27f426f93f9f3a2893bfc46be8ad'}"
+OK  mut-r red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-r red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-r red: safety tests still PASS: 'broken=[]'
+OK  mut-r green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-r green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-r green: static pytest no failure: '[]'
+OK  mut-s order baseline < red < green: 'baseline=186 red=224 green=225'
+OK  mut-s red exit != 0: 'exit=1'
+OK  mut-s green exit == 0: 'exit=0'
+OK  mut-s red: only the policy file differs from baseline: "{'policies/authz.rego': '85dcce72f3fdb5b9653de23aa3359545614bc6425f9d7e24e6966968232bbbf9', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-s-red.xml': 'f7b9f93c4f9a52e93af8f2706c3611d18cd63a1c70b845937ef6d2bb2b1d8c3b'}"
+OK  mut-s green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-s-green.xml': 'bc763bc581683a3116b6b20f4d302c3d78352c7ebdc5c4e06b528676a5593adf'}"
+OK  mut-s red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-s red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-s red: safety tests still PASS: 'broken=[]'
+OK  mut-s red junit verified against log hash + exit_pytest: 'ok'
+OK  mut-s red: planned pytest tests failed: "planned=['test_policy_has_no_runtime_env_or_network_builtins'] failed=['test_policy_has_no_runtime_env_or_network_builtins']"
+OK  mut-s green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-s green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-s green: static pytest no failure: '[]'
+OK  mut-t order baseline < red < green: 'baseline=186 red=226 green=227'
+OK  mut-t red exit != 0: 'exit=1'
+OK  mut-t green exit == 0: 'exit=0'
+OK  mut-t red: only the policy file differs from baseline: "{'policies/authz.rego': 'abd8cfc8c61df94c003846292bbc27e97bf5c8e0310dfb20898c7131b2b8be32', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-t-red.xml': '7b82b1d1f920c0daa0f4a262f2920bec2e344f2ac620db3efdec82c276e60a53'}"
+OK  mut-t green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-t-green.xml': 'eafbcb11974d50f9710b4170462e628b40c34d397fabacee8a7b0707790f590c'}"
+OK  mut-t red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-t red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-t red: safety tests still PASS: 'broken=[]'
+OK  mut-t green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-t green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-t green: static pytest no failure: '[]'
+OK  mut-u order baseline < red < green: 'baseline=186 red=228 green=229'
+OK  mut-u red exit != 0: 'exit=1'
+OK  mut-u green exit == 0: 'exit=0'
+OK  mut-u red: only the policy file differs from baseline: "{'policies/authz.rego': '90f7b6ba365b6fb9f26dbb7d400aa4abc52e5fe6ac459be3fac55a2e35989fad', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-u-red.xml': '7f7303b3c0371e52bc3a7fb5038c5c17c8e03648203d325a8eaf9bdc901a390f'}"
+OK  mut-u green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-u-green.xml': '6c1ba4e47f3cdf106f22830044497a780f91efdc38e3c364a090b27fc5826b54'}"
+OK  mut-u red: all 53 tests reported (policy compiled): 'missing=[]'
+OK  mut-u red: planned opa tests FAIL: 'not FAIL=[]'
+OK  mut-u red: safety tests still PASS: 'broken=[]'
+OK  mut-u green: all 53 PASS: 'missing=[] not_pass=[]'
+OK  mut-u green junit verified against log hash + exit_pytest: 'ok'
+OK  mut-u green: static pytest no failure: '[]'
+OK  green-final exit == 0: 'exit=0'
+OK  green-final hashes == baseline: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-green-final.xml': '7c88c94c79068c11a8f53837e9e4e138e4c542751858883f5aa373bd5e50f308'}"
+OK  green-final: all 53 PASS: 'missing=[] not_pass=[]'
+OK  green-final junit verified against log hash + exit_pytest: 'ok'
+OK  green-final: static pytest no failure: '[]'
+summary: 253 ok, 0 bad
+
+## stderr
+

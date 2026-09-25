@@ -1,0 +1,18 @@
+# 증거 104-review-probe-s1-empty.log
+시작: 2026-09-25T18:26:02+09:00
+끝:   2026-09-25T18:26:02+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv\Scripts\python -m pytest -q -p no;cacheprovider -c C;C:\Program Files\Git\Users\swsj1\AppData\Local\Temp\claude\C--Portpolio-agent-broker\d44764eb-9559-4620-9ecd-2459f2861e82\scratchpad\p-s1-empty\pytest.ini --rootdir=C;C:\Program Files\Git\Users\swsj1\AppData\Local\Temp\claude\C--Portpolio-agent-broker\d44764eb-9559-4620-9ecd-2459f2861e82\scratchpad\p-s1-empty C;C:\Program Files\Git\Users\swsj1\AppData\Local\Temp\claude\C--Portpolio-agent-broker\d44764eb-9559-4620-9ecd-2459f2861e82\scratchpad\p-s1-empty\tests\test_policy_static.py
+종료 코드: 127
+
+## stdout
+
+
+## stderr
+/usr/bin/bash: line 1: .venvScriptspython: command not found
+/usr/bin/bash: line 1: cacheprovider: command not found
+/usr/bin/bash: line 1: C:Program: command not found
+/usr/bin/bash: line 1: C:Program: command not found
+/usr/bin/bash: line 1: C:Program: command not found

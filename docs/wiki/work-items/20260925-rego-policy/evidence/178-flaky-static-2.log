@@ -1,0 +1,15 @@
+# 증거 178-flaky-static-2.log
+시작: 2026-09-25T18:51:10+09:00
+끝:   2026-09-25T18:51:14+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python -m pytest -q tests/test_policy_static.py
+종료 코드: 0
+
+## stdout
+..                                                                       [100%]
+2 passed in 0.03s
+
+## stderr
+

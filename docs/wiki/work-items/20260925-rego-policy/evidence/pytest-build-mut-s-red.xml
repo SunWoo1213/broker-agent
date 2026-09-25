@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.385" timestamp="2026-09-25T21:49:37.729840+09:00" hostname="SunLaptop"><testcase classname="tests.test_policy_static" name="test_policy_default_lines_are_deny_only" time="0.002" /><testcase classname="tests.test_policy_static" name="test_policy_has_no_runtime_env_or_network_builtins" time="0.003"><failure message="AssertionError: C:\Portpolio\agent-broker\policies\authz.rego: 금지된 내장 함수 'opa.runtime'가 있다&#10;assert 'opa.runtime' not in 'package bro... == &quot;1&quot;\n}\n'&#10;  &#10;  'opa.runtime' is contained here:&#10;    s&quot;} if {&#10;    &#09;opa.runtime().env.BROKER_DEV == &quot;1&quot;&#10;  ? &#09;+++++++++++&#10;    }">request = &lt;FixtureRequest for &lt;Function test_policy_has_no_runtime_env_or_network_builtins&gt;&gt;
+
+    def test_policy_has_no_runtime_env_or_network_builtins(request):
+        files = _policy_files(request)
+        assert files, "policies/ 아래 검사 대상 .rego 파일이 없다"
+    
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            for forbidden in FORBIDDEN_BUILTINS:
+&gt;               assert forbidden not in text, f"{path}: 금지된 내장 함수 {forbidden!r}가 있다"
+E               AssertionError: C:\Portpolio\agent-broker\policies\authz.rego: 금지된 내장 함수 'opa.runtime'가 있다
+E               assert 'opa.runtime' not in 'package bro... == "1"\n}\n'
+E                 
+E                 'opa.runtime' is contained here:
+E                   s"} if {
+E                   	opa.runtime().env.BROKER_DEV == "1"
+E                 ? 	+++++++++++
+E                   }
+
+tests\test_policy_static.py:53: AssertionError</failure></testcase></testsuite></testsuites>

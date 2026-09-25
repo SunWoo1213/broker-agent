@@ -1,0 +1,30 @@
+# 증거 268-review-c2i-bytes-and-sort.log
+시작: 2026-09-25T22:25:41+09:00
+끝:   2026-09-25T22:25:43+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python -c "
+import pathlib
+w='\uae30\ub85d\ub428'
+b=w.encode('cp949'); print('cp949', b.hex(' '))
+print('decoded-as-utf8', ascii(b.decode('utf-8','replace')))
+print('claimed-c6', ascii(bytes.fromhex('b1e2b7cfb5c6').decode('utf-8','replace')))
+line=pathlib.Path('.claude/runs/20260925-rego-policy/evidence/261-ac6-scope.log').read_bytes().splitlines()[13]
+print('log261-line14-has-cfb5', b'\xcf\xb5' in line, 'starts', line[:40])
+print('log261-decoded', ascii(line.decode('utf-8')))
+names=[p.name for p in pathlib.Path('.claude/runs/20260925-rego-policy').glob('07-improvement-review*.md')]+['07-improvement-review.c2.md']
+print('sorted-with-c2', sorted(names), 'last=', sorted(names)[-1])
+"
+종료 코드: 0
+
+## stdout
+cp949 b1 e2 b7 cf b5 ca
+decoded-as-utf8 '\ufffd\ufffd\u03f5\ufffd'
+claimed-c6 '\ufffd\ufffd\u03f5\ufffd'
+log261-line14-has-cfb5 True starts b'HUMAN rule4: protected files unchanged: '
+log261-decoded "HUMAN rule4: protected files unchanged: 'docs/decisions.md' (00-approval.md\ufffd\ufffd \ufffd\ufffd\u03f5\ufffd, \ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \xf3\ufffd\ufffd)"
+sorted-with-c2 ['07-improvement-review.c2.md', '07-improvement-review.md', '07-improvement-review.r2.md', '07-improvement-review.r3.md'] last= 07-improvement-review.r3.md
+
+## stderr
+

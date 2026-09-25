@@ -1,0 +1,37 @@
+# 증거 184-build-c2-env.log
+시작: 2026-09-25T19:38:16+09:00
+끝:   2026-09-25T19:38:17+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: pwd; git rev-parse --short HEAD; sha256sum .claude/runs/20260925-rego-policy/checks/*.py .claude/runs/20260925-rego-policy/checks_c2/*.py; sha256sum policies/authz.rego policies/authz_test.rego tests/test_policy_static.py; git status --porcelain --untracked-files=all; echo "--- d18 c2 begin"; grep -n "K10" docs/decisions.md; echo "--- d18 c2 end"; echo "--- approval c2 begin"; grep -n "K10(A" .claude/runs/20260925-rego-policy/00-approval.md; echo "--- approval c2 end"
+종료 코드: 0
+
+## stdout
+/c/Portpolio/agent-broker
+7a40f19
+b36649e7b937723a267e2ae44c3a6430330f90851afb8dcde8030507bc43fbaa *.claude/runs/20260925-rego-policy/checks/_ev.py
+287bb79f426543910a9cfb0e88bbf6697b9fe40ea99a2cc9be15d5473947de06 *.claude/runs/20260925-rego-policy/checks/ac_build_evidence.py
+0b0c8c62487d2b346f1e151ff8d963f4c0b5b84f9d878552e3b30a5bb51f5678 *.claude/runs/20260925-rego-policy/checks/ac_forbidden_commands.py
+8c84e31dc3c8c921543e0f4bda1568825a3c23276caa39f5b46b7c61dac783b4 *.claude/runs/20260925-rego-policy/checks/ac_scope.py
+9b91e9391280b393cbfeb2e060c0f06fcbcb4c22b49272d1fe4d26a7355b1150 *.claude/runs/20260925-rego-policy/checks/ac0_env.py
+3c44191c2cdc9dfe04d59a51b8a4e5d218c25cfc0c40c9a8594cbfe457e2c0dd *.claude/runs/20260925-rego-policy/checks/check_junit.py
+fa5fbca3d2cd612040ccadc9ee100d1a20c34e90278b97dadffb98762c4caffe *.claude/runs/20260925-rego-policy/checks/check_opa.py
+42fa7ad65b1def1a3d08538ff7ad7ec5b9e8ec765a97904bf958da713db71d0f *.claude/runs/20260925-rego-policy/checks/plan_tests.py
+46f07fb45b1325fcbdf86706d3707935356dfb44f9384b74245364b69f9e981d *.claude/runs/20260925-rego-policy/checks_c2/c2_evidence.py
+e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723 *policies/authz.rego
+ceb6e129a5dddff28ab5a7a4aa3409b5f6e4b341c8f1aa0a5c72ea01205290fc *policies/authz_test.rego
+0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e *tests/test_policy_static.py
+ M docs/decisions.md
+ M policies/authz.rego
+ M policies/authz_test.rego
+?? tests/test_policy_static.py
+--- d18 c2 begin
+21:- 작업별 인자: `expense.create`의 `args.amount`는 1 이상 정수(원). `mail.send`의 인자 키는 `to` · `subject` · `body`만 허용하고 셋 다 필수다. `to`는 1개 이상인 이메일 문자열 배열, `subject` · `body`는 문자열(빈 문자열 허용). 사내 도메인은 정책 상수(`example.com`)이고 정확히 같은 도메인만 사내다. 수신자 중 하나라도 사내가 아니면 승인 경로. (2026-09-25 보강 — 작업 D 개선 사이클 2, K10)
+--- d18 c2 end
+--- approval c2 begin
+13:| 2026-09-25 19:36 (+0900) | 사이클 2 ③ 시작 전, K10(A안) 승인에 따라 메인 세션이 `docs/decisions.md` D18 상세 "작업별 인자" 문장 교체(mail.send subject · body 필수, 문자열, 빈 문자열 허용). 이 작업(③)의 행동이 아님 | "A안으로 진행해주세요" |
+--- approval c2 end
+
+## stderr
+

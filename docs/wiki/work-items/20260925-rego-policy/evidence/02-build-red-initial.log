@@ -1,0 +1,474 @@
+# 증거 02-build-red-initial.log
+시작: 2026-09-25T17:52:15+09:00
+끝:   2026-09-25T17:52:22+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 3
+명령: export MSYS_NO_PATHCONV=1; sha256sum policies/authz.rego policies/authz_test.rego tests/test_policy_static.py; docker compose run --rm opa test /policies -v; a=$?; .venv/Scripts/python -m pytest -q tests/test_policy_static.py --junitxml=.claude/runs/20260925-rego-policy/evidence/pytest-build-red-initial.xml; b=$?; sha256sum .claude/runs/20260925-rego-policy/evidence/pytest-build-red-initial.xml; echo "exit_opa=$a exit_pytest=$b"; test "$a" = 0 && test "$b" = 0
+종료 코드: 1
+
+## stdout
+6b3b528314754c92b7890e3085cf67000073a410d91e3d5d7f05d20c08ab7610 *policies/authz.rego
+b28fee70bff0b958bff4844ded92c3bb27b303d5867398c2d073542755067b9d *policies/authz_test.rego
+0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e *tests/test_policy_static.py
+/policies/authz_test.rego:64:
+data.broker.authz_test.test_default_deny: PASS (482.885µs)
+/policies/authz_test.rego:68:
+data.broker.authz_test.test_no_input_denied: FAIL (1.215309ms)
+/policies/authz_test.rego:502:
+data.broker.authz_test.test_extra_top_level_field_ignored: FAIL (1.294635ms)
+/policies/authz_test.rego:384:
+data.broker.authz_test.test_out_of_scope_beats_approval: FAIL (1.008949ms)
+/policies/authz_test.rego:110:
+data.broker.authz_test.test_missing_action_risk_denied: FAIL (733.167µs)
+/policies/authz_test.rego:89:
+data.broker.authz_test.test_missing_user_denied: FAIL (649.74µs)
+/policies/authz_test.rego:152:
+data.broker.authz_test.test_bad_type_agent_denied: FAIL (1.388719ms)
+/policies/authz_test.rego:391:
+data.broker.authz_test.test_over_limit_beats_approval: FAIL (543.491µs)
+/policies/authz_test.rego:257:
+data.broker.authz_test.test_delegation_expired_denied: FAIL (677.08µs)
+/policies/authz_test.rego:248:
+data.broker.authz_test.test_scope_requires_exact_match: FAIL (1.869688ms)
+/policies/authz_test.rego:96:
+data.broker.authz_test.test_missing_action_denied: FAIL (503.946µs)
+/policies/authz_test.rego:74:
+data.broker.authz_test.test_non_object_input_denied: FAIL (379.836µs)
+/policies/authz_test.rego:103:
+data.broker.authz_test.test_missing_action_name_denied: FAIL (1.536034ms)
+/policies/authz_test.rego:160:
+data.broker.authz_test.test_bad_type_user_denied: FAIL (2.0766ms)
+/policies/authz_test.rego:266:
+data.broker.authz_test.test_expense_over_per_tx_limit_denied: FAIL (2.353644ms)
+/policies/authz_test.rego:398:
+data.broker.authz_test.test_expired_beats_approval: FAIL (2.759336ms)
+/policies/authz_test.rego:117:
+data.broker.authz_test.test_missing_delegation_denied: FAIL (2.874283ms)
+/policies/authz_test.rego:168:
+data.broker.authz_test.test_bad_type_action_denied: FAIL (1.011307ms)
+/policies/authz_test.rego:82:
+data.broker.authz_test.test_missing_agent_denied: FAIL (2.613729ms)
+/policies/authz_test.rego:216:
+data.broker.authz_test.test_bad_type_delegation_expires_at_denied: FAIL (1.373358ms)
+/policies/authz_test.rego:192:
+data.broker.authz_test.test_bad_type_delegation_denied: FAIL (1.718178ms)
+/policies/authz_test.rego:208:
+data.broker.authz_test.test_bad_type_delegation_per_tx_limit_denied: FAIL (1.619199ms)
+/policies/authz_test.rego:176:
+data.broker.authz_test.test_bad_type_action_name_denied: FAIL (2.02336ms)
+/policies/authz_test.rego:200:
+data.broker.authz_test.test_bad_type_delegation_scopes_denied: FAIL (1.88216ms)
+/policies/authz_test.rego:184:
+data.broker.authz_test.test_bad_type_action_risk_denied: FAIL (2.151969ms)
+/policies/authz_test.rego:124:
+data.broker.authz_test.test_missing_delegation_scopes_denied: FAIL (886.026µs)
+/policies/authz_test.rego:224:
+data.broker.authz_test.test_bad_type_args_denied: FAIL (1.568157ms)
+/policies/authz_test.rego:131:
+data.broker.authz_test.test_missing_delegation_per_tx_limit_denied: FAIL (1.678095ms)
+/policies/authz_test.rego:138:
+data.broker.authz_test.test_missing_delegation_expires_at_denied: FAIL (942.879µs)
+/policies/authz_test.rego:241:
+data.broker.authz_test.test_empty_scopes_denied: FAIL (2.074342ms)
+/policies/authz_test.rego:145:
+data.broker.authz_test.test_missing_args_denied: FAIL (912.008µs)
+/policies/authz_test.rego:469:
+data.broker.authz_test.test_low_risk_in_scope_allowed: FAIL (1.083672ms)
+/policies/authz_test.rego:234:
+data.broker.authz_test.test_action_not_in_scope_denied: FAIL (2.66729ms)
+/policies/authz_test.rego:405:
+data.broker.authz_test.test_default_is_deny_when_no_rule_matches: PASS (2.624696ms)
+/policies/authz_test.rego:475:
+data.broker.authz_test.test_expense_at_limit_allowed: FAIL (1.193237ms)
+/policies/authz_test.rego:436:
+data.broker.authz_test.test_out_of_scope_never_allowed: PASS (3.183718ms)
+/policies/authz_test.rego:482:
+data.broker.authz_test.test_expense_demo_180000_allowed: FAIL (437.675µs)
+/policies/authz_test.rego:423:
+data.broker.authz_test.test_external_mail_never_allowed: PASS (3.863318ms)
+/policies/authz_test.rego:334:
+data.broker.authz_test.test_mail_external_recipient_denied_stage1: FAIL (734.818µs)
+/policies/authz_test.rego:488:
+data.broker.authz_test.test_mail_internal_recipients_allowed: FAIL (793.728µs)
+/policies/authz_test.rego:273:
+data.broker.authz_test.test_expense_zero_limit_denies_any_amount: FAIL (535.32µs)
+/policies/authz_test.rego:280:
+data.broker.authz_test.test_expense_invalid_amount_denied: FAIL (589.567µs)
+/policies/authz_test.rego:304:
+data.broker.authz_test.test_mail_unknown_field_denied: FAIL (488.611µs)
+/policies/authz_test.rego:292:
+data.broker.authz_test.test_mail_invalid_recipients_denied: FAIL (1.172533ms)
+/policies/authz_test.rego:453:
+data.broker.authz_test.test_decision_shape: PASS (6.278978ms)
+/policies/authz_test.rego:495:
+data.broker.authz_test.test_not_expired_boundary_allowed: FAIL (5.592902ms)
+/policies/authz_test.rego:320:
+data.broker.authz_test.test_high_risk_denied_stage1: FAIL (1.880549ms)
+/policies/authz_test.rego:415:
+data.broker.authz_test.test_over_limit_never_allowed: PASS (7.684335ms)
+/policies/authz_test.rego:372:
+data.broker.authz_test.test_invalid_input_beats_other_reasons: FAIL (674.615µs)
+/policies/authz_test.rego:327:
+data.broker.authz_test.test_medium_risk_denied_stage1: FAIL (637.485µs)
+/policies/authz_test.rego:357:
+data.broker.authz_test.test_stage1_never_returns_require_approval: FAIL (359.228µs)
+/policies/authz_test.rego:348:
+data.broker.authz_test.test_mail_lookalike_domain_is_external: FAIL (541.337µs)
+/policies/authz_test.rego:341:
+data.broker.authz_test.test_mail_one_external_among_internal_denied: FAIL (1.278048ms)
+--------------------------------------------------------------------------------
+FAILURES
+--------------------------------------------------------------------------------
+data.broker.authz_test.test_no_input_denied: FAIL (1.215309ms)
+
+  query:1                            Enter data.broker.authz_test.test_no_input_denied = _  
+  /policies/authz_test.rego:68       | Enter data.broker.authz_test.test_no_input_denied  
+  /policies/authz_test.rego:71       | | Fail d.reason = "invalid_input"  
+  query:1                            | Fail data.broker.authz_test.test_no_input_denied = _  
+
+data.broker.authz_test.test_extra_top_level_field_ignored: FAIL (1.294635ms)
+
+  query:1                             Enter data.broker.authz_test.test_extra_top_level_field_ignored = _  
+  /policies/authz_test.rego:502       | Enter data.broker.authz_test.test_extra_top_level_field_ignored  
+  /policies/authz_test.rego:504       | | Fail d1.result = "allow"  
+  query:1                             | Fail data.broker.authz_test.test_extra_top_level_field_ignored = _  
+
+data.broker.authz_test.test_out_of_scope_beats_approval: FAIL (1.008949ms)
+
+  query:1                             Enter data.broker.authz_test.test_out_of_scope_beats_approval = _  
+  /policies/authz_test.rego:384       | Enter data.broker.authz_test.test_out_of_scope_beats_approval  
+  /policies/authz_test.rego:388       | | Fail d.reason = "action_not_in_scope"  
+  query:1                             | Fail data.broker.authz_test.test_out_of_scope_beats_approval = _  
+
+data.broker.authz_test.test_missing_action_risk_denied: FAIL (733.167µs)
+
+  query:1                             Enter data.broker.authz_test.test_missing_action_risk_denied = _  
+  /policies/authz_test.rego:110       | Enter data.broker.authz_test.test_missing_action_risk_denied  
+  /policies/authz_test.rego:114       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_action_risk_denied = _  
+
+data.broker.authz_test.test_missing_user_denied: FAIL (649.74µs)
+
+  query:1                            Enter data.broker.authz_test.test_missing_user_denied = _  
+  /policies/authz_test.rego:89       | Enter data.broker.authz_test.test_missing_user_denied  
+  /policies/authz_test.rego:93       | | Fail d.reason = "invalid_input"  
+  query:1                            | Fail data.broker.authz_test.test_missing_user_denied = _  
+
+data.broker.authz_test.test_bad_type_agent_denied: FAIL (1.388719ms)
+
+  /policies/authz_test.rego:154       Enter __local293__ = data.broker.authz_test.base_expense; object.union(__local293__, {"agent": v}, __local159__); data.broker.authz_test.decide(__local159__, __local160__); d = __local160__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:156       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:153       | Fail every v in __local158__ { __local293__ = data.broker.authz_test.base_expense; object.union(__local293__, {"agent": v}, __local159__); data.broker.authz_test.decide(__local159__, __local160__); d = __local160__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:153       | Fail every v in __local158__ { __local293__ = data.broker.authz_test.base_expense; object.union(__local293__, {"agent": v}, __local159__); data.broker.authz_test.decide(__local159__, __local160__); d = __local160__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_agent_denied = _  
+
+data.broker.authz_test.test_over_limit_beats_approval: FAIL (543.491µs)
+
+  query:1                             Enter data.broker.authz_test.test_over_limit_beats_approval = _  
+  /policies/authz_test.rego:391       | Enter data.broker.authz_test.test_over_limit_beats_approval  
+  /policies/authz_test.rego:395       | | Fail d.reason = "per_tx_limit_exceeded"  
+  query:1                             | Fail data.broker.authz_test.test_over_limit_beats_approval = _  
+
+data.broker.authz_test.test_delegation_expired_denied: FAIL (677.08µs)
+
+  /policies/authz_test.rego:259       Enter __local306__ = data.broker.authz_test.base_lookup; object.union(__local306__, {"delegation": {"expires_at": exp}}, __local196__); inp = __local196__; data.broker.authz_test.decide(inp, __local197__); d = __local197__; d.result = "deny"; d.reason = "delegation_expired"  
+  /policies/authz_test.rego:262       | Fail d.reason = "delegation_expired"  
+  /policies/authz_test.rego:258       | Fail every exp in __local195__ { __local306__ = data.broker.authz_test.base_lookup; object.union(__local306__, {"delegation": {"expires_at": exp}}, __local196__); inp = __local196__; data.broker.authz_test.decide(inp, __local197__); d = __local197__; d.result = "deny"; d.reason = "delegation_expired" }  
+  /policies/authz_test.rego:258       | Fail every exp in __local195__ { __local306__ = data.broker.authz_test.base_lookup; object.union(__local306__, {"delegation": {"expires_at": exp}}, __local196__); inp = __local196__; data.broker.authz_test.decide(inp, __local197__); d = __local197__; d.result = "deny"; d.reason = "delegation_expired" }  
+  query:1                             | Fail data.broker.authz_test.test_delegation_expired_denied = _  
+
+data.broker.authz_test.test_scope_requires_exact_match: FAIL (1.869688ms)
+
+  /policies/authz_test.rego:250       Enter __local305__ = data.broker.authz_test.base_expense; object.union(__local305__, {"delegation": {"scopes": scopes}}, __local193__); inp = __local193__; data.broker.authz_test.decide(inp, __local194__); d = __local194__; d.result = "deny"; d.reason = "action_not_in_scope"  
+  /policies/authz_test.rego:253       | Fail d.reason = "action_not_in_scope"  
+  /policies/authz_test.rego:249       | Fail every scopes in __local192__ { __local305__ = data.broker.authz_test.base_expense; object.union(__local305__, {"delegation": {"scopes": scopes}}, __local193__); inp = __local193__; data.broker.authz_test.decide(inp, __local194__); d = __local194__; d.result = "deny"; d.reason = "action_not_in_scope" }  
+  /policies/authz_test.rego:249       | Fail every scopes in __local192__ { __local305__ = data.broker.authz_test.base_expense; object.union(__local305__, {"delegation": {"scopes": scopes}}, __local193__); inp = __local193__; data.broker.authz_test.decide(inp, __local194__); d = __local194__; d.result = "deny"; d.reason = "action_not_in_scope" }  
+  query:1                             | Fail data.broker.authz_test.test_scope_requires_exact_match = _  
+
+data.broker.authz_test.test_missing_action_denied: FAIL (503.946µs)
+
+  query:1                             Enter data.broker.authz_test.test_missing_action_denied = _  
+  /policies/authz_test.rego:96        | Enter data.broker.authz_test.test_missing_action_denied  
+  /policies/authz_test.rego:100       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_action_denied = _  
+
+data.broker.authz_test.test_non_object_input_denied: FAIL (379.836µs)
+
+  /policies/authz_test.rego:76       Enter data.broker.authz_test.decide(v, __local137__); d = __local137__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:78       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:75       | Fail every v in __local136__ { data.broker.authz_test.decide(v, __local137__); d = __local137__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:75       | Fail every v in __local136__ { data.broker.authz_test.decide(v, __local137__); d = __local137__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                            | Fail data.broker.authz_test.test_non_object_input_denied = _  
+
+data.broker.authz_test.test_missing_action_name_denied: FAIL (1.536034ms)
+
+  query:1                             Enter data.broker.authz_test.test_missing_action_name_denied = _  
+  /policies/authz_test.rego:103       | Enter data.broker.authz_test.test_missing_action_name_denied  
+  /policies/authz_test.rego:107       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_action_name_denied = _  
+
+data.broker.authz_test.test_bad_type_user_denied: FAIL (2.0766ms)
+
+  /policies/authz_test.rego:162       Enter __local294__ = data.broker.authz_test.base_expense; object.union(__local294__, {"user": v}, __local162__); data.broker.authz_test.decide(__local162__, __local163__); d = __local163__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:164       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:161       | Fail every v in __local161__ { __local294__ = data.broker.authz_test.base_expense; object.union(__local294__, {"user": v}, __local162__); data.broker.authz_test.decide(__local162__, __local163__); d = __local163__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:161       | Fail every v in __local161__ { __local294__ = data.broker.authz_test.base_expense; object.union(__local294__, {"user": v}, __local162__); data.broker.authz_test.decide(__local162__, __local163__); d = __local163__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_user_denied = _  
+
+data.broker.authz_test.test_expense_over_per_tx_limit_denied: FAIL (2.353644ms)
+
+  query:1                             Enter data.broker.authz_test.test_expense_over_per_tx_limit_denied = _  
+  /policies/authz_test.rego:266       | Enter data.broker.authz_test.test_expense_over_per_tx_limit_denied  
+  /policies/authz_test.rego:270       | | Fail d.reason = "per_tx_limit_exceeded"  
+  query:1                             | Fail data.broker.authz_test.test_expense_over_per_tx_limit_denied = _  
+
+data.broker.authz_test.test_expired_beats_approval: FAIL (2.759336ms)
+
+  query:1                             Enter data.broker.authz_test.test_expired_beats_approval = _  
+  /policies/authz_test.rego:398       | Enter data.broker.authz_test.test_expired_beats_approval  
+  /policies/authz_test.rego:402       | | Fail d.reason = "delegation_expired"  
+  query:1                             | Fail data.broker.authz_test.test_expired_beats_approval = _  
+
+data.broker.authz_test.test_missing_delegation_denied: FAIL (2.874283ms)
+
+  query:1                             Enter data.broker.authz_test.test_missing_delegation_denied = _  
+  /policies/authz_test.rego:117       | Enter data.broker.authz_test.test_missing_delegation_denied  
+  /policies/authz_test.rego:121       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_delegation_denied = _  
+
+data.broker.authz_test.test_bad_type_action_denied: FAIL (1.011307ms)
+
+  /policies/authz_test.rego:170       Enter __local295__ = data.broker.authz_test.base_expense; object.union(__local295__, {"action": v}, __local165__); data.broker.authz_test.decide(__local165__, __local166__); d = __local166__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:172       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:169       | Fail every v in __local164__ { __local295__ = data.broker.authz_test.base_expense; object.union(__local295__, {"action": v}, __local165__); data.broker.authz_test.decide(__local165__, __local166__); d = __local166__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:169       | Fail every v in __local164__ { __local295__ = data.broker.authz_test.base_expense; object.union(__local295__, {"action": v}, __local165__); data.broker.authz_test.decide(__local165__, __local166__); d = __local166__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_action_denied = _  
+
+data.broker.authz_test.test_missing_agent_denied: FAIL (2.613729ms)
+
+  query:1                            Enter data.broker.authz_test.test_missing_agent_denied = _  
+  /policies/authz_test.rego:82       | Enter data.broker.authz_test.test_missing_agent_denied  
+  /policies/authz_test.rego:86       | | Fail d.reason = "invalid_input"  
+  query:1                            | Fail data.broker.authz_test.test_missing_agent_denied = _  
+
+data.broker.authz_test.test_bad_type_delegation_expires_at_denied: FAIL (1.373358ms)
+
+  /policies/authz_test.rego:218       Enter __local301__ = data.broker.authz_test.base_expense; object.union(__local301__, {"delegation": {"expires_at": v}}, __local183__); data.broker.authz_test.decide(__local183__, __local184__); d = __local184__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:220       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:217       | Fail every v in __local182__ { __local301__ = data.broker.authz_test.base_expense; object.union(__local301__, {"delegation": {"expires_at": v}}, __local183__); data.broker.authz_test.decide(__local183__, __local184__); d = __local184__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:217       | Fail every v in __local182__ { __local301__ = data.broker.authz_test.base_expense; object.union(__local301__, {"delegation": {"expires_at": v}}, __local183__); data.broker.authz_test.decide(__local183__, __local184__); d = __local184__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_delegation_expires_at_denied = _  
+
+data.broker.authz_test.test_bad_type_delegation_denied: FAIL (1.718178ms)
+
+  /policies/authz_test.rego:194       Enter __local298__ = data.broker.authz_test.base_expense; object.union(__local298__, {"delegation": v}, __local174__); data.broker.authz_test.decide(__local174__, __local175__); d = __local175__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:196       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:193       | Fail every v in __local173__ { __local298__ = data.broker.authz_test.base_expense; object.union(__local298__, {"delegation": v}, __local174__); data.broker.authz_test.decide(__local174__, __local175__); d = __local175__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:193       | Fail every v in __local173__ { __local298__ = data.broker.authz_test.base_expense; object.union(__local298__, {"delegation": v}, __local174__); data.broker.authz_test.decide(__local174__, __local175__); d = __local175__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_delegation_denied = _  
+
+data.broker.authz_test.test_bad_type_delegation_per_tx_limit_denied: FAIL (1.619199ms)
+
+  /policies/authz_test.rego:210       Enter __local300__ = data.broker.authz_test.base_expense; object.union(__local300__, {"delegation": {"per_tx_limit": v}}, __local180__); data.broker.authz_test.decide(__local180__, __local181__); d = __local181__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:212       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:209       | Fail every v in __local179__ { __local300__ = data.broker.authz_test.base_expense; object.union(__local300__, {"delegation": {"per_tx_limit": v}}, __local180__); data.broker.authz_test.decide(__local180__, __local181__); d = __local181__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:209       | Fail every v in __local179__ { __local300__ = data.broker.authz_test.base_expense; object.union(__local300__, {"delegation": {"per_tx_limit": v}}, __local180__); data.broker.authz_test.decide(__local180__, __local181__); d = __local181__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_delegation_per_tx_limit_denied = _  
+
+data.broker.authz_test.test_bad_type_action_name_denied: FAIL (2.02336ms)
+
+  /policies/authz_test.rego:178       Enter __local296__ = data.broker.authz_test.base_expense; object.union(__local296__, {"action": {"name": v}}, __local168__); data.broker.authz_test.decide(__local168__, __local169__); d = __local169__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:180       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:177       | Fail every v in __local167__ { __local296__ = data.broker.authz_test.base_expense; object.union(__local296__, {"action": {"name": v}}, __local168__); data.broker.authz_test.decide(__local168__, __local169__); d = __local169__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:177       | Fail every v in __local167__ { __local296__ = data.broker.authz_test.base_expense; object.union(__local296__, {"action": {"name": v}}, __local168__); data.broker.authz_test.decide(__local168__, __local169__); d = __local169__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_action_name_denied = _  
+
+data.broker.authz_test.test_bad_type_delegation_scopes_denied: FAIL (1.88216ms)
+
+  /policies/authz_test.rego:202       Enter __local299__ = data.broker.authz_test.base_expense; object.union(__local299__, {"delegation": {"scopes": v}}, __local177__); data.broker.authz_test.decide(__local177__, __local178__); d = __local178__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:204       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:201       | Fail every v in __local176__ { __local299__ = data.broker.authz_test.base_expense; object.union(__local299__, {"delegation": {"scopes": v}}, __local177__); data.broker.authz_test.decide(__local177__, __local178__); d = __local178__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:201       | Fail every v in __local176__ { __local299__ = data.broker.authz_test.base_expense; object.union(__local299__, {"delegation": {"scopes": v}}, __local177__); data.broker.authz_test.decide(__local177__, __local178__); d = __local178__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_delegation_scopes_denied = _  
+
+data.broker.authz_test.test_bad_type_action_risk_denied: FAIL (2.151969ms)
+
+  /policies/authz_test.rego:186       Enter __local297__ = data.broker.authz_test.base_expense; object.union(__local297__, {"action": {"risk": v}}, __local171__); data.broker.authz_test.decide(__local171__, __local172__); d = __local172__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:188       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:185       | Fail every v in __local170__ { __local297__ = data.broker.authz_test.base_expense; object.union(__local297__, {"action": {"risk": v}}, __local171__); data.broker.authz_test.decide(__local171__, __local172__); d = __local172__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:185       | Fail every v in __local170__ { __local297__ = data.broker.authz_test.base_expense; object.union(__local297__, {"action": {"risk": v}}, __local171__); data.broker.authz_test.decide(__local171__, __local172__); d = __local172__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_action_risk_denied = _  
+
+data.broker.authz_test.test_missing_delegation_scopes_denied: FAIL (886.026µs)
+
+  query:1                             Enter data.broker.authz_test.test_missing_delegation_scopes_denied = _  
+  /policies/authz_test.rego:124       | Enter data.broker.authz_test.test_missing_delegation_scopes_denied  
+  /policies/authz_test.rego:128       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_delegation_scopes_denied = _  
+
+data.broker.authz_test.test_bad_type_args_denied: FAIL (1.568157ms)
+
+  /policies/authz_test.rego:226       Enter __local302__ = data.broker.authz_test.base_expense; object.union(__local302__, {"args": v}, __local186__); data.broker.authz_test.decide(__local186__, __local187__); d = __local187__; d.result = "deny"; d.reason = "invalid_input"  
+  /policies/authz_test.rego:228       | Fail d.reason = "invalid_input"  
+  /policies/authz_test.rego:225       | Fail every v in __local185__ { __local302__ = data.broker.authz_test.base_expense; object.union(__local302__, {"args": v}, __local186__); data.broker.authz_test.decide(__local186__, __local187__); d = __local187__; d.result = "deny"; d.reason = "invalid_input" }  
+  /policies/authz_test.rego:225       | Fail every v in __local185__ { __local302__ = data.broker.authz_test.base_expense; object.union(__local302__, {"args": v}, __local186__); data.broker.authz_test.decide(__local186__, __local187__); d = __local187__; d.result = "deny"; d.reason = "invalid_input" }  
+  query:1                             | Fail data.broker.authz_test.test_bad_type_args_denied = _  
+
+data.broker.authz_test.test_missing_delegation_per_tx_limit_denied: FAIL (1.678095ms)
+
+  query:1                             Enter data.broker.authz_test.test_missing_delegation_per_tx_limit_denied = _  
+  /policies/authz_test.rego:131       | Enter data.broker.authz_test.test_missing_delegation_per_tx_limit_denied  
+  /policies/authz_test.rego:135       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_delegation_per_tx_limit_denied = _  
+
+data.broker.authz_test.test_missing_delegation_expires_at_denied: FAIL (942.879µs)
+
+  query:1                             Enter data.broker.authz_test.test_missing_delegation_expires_at_denied = _  
+  /policies/authz_test.rego:138       | Enter data.broker.authz_test.test_missing_delegation_expires_at_denied  
+  /policies/authz_test.rego:142       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_delegation_expires_at_denied = _  
+
+data.broker.authz_test.test_empty_scopes_denied: FAIL (2.074342ms)
+
+  query:1                             Enter data.broker.authz_test.test_empty_scopes_denied = _  
+  /policies/authz_test.rego:241       | Enter data.broker.authz_test.test_empty_scopes_denied  
+  /policies/authz_test.rego:245       | | Fail d.reason = "action_not_in_scope"  
+  query:1                             | Fail data.broker.authz_test.test_empty_scopes_denied = _  
+
+data.broker.authz_test.test_missing_args_denied: FAIL (912.008µs)
+
+  query:1                             Enter data.broker.authz_test.test_missing_args_denied = _  
+  /policies/authz_test.rego:145       | Enter data.broker.authz_test.test_missing_args_denied  
+  /policies/authz_test.rego:149       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_missing_args_denied = _  
+
+data.broker.authz_test.test_low_risk_in_scope_allowed: FAIL (1.083672ms)
+
+  query:1                             Enter data.broker.authz_test.test_low_risk_in_scope_allowed = _  
+  /policies/authz_test.rego:469       | Enter data.broker.authz_test.test_low_risk_in_scope_allowed  
+  /policies/authz_test.rego:471       | | Fail d.result = "allow"  
+  query:1                             | Fail data.broker.authz_test.test_low_risk_in_scope_allowed = _  
+
+data.broker.authz_test.test_action_not_in_scope_denied: FAIL (2.66729ms)
+
+  query:1                             Enter data.broker.authz_test.test_action_not_in_scope_denied = _  
+  /policies/authz_test.rego:234       | Enter data.broker.authz_test.test_action_not_in_scope_denied  
+  /policies/authz_test.rego:238       | | Fail d.reason = "action_not_in_scope"  
+  query:1                             | Fail data.broker.authz_test.test_action_not_in_scope_denied = _  
+
+data.broker.authz_test.test_expense_at_limit_allowed: FAIL (1.193237ms)
+
+  query:1                             Enter data.broker.authz_test.test_expense_at_limit_allowed = _  
+  /policies/authz_test.rego:475       | Enter data.broker.authz_test.test_expense_at_limit_allowed  
+  /policies/authz_test.rego:478       | | Fail d.result = "allow"  
+  query:1                             | Fail data.broker.authz_test.test_expense_at_limit_allowed = _  
+
+data.broker.authz_test.test_expense_demo_180000_allowed: FAIL (437.675µs)
+
+  query:1                             Enter data.broker.authz_test.test_expense_demo_180000_allowed = _  
+  /policies/authz_test.rego:482       | Enter data.broker.authz_test.test_expense_demo_180000_allowed  
+  /policies/authz_test.rego:484       | | Fail d.result = "allow"  
+  query:1                             | Fail data.broker.authz_test.test_expense_demo_180000_allowed = _  
+
+data.broker.authz_test.test_mail_external_recipient_denied_stage1: FAIL (734.818µs)
+
+  query:1                             Enter data.broker.authz_test.test_mail_external_recipient_denied_stage1 = _  
+  /policies/authz_test.rego:334       | Enter data.broker.authz_test.test_mail_external_recipient_denied_stage1  
+  /policies/authz_test.rego:338       | | Fail d.reason = "approval_required_external_recipient"  
+  query:1                             | Fail data.broker.authz_test.test_mail_external_recipient_denied_stage1 = _  
+
+data.broker.authz_test.test_mail_internal_recipients_allowed: FAIL (793.728µs)
+
+  query:1                             Enter data.broker.authz_test.test_mail_internal_recipients_allowed = _  
+  /policies/authz_test.rego:488       | Enter data.broker.authz_test.test_mail_internal_recipients_allowed  
+  /policies/authz_test.rego:491       | | Fail d.result = "allow"  
+  query:1                             | Fail data.broker.authz_test.test_mail_internal_recipients_allowed = _  
+
+data.broker.authz_test.test_expense_zero_limit_denies_any_amount: FAIL (535.32µs)
+
+  query:1                             Enter data.broker.authz_test.test_expense_zero_limit_denies_any_amount = _  
+  /policies/authz_test.rego:273       | Enter data.broker.authz_test.test_expense_zero_limit_denies_any_amount  
+  /policies/authz_test.rego:277       | | Fail d.reason = "per_tx_limit_exceeded"  
+  query:1                             | Fail data.broker.authz_test.test_expense_zero_limit_denies_any_amount = _  
+
+data.broker.authz_test.test_expense_invalid_amount_denied: FAIL (589.567µs)
+
+  query:1                             Enter data.broker.authz_test.test_expense_invalid_amount_denied = _  
+  /policies/authz_test.rego:280       | Enter data.broker.authz_test.test_expense_invalid_amount_denied  
+  /policies/authz_test.rego:283       | | Fail d0.reason = "invalid_args"  
+  query:1                             | Fail data.broker.authz_test.test_expense_invalid_amount_denied = _  
+
+data.broker.authz_test.test_mail_unknown_field_denied: FAIL (488.611µs)
+
+  query:1                             Enter data.broker.authz_test.test_mail_unknown_field_denied = _  
+  /policies/authz_test.rego:304       | Enter data.broker.authz_test.test_mail_unknown_field_denied  
+  /policies/authz_test.rego:307       | | Fail d1.reason = "invalid_args"  
+  query:1                             | Fail data.broker.authz_test.test_mail_unknown_field_denied = _  
+
+data.broker.authz_test.test_mail_invalid_recipients_denied: FAIL (1.172533ms)
+
+  query:1                             Enter data.broker.authz_test.test_mail_invalid_recipients_denied = _  
+  /policies/authz_test.rego:292       | Enter data.broker.authz_test.test_mail_invalid_recipients_denied  
+  /policies/authz_test.rego:295       | | Fail d0.reason = "invalid_args"  
+  query:1                             | Fail data.broker.authz_test.test_mail_invalid_recipients_denied = _  
+
+data.broker.authz_test.test_not_expired_boundary_allowed: FAIL (5.592902ms)
+
+  query:1                             Enter data.broker.authz_test.test_not_expired_boundary_allowed = _  
+  /policies/authz_test.rego:495       | Enter data.broker.authz_test.test_not_expired_boundary_allowed  
+  /policies/authz_test.rego:498       | | Fail d.result = "allow"  
+  query:1                             | Fail data.broker.authz_test.test_not_expired_boundary_allowed = _  
+
+data.broker.authz_test.test_high_risk_denied_stage1: FAIL (1.880549ms)
+
+  query:1                             Enter data.broker.authz_test.test_high_risk_denied_stage1 = _  
+  /policies/authz_test.rego:320       | Enter data.broker.authz_test.test_high_risk_denied_stage1  
+  /policies/authz_test.rego:324       | | Fail d.reason = "approval_required_high_risk"  
+  query:1                             | Fail data.broker.authz_test.test_high_risk_denied_stage1 = _  
+
+data.broker.authz_test.test_invalid_input_beats_other_reasons: FAIL (674.615µs)
+
+  query:1                             Enter data.broker.authz_test.test_invalid_input_beats_other_reasons = _  
+  /policies/authz_test.rego:372       | Enter data.broker.authz_test.test_invalid_input_beats_other_reasons  
+  /policies/authz_test.rego:381       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_invalid_input_beats_other_reasons = _  
+
+data.broker.authz_test.test_medium_risk_denied_stage1: FAIL (637.485µs)
+
+  query:1                             Enter data.broker.authz_test.test_medium_risk_denied_stage1 = _  
+  /policies/authz_test.rego:327       | Enter data.broker.authz_test.test_medium_risk_denied_stage1  
+  /policies/authz_test.rego:331       | | Fail d.reason = "approval_required_medium_risk"  
+  query:1                             | Fail data.broker.authz_test.test_medium_risk_denied_stage1 = _  
+
+data.broker.authz_test.test_stage1_never_returns_require_approval: FAIL (359.228µs)
+
+  query:1       Enter data.broker.authz_test.test_stage1_never_returns_require_approval = _  
+  query:1       | Fail data.broker.authz_test.test_stage1_never_returns_require_approval = _  
+
+data.broker.authz_test.test_mail_lookalike_domain_is_external: FAIL (541.337µs)
+
+  /policies/authz_test.rego:350       Enter __local320__ = data.broker.authz_test.base_mail; object.union(__local320__, {"args": {"to": to}}, __local227__); inp = __local227__; data.broker.authz_test.decide(inp, __local228__); d = __local228__; d.result = "deny"; d.reason = "approval_required_external_recipient"  
+  /policies/authz_test.rego:353       | Fail d.reason = "approval_required_external_recipient"  
+  /policies/authz_test.rego:349       | Fail every to in __local226__ { __local320__ = data.broker.authz_test.base_mail; object.union(__local320__, {"args": {"to": to}}, __local227__); inp = __local227__; data.broker.authz_test.decide(inp, __local228__); d = __local228__; d.result = "deny"; d.reason = "approval_required_external_recipient" }  
+  /policies/authz_test.rego:349       | Fail every to in __local226__ { __local320__ = data.broker.authz_test.base_mail; object.union(__local320__, {"args": {"to": to}}, __local227__); inp = __local227__; data.broker.authz_test.decide(inp, __local228__); d = __local228__; d.result = "deny"; d.reason = "approval_required_external_recipient" }  
+  query:1                             | Fail data.broker.authz_test.test_mail_lookalike_domain_is_external = _  
+
+data.broker.authz_test.test_mail_one_external_among_internal_denied: FAIL (1.278048ms)
+
+  query:1                             Enter data.broker.authz_test.test_mail_one_external_among_internal_denied = _  
+  /policies/authz_test.rego:341       | Enter data.broker.authz_test.test_mail_one_external_among_internal_denied  
+  /policies/authz_test.rego:345       | | Fail d.reason = "approval_required_external_recipient"  
+  query:1                             | Fail data.broker.authz_test.test_mail_one_external_among_internal_denied = _  
+
+--------------------------------------------------------------------------------
+PASS: 6/53
+FAIL: 47/53
+..                                                                       [100%]
+2 passed in 0.34s
+886f85cb75d5a1a36cf70730eb8714599bc6625da540a1f746a3fabae08df321 *.claude/runs/20260925-rego-policy/evidence/pytest-build-red-initial.xml
+exit_opa=2 exit_pytest=0
+
+## stderr
+ Container agent-broker-opa-run-cf7b1ee0b847 Creating 
+ Container agent-broker-opa-run-cf7b1ee0b847 Created

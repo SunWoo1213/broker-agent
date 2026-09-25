@@ -1,0 +1,58 @@
+# 증거 264-ac9-c2-evidence.log
+시작: 2026-09-25T22:12:48+09:00
+끝:   2026-09-25T22:12:49+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python .claude/runs/20260925-rego-policy/checks_c2/c2_evidence.py --require-ac1
+종료 코드: 0
+
+## stdout
+OK  07 review lists this script hash == current: 'review=07-improvement-review.r3.md listed=46f07fb45b1325fcbdf86706d3707935356dfb44f9384b74245364b69f9e981d'
+OK  c2 green-tests before last baseline: 'green=185 base=186'
+OK  c2 green-tests: new test PASS: 'PASS'
+OK  policy unchanged in cycle 2 (env == baseline == now): 'env=e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723 base=e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723'
+OK  test file changed in cycle 2: 'env=ceb6e129a5dddff28ab5a7a4aa3409b5f6e4b341c8f1aa0a5c72ea01205290fc base=22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d'
+OK  current files == c2 baseline: ''
+OK  mut-v order baseline < red < green: 'baseline=186 red=230 green=231'
+OK  mut-v red exit != 0: 'exit=1'
+OK  mut-v green exit == 0: 'exit=0'
+OK  mut-v red: only the policy file differs: "{'policies/authz.rego': '899e91d43e2bcfaa5c507781846f045de23af794d2b9ee28bf36bcff1ee69eb1', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-v-red.xml': 'e3d9e43f64c72d45c79c0d6acf77ff0cbc8db7b544e18ca570177570662525bc'}"
+OK  mut-v green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-v-green.xml': '217bab25c0696d6017b09d1cc7046dcbb51876bef0b70b56aac16a1c69382afc'}"
+OK  mut-v red: all 54 tests reported: 'missing=[]'
+OK  mut-v red: non-PASS set == planned exactly (1): 'extra=[] missing=[]'
+OK  mut-v green: all 54 PASS: 'missing=[] not_pass=[]'
+OK  mut-v green junit verified: 'ok'
+OK  mut-w order baseline < red < green: 'baseline=186 red=232 green=233'
+OK  mut-w red exit != 0: 'exit=1'
+OK  mut-w green exit == 0: 'exit=0'
+OK  mut-w red: only the policy file differs: "{'policies/authz.rego': 'da7834d12c6c8dcef3ad8032db59f65fef00878afa86916432bf190663ae5dca', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-w-red.xml': 'eb66c558e13dc6d16636e0ddab3488f7a660333b4a729d52c98044135915e1a0'}"
+OK  mut-w green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-w-green.xml': '50657e3397adae68ef78a35dce082ca0844157f3bb977e94cfa826142041a752'}"
+OK  mut-w red: all 54 tests reported: 'missing=[]'
+OK  mut-w red: non-PASS set == planned exactly (1): 'extra=[] missing=[]'
+OK  mut-w green: all 54 PASS: 'missing=[] not_pass=[]'
+OK  mut-w green junit verified: 'ok'
+OK  mut-x order baseline < red < green: 'baseline=186 red=234 green=235'
+OK  mut-x red exit != 0: 'exit=1'
+OK  mut-x green exit == 0: 'exit=0'
+OK  mut-x red: only the policy file differs: "{'policies/authz.rego': 'c7fbd68b60a5dae309360cd23b0168038f344e2f95489789a9be3d6628ff76ba', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-x-red.xml': '696197b47660cef9ad1b864204860e4bd3c08299712e5483d18dee065ecd99dd'}"
+OK  mut-x green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-x-green.xml': 'f5170c12b7dc340fb9ea19b34b31ce5f6a9fea2bc08def7ef10e2192a8517a05'}"
+OK  mut-x red: all 54 tests reported: 'missing=[]'
+OK  mut-x red: non-PASS set == planned exactly (37): 'extra=[] missing=[]'
+OK  mut-x green: all 54 PASS: 'missing=[] not_pass=[]'
+OK  mut-x green junit verified: 'ok'
+OK  mut-y order baseline < red < green: 'baseline=186 red=236 green=237'
+OK  mut-y red exit != 0: 'exit=1'
+OK  mut-y green exit == 0: 'exit=0'
+OK  mut-y red: only the policy file differs: "{'policies/authz.rego': '05e0d8db38988f8b2e0d5db91ceefbe26e03ea6b3790311e55515b9d0c80ad57', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-y-red.xml': 'c177cc48e4842bf4d4de0f73fc4f42a6636a58e9698f805dea2cd1e78ae4216a'}"
+OK  mut-y green: all files restored: "{'policies/authz.rego': 'e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723', 'policies/authz_test.rego': '22217c68c436fd8db676f5eae6b9fe89248f6ffe42c85ae30417547704aedd9d', 'tests/test_policy_static.py': '0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e', '.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-y-green.xml': 'bac9ba48707895cf5f1a4c7471fdd420570a5fba9b9921bcd4403e3fbcb13fce'}"
+OK  mut-y red: all 54 tests reported: 'missing=[]'
+OK  mut-y red: non-PASS set == planned exactly (7): 'extra=[] missing=[]'
+OK  mut-y green: all 54 PASS: 'missing=[] not_pass=[]'
+OK  mut-y green junit verified: 'ok'
+OK  green-final: all 54 PASS: 'exit=0 missing=[] not_pass=[]'
+OK  ac1-opa-test after green-final: new test PASS: 'PASS'
+summary: 44 ok, 0 bad
+
+## stderr
+

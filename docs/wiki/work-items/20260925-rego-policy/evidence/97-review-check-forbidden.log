@@ -1,0 +1,16 @@
+# 증거 97-review-check-forbidden.log
+시작: 2026-09-25T18:25:43+09:00
+끝:   2026-09-25T18:25:44+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python .claude/runs/20260925-rego-policy/checks/ac_forbidden_commands.py
+종료 코드: 0
+
+## stdout
+OK  logs checked: '96'
+OK  no forbidden command in evidence logs: '[]'
+summary: 2 ok, 0 bad
+
+## stderr
+

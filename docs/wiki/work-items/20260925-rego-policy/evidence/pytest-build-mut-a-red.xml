@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.724" timestamp="2026-09-25T19:39:09.819884+09:00" hostname="SunLaptop"><testcase classname="tests.test_policy_static" name="test_policy_default_lines_are_deny_only" time="0.003"><failure message="AssertionError: C:\Portpolio\agent-broker\policies\authz.rego: default 줄은 거부 쪽이어야 한다: 'default decision := {&quot;result&quot;: &quot;allow&quot;, &quot;reason&quot;: &quot;no_matching_rule&quot;}'&#10;assert None&#10; +  where None = &lt;built-in method match of re.Pattern object at 0x0000022283862740&gt;('default decision := {&quot;result&quot;: &quot;allow&quot;, &quot;reason&quot;: &quot;no_matching_rule&quot;}')&#10; +    where &lt;built-in method match of re.Pattern object at 0x0000022283862740&gt; = re.compile('^default [A-Za-z_][A-Za-z0-9_]* := false$').match">request = &lt;FixtureRequest for &lt;Function test_policy_default_lines_are_deny_only&gt;&gt;
+
+    def test_policy_default_lines_are_deny_only(request):
+        files = _policy_files(request)
+        assert files, "policies/ 아래 검사 대상 .rego 파일이 없다"
+    
+        decision_line_count = 0
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            for line in text.splitlines():
+                stripped = line.strip()
+                if not stripped.startswith("default "):
+                    continue
+                if stripped == DEFAULT_DECISION_LINE:
+                    decision_line_count += 1
+                    continue
+&gt;               assert DEFAULT_FALSE_RE.match(stripped), (
+                    f"{path}: default 줄은 거부 쪽이어야 한다: {stripped!r}"
+                )
+E               AssertionError: C:\Portpolio\agent-broker\policies\authz.rego: default 줄은 거부 쪽이어야 한다: 'default decision := {"result": "allow", "reason": "no_matching_rule"}'
+E               assert None
+E                +  where None = &lt;built-in method match of re.Pattern object at 0x0000022283862740&gt;('default decision := {"result": "allow", "reason": "no_matching_rule"}')
+E                +    where &lt;built-in method match of re.Pattern object at 0x0000022283862740&gt; = re.compile('^default [A-Za-z_][A-Za-z0-9_]* := false$').match
+
+tests\test_policy_static.py:38: AssertionError</failure></testcase><testcase classname="tests.test_policy_static" name="test_policy_has_no_runtime_env_or_network_builtins" time="0.002" /></testsuite></testsuites>

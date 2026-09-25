@@ -1,0 +1,21 @@
+# 증거 166-ac1-check.log
+시작: 2026-09-25T18:49:05+09:00
+끝:   2026-09-25T18:49:06+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python .claude/runs/20260925-rego-policy/checks/check_opa.py ac1-opa-test
+종료 코드: 0
+
+## stdout
+INFO ac1-opa-test extra tests beyond plan: []
+OK  ac1-opa-test exit == 0: 'exit=0 file=165-ac1-opa-test.log'
+OK  ac1-opa-test parsed tests > 0: 'parsed=53'
+OK  ac1-opa-test no duplicate names: '[]'
+OK  ac1-opa-test all 53 planned tests present: 'missing=[]'
+OK  ac1-opa-test every test PASS: '[]'
+OK  ac1-opa-test summary is exactly PASS: n/n with n == parsed: "summary={'PASS': (53, 53)} parsed=53"
+summary: 6 ok, 0 bad
+
+## stderr
+

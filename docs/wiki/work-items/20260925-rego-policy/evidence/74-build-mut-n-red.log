@@ -1,0 +1,230 @@
+# 증거 74-build-mut-n-red.log
+시작: 2026-09-25T18:14:42+09:00
+끝:   2026-09-25T18:14:47+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: export MSYS_NO_PATHCONV=1; sha256sum policies/authz.rego policies/authz_test.rego tests/test_policy_static.py; docker compose run --rm opa test /policies -v; a=$?; .venv/Scripts/python -m pytest -q tests/test_policy_static.py --junitxml=.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-n-red.xml; b=$?; sha256sum .claude/runs/20260925-rego-policy/evidence/pytest-build-mut-n-red.xml; echo "exit_opa=$a exit_pytest=$b"; test "$a" = 0 && test "$b" = 0
+종료 코드: 1
+
+## stdout
+2fb25bf2039068e8b7fc9ba4500859fa2b140d3d7d5eb5779f8031e6bc2d25b5 *policies/authz.rego
+063844e53ce3027485bea1fac13d9d2688f8630478c3f48ce975cfff48b23fce *policies/authz_test.rego
+0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e *tests/test_policy_static.py
+/policies/authz_test.rego:327:
+data.broker.authz_test.test_medium_risk_denied_stage1: PASS (3.865649ms)
+/policies/authz_test.rego:334:
+data.broker.authz_test.test_mail_external_recipient_denied_stage1: PASS (3.028347ms)
+/policies/authz_test.rego:341:
+data.broker.authz_test.test_mail_one_external_among_internal_denied: PASS (1.204766ms)
+/policies/authz_test.rego:234:
+data.broker.authz_test.test_action_not_in_scope_denied: PASS (4.864985ms)
+/policies/authz_test.rego:160:
+data.broker.authz_test.test_bad_type_user_denied: PASS (13.355757ms)
+/policies/authz_test.rego:372:
+data.broker.authz_test.test_invalid_input_beats_other_reasons: FAIL (3.57432ms)
+/policies/authz_test.rego:384:
+data.broker.authz_test.test_out_of_scope_beats_approval: FAIL (961.089µs)
+/policies/authz_test.rego:357:
+data.broker.authz_test.test_stage1_never_returns_require_approval: PASS (11.021333ms)
+/policies/authz_test.rego:348:
+data.broker.authz_test.test_mail_lookalike_domain_is_external: PASS (13.222911ms)
+/policies/authz_test.rego:405:
+data.broker.authz_test.test_default_is_deny_when_no_rule_matches: PASS (2.625998ms)
+/policies/authz_test.rego:96:
+data.broker.authz_test.test_missing_action_denied: PASS (757.297µs)
+/policies/authz_test.rego:391:
+data.broker.authz_test.test_over_limit_beats_approval: FAIL (5.763774ms)
+/policies/authz_test.rego:64:
+data.broker.authz_test.test_default_deny: PASS (486.042µs)
+/policies/authz_test.rego:504:
+data.broker.authz_test.test_extra_top_level_field_ignored: PASS (19.430917ms)
+/policies/authz_test.rego:68:
+data.broker.authz_test.test_no_input_denied: PASS (412.582µs)
+/policies/authz_test.rego:82:
+data.broker.authz_test.test_missing_agent_denied: PASS (637.525µs)
+/policies/authz_test.rego:89:
+data.broker.authz_test.test_missing_user_denied: PASS (831.905µs)
+/policies/authz_test.rego:415:
+data.broker.authz_test.test_over_limit_never_allowed: PASS (20.86126ms)
+/policies/authz_test.rego:74:
+data.broker.authz_test.test_non_object_input_denied: PASS (1.339612ms)
+/policies/authz_test.rego:398:
+data.broker.authz_test.test_expired_beats_approval: FAIL (14.18614ms)
+/policies/authz_test.rego:168:
+data.broker.authz_test.test_bad_type_action_denied: PASS (8.034325ms)
+/policies/authz_test.rego:103:
+data.broker.authz_test.test_missing_action_name_denied: PASS (1.712179ms)
+/policies/authz_test.rego:124:
+data.broker.authz_test.test_missing_delegation_scopes_denied: PASS (7.952407ms)
+/policies/authz_test.rego:184:
+data.broker.authz_test.test_bad_type_action_risk_denied: PASS (8.06957ms)
+/policies/authz_test.rego:110:
+data.broker.authz_test.test_missing_action_risk_denied: PASS (1.208171ms)
+/policies/authz_test.rego:192:
+data.broker.authz_test.test_bad_type_delegation_denied: PASS (11.652355ms)
+/policies/authz_test.rego:176:
+data.broker.authz_test.test_bad_type_action_name_denied: PASS (12.377911ms)
+/policies/authz_test.rego:131:
+data.broker.authz_test.test_missing_delegation_per_tx_limit_denied: PASS (2.550907ms)
+/policies/authz_test.rego:117:
+data.broker.authz_test.test_missing_delegation_denied: PASS (4.135353ms)
+/policies/authz_test.rego:241:
+data.broker.authz_test.test_empty_scopes_denied: PASS (5.155129ms)
+/policies/authz_test.rego:266:
+data.broker.authz_test.test_expense_over_per_tx_limit_denied: PASS (2.59062ms)
+/policies/authz_test.rego:273:
+data.broker.authz_test.test_expense_zero_limit_denies_any_amount: PASS (2.745085ms)
+/policies/authz_test.rego:145:
+data.broker.authz_test.test_missing_args_denied: PASS (1.990075ms)
+/policies/authz_test.rego:320:
+data.broker.authz_test.test_high_risk_denied_stage1: PASS (1.558589ms)
+/policies/authz_test.rego:138:
+data.broker.authz_test.test_missing_delegation_expires_at_denied: PASS (18.41958ms)
+/policies/authz_test.rego:248:
+data.broker.authz_test.test_scope_requires_exact_match: PASS (25.834474ms)
+/policies/authz_test.rego:257:
+data.broker.authz_test.test_delegation_expired_denied: PASS (34.31131ms)
+/policies/authz_test.rego:304:
+data.broker.authz_test.test_mail_unknown_field_denied: PASS (25.224116ms)
+/policies/authz_test.rego:292:
+data.broker.authz_test.test_mail_invalid_recipients_denied: FAIL (27.131844ms)
+/policies/authz_test.rego:152:
+data.broker.authz_test.test_bad_type_agent_denied: PASS (1.845545ms)
+/policies/authz_test.rego:200:
+data.broker.authz_test.test_bad_type_delegation_scopes_denied: PASS (10.883621ms)
+/policies/authz_test.rego:208:
+data.broker.authz_test.test_bad_type_delegation_per_tx_limit_denied: PASS (23.865953ms)
+/policies/authz_test.rego:423:
+data.broker.authz_test.test_external_mail_never_allowed: PASS (7.827289ms)
+/policies/authz_test.rego:472:
+data.broker.authz_test.test_low_risk_in_scope_allowed: PASS (11.129603ms)
+/policies/authz_test.rego:280:
+data.broker.authz_test.test_expense_invalid_amount_denied: PASS (50.443924ms)
+/policies/authz_test.rego:484:
+data.broker.authz_test.test_expense_demo_180000_allowed: PASS (9.08073ms)
+/policies/authz_test.rego:497:
+data.broker.authz_test.test_not_expired_boundary_allowed: PASS (6.513257ms)
+/policies/authz_test.rego:453:
+data.broker.authz_test.test_decision_shape: PASS (23.87812ms)
+/policies/authz_test.rego:477:
+data.broker.authz_test.test_expense_at_limit_allowed: PASS (12.485751ms)
+/policies/authz_test.rego:490:
+data.broker.authz_test.test_mail_internal_recipients_allowed: PASS (11.78245ms)
+/policies/authz_test.rego:216:
+data.broker.authz_test.test_bad_type_delegation_expires_at_denied: PASS (23.947444ms)
+/policies/authz_test.rego:436:
+data.broker.authz_test.test_out_of_scope_never_allowed: PASS (28.612435ms)
+/policies/authz_test.rego:224:
+data.broker.authz_test.test_bad_type_args_denied: PASS (6.382507ms)
+--------------------------------------------------------------------------------
+FAILURES
+--------------------------------------------------------------------------------
+data.broker.authz_test.test_invalid_input_beats_other_reasons: FAIL (3.57432ms)
+
+  query:1                             Enter data.broker.authz_test.test_invalid_input_beats_other_reasons = _  
+  /policies/authz_test.rego:372       | Enter data.broker.authz_test.test_invalid_input_beats_other_reasons  
+  /policies/authz_test.rego:381       | | Fail d.reason = "invalid_input"  
+  query:1                             | Fail data.broker.authz_test.test_invalid_input_beats_other_reasons = _  
+
+data.broker.authz_test.test_out_of_scope_beats_approval: FAIL (961.089µs)
+
+  query:1                             Enter data.broker.authz_test.test_out_of_scope_beats_approval = _  
+  /policies/authz_test.rego:384       | Enter data.broker.authz_test.test_out_of_scope_beats_approval  
+  /policies/authz_test.rego:388       | | Fail d.reason = "action_not_in_scope"  
+  query:1                             | Fail data.broker.authz_test.test_out_of_scope_beats_approval = _  
+
+data.broker.authz_test.test_over_limit_beats_approval: FAIL (5.763774ms)
+
+  query:1                             Enter data.broker.authz_test.test_over_limit_beats_approval = _  
+  /policies/authz_test.rego:391       | Enter data.broker.authz_test.test_over_limit_beats_approval  
+  /policies/authz_test.rego:395       | | Fail d.reason = "per_tx_limit_exceeded"  
+  query:1                             | Fail data.broker.authz_test.test_over_limit_beats_approval = _  
+
+data.broker.authz_test.test_expired_beats_approval: FAIL (14.18614ms)
+
+  query:1                             Enter data.broker.authz_test.test_expired_beats_approval = _  
+  /policies/authz_test.rego:398       | Enter data.broker.authz_test.test_expired_beats_approval  
+  /policies/authz_test.rego:402       | | Fail d.reason = "delegation_expired"  
+  query:1                             | Fail data.broker.authz_test.test_expired_beats_approval = _  
+
+data.broker.authz_test.test_mail_invalid_recipients_denied: FAIL (27.131844ms)
+
+  query:1                             Enter data.broker.authz_test.test_mail_invalid_recipients_denied = _  
+  /policies/authz_test.rego:292       | Enter data.broker.authz_test.test_mail_invalid_recipients_denied  
+  /policies/authz_test.rego:9         | | Enter data.broker.authz_test.decide  
+  /policies/authz.rego:21             | | | Enter data.broker.authz.decision  
+  /policies/authz.rego:43             | | | | Enter data.broker.authz.approval_reason  
+  /policies/authz.rego:166            | | | | | Enter data.broker.authz.has_external_recipient  
+  /policies/authz.rego:167            | | | | | | Fail r = input.args.to[__local13__]  
+  /policies/authz.rego:45             | | | | | Fail data.broker.authz.has_external_recipient  
+  /policies/authz.rego:22             | | | | Fail r = data.broker.authz.approval_reason  
+  /policies/authz.rego:23             | | | Enter data.broker.authz.decision  
+  /policies/authz.rego:29             | | | | Enter data.broker.authz.deny_reason  
+  /policies/authz.rego:30             | | | | | Fail not data.broker.authz.valid_input  
+  /policies/authz.rego:31             | | | | Enter data.broker.authz.deny_reason  
+  /policies/authz.rego:32             | | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:107            | | | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:109            | | | | | | | Fail neq(__local339__, __local340__)  
+  /policies/authz.rego:32             | | | | | | Fail data.broker.authz.valid_args  
+  /policies/authz_test.rego:298       Enter __local397__ = data.broker.authz_test.base_mail; object.union(__local397__, {"args": {"to": v}}, __local246__); data.broker.authz_test.decide(__local246__, __local247__); d = __local247__; d.result = "deny"; d.reason = "invalid_args"  
+  /policies/authz_test.rego:9         | Enter data.broker.authz_test.decide  
+  /policies/authz.rego:21             | | Enter data.broker.authz.decision  
+  /policies/authz.rego:43             | | | Enter data.broker.authz.approval_reason  
+  /policies/authz.rego:166            | | | | Enter data.broker.authz.has_external_recipient  
+  /policies/authz.rego:167            | | | | | Fail r = input.args.to[__local13__]  
+  /policies/authz.rego:45             | | | | Fail data.broker.authz.has_external_recipient  
+  /policies/authz.rego:22             | | | Fail r = data.broker.authz.approval_reason  
+  /policies/authz.rego:23             | | Enter data.broker.authz.decision  
+  /policies/authz.rego:29             | | | Enter data.broker.authz.deny_reason  
+  /policies/authz.rego:30             | | | | Fail not data.broker.authz.valid_input  
+  /policies/authz.rego:31             | | | Enter data.broker.authz.deny_reason  
+  /policies/authz.rego:32             | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:107            | | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:109            | | | | | | Fail neq(__local339__, __local340__)  
+  /policies/authz.rego:93             | | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:97             | | | | | | Fail is_array(__local333__)  
+  /policies/authz.rego:32             | | | | | Fail data.broker.authz.valid_args  
+  /policies/authz_test.rego:298       Enter __local397__ = data.broker.authz_test.base_mail; object.union(__local397__, {"args": {"to": v}}, __local246__); data.broker.authz_test.decide(__local246__, __local247__); d = __local247__; d.result = "deny"; d.reason = "invalid_args"  
+  /policies/authz_test.rego:9         | Enter data.broker.authz_test.decide  
+  /policies/authz.rego:21             | | Enter data.broker.authz.decision  
+  /policies/authz.rego:43             | | | Enter data.broker.authz.approval_reason  
+  /policies/authz.rego:166            | | | | Enter data.broker.authz.has_external_recipient  
+  /policies/authz.rego:167            | | | | | Fail r = input.args.to[__local13__]  
+  /policies/authz.rego:45             | | | | Fail data.broker.authz.has_external_recipient  
+  /policies/authz.rego:22             | | | Fail r = data.broker.authz.approval_reason  
+  /policies/authz.rego:23             | | Enter data.broker.authz.decision  
+  /policies/authz.rego:29             | | | Enter data.broker.authz.deny_reason  
+  /policies/authz.rego:30             | | | | Fail not data.broker.authz.valid_input  
+  /policies/authz.rego:31             | | | Enter data.broker.authz.deny_reason  
+  /policies/authz.rego:32             | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:107            | | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:109            | | | | | | Fail neq(__local339__, __local340__)  
+  /policies/authz.rego:93             | | | | | Enter data.broker.authz.valid_args  
+  /policies/authz.rego:98             | | | | | | Fail gte(__local160__, 1)  
+  /policies/authz.rego:32             | | | | | Fail data.broker.authz.valid_args  
+  /policies/authz_test.rego:298       Enter __local397__ = data.broker.authz_test.base_mail; object.union(__local397__, {"args": {"to": v}}, __local246__); data.broker.authz_test.decide(__local246__, __local247__); d = __local247__; d.result = "deny"; d.reason = "invalid_args"  
+  /policies/authz_test.rego:9         | Enter data.broker.authz_test.decide  
+  /policies/authz.rego:21             | | Enter data.broker.authz.decision  
+  /policies/authz.rego:43             | | | Enter data.broker.authz.approval_reason  
+  /policies/authz.rego:166            | | | | Enter data.broker.authz.has_external_recipient  
+  /policies/authz.rego:168            | | | | | Enter data.broker.authz.internal_recipient(r)  
+  /policies/authz.rego:172            | | | | | | Enter data.broker.authz.internal_recipient  
+  /policies/authz.rego:173            | | | | | | | Fail is_string(r)  
+  /policies/authz.rego:168            | | | | | | Fail data.broker.authz.internal_recipient(r)  
+  /policies/authz_test.rego:300       | Fail d.reason = "invalid_args"  
+  /policies/authz_test.rego:297       | | | Fail every v in __local245__ { __local397__ = data.broker.authz_test.base_mail; object.union(__local397__, {"args": {"to": v}}, __local246__); data.broker.authz_test.decide(__local246__, __local247__); d = __local247__; d.result = "deny"; d.reason = "invalid_args" }  
+  /policies/authz_test.rego:297       | | Fail every v in __local245__ { __local397__ = data.broker.authz_test.base_mail; object.union(__local397__, {"args": {"to": v}}, __local246__); data.broker.authz_test.decide(__local246__, __local247__); d = __local247__; d.result = "deny"; d.reason = "invalid_args" }  
+  query:1                             | Fail data.broker.authz_test.test_mail_invalid_recipients_denied = _  
+
+--------------------------------------------------------------------------------
+PASS: 48/53
+FAIL: 5/53
+..                                                                       [100%]
+2 passed in 0.10s
+b5dc024105b849dd6ee168635a49bebedd1766e32eb6617857cefcd6e15c70b2 *.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-n-red.xml
+exit_opa=2 exit_pytest=0
+
+## stderr
+ Container agent-broker-opa-run-f82f4eea18aa Creating 
+ Container agent-broker-opa-run-f82f4eea18aa Created

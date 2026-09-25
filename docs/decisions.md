@@ -13,6 +13,14 @@
 | D7 | 감사 로그는 아웃박스 + 해시 체인 | 동기 기록은 느리고, 단순 비동기는 유실 가능 | 워커 강제 종료 후 유실 0건, 체인 변조 탐지 | 확정 |
 | D8 | 언어는 Python 하나로 통일 | 에이전트 생태계 · 기존 경험. 게이트웨이 지연이 목표(p95 20ms)를 못 맞추면 재검토 | 5단계 부하 테스트 | 잠정 |
 | D9 | K8s 대신 ECS Fargate | 신입 한 프로젝트에서 AWS와 K8s를 둘 다 깊게 하기 어려움. 트래커 공고에서 AWS 요구가 더 많음 | — | 확정 |
+| D18 | OPA 입력 · 출력 계약과 역할 분담. 게이트웨이 ②가 DB로 위임(존재 · 범위 · 만료 · 취소)을 먼저 확인하고, OPA(`data.broker.authz.decision`)는 입력 형식 · 범위 · 만료(②와 이중 방어) · 건당 한도 · 위험도를 판단한다. 입력 `{agent, user, action:{name, risk}, delegation:{scopes, per_tx_limit, expires_at}, args}`, 출력 `{result: allow \| deny \| require_approval, reason}`. 입력이 없거나 필드가 빠지거나 타입이 틀리면 OPA가 `deny`(`invalid_input`). 1단계에서는 승인이 필요한 요청도 정책이 `deny`(`approval_required_*`)를 낸다(상수 `approval_result` 하나, 2단계 8번에서 교체). 게이트웨이는 응답 형식 오류 · 알 수 없는 result · 타임아웃(200ms) · 연결 실패 · (1단계) `require_approval`을 모두 거부로 처리 | 위임 상태의 원본은 DB라 게이트웨이가 확인하고, 정책(D5)은 위험 판단에 집중한다. 입력 계약을 정책 안에서 다시 검사해 게이트웨이 버그가 허용으로 새지 않게 한다(D1). 1단계에는 승인 흐름이 없으므로 정책이 직접 거부해 게이트웨이 해석과 무관하게 막는다 | `opa test` 54개(필드 누락 · 타입 오류 · 경계값 · 우선순위 · 1단계 승인 경로 거부) + 변이 25종(작업 D). 게이트웨이 쪽은 작업 I(3-d) | 확정 |
+
+### D18 상세 — OPA 입력 · 출력 계약 (1단계)
+
+- 입력 타입: `agent` · `user` · `action.name`은 빈 문자열이 아닌 문자열. `action.risk`는 `low` · `medium` · `high`(영문 소문자). `delegation.scopes`는 문자열 배열이고 `action.name`과 정확히 같은 원소가 있어야 범위 안. `delegation.per_tx_limit`은 0 이상 정수(원, 한도 없는 위임은 0). `delegation.expires_at`은 시간대가 있는 RFC 3339 문자열. `args`는 객체. 알 수 없는 최상위 필드는 무시한다(유일한 관대한 쪽 결정. 정책이 읽는 필드가 고정돼 있어 모르는 필드로 허용이 생기지 않음을 테스트로 확인).
+- 작업별 인자: `expense.create`의 `args.amount`는 1 이상 정수(원). `mail.send`의 인자 키는 `to` · `subject` · `body`만 허용하고 셋 다 필수다. `to`는 1개 이상인 이메일 문자열 배열, `subject` · `body`는 문자열(빈 문자열 허용). 사내 도메인은 정책 상수(`example.com`)이고 정확히 같은 도메인만 사내다. 수신자 중 하나라도 사내가 아니면 승인 경로. (2026-09-25 보강 — 작업 D 개선 사이클 2, K10)
+- 이유 코드와 우선순위: `invalid_input` > `invalid_args` > `action_not_in_scope` > `delegation_expired` > `per_tx_limit_exceeded` > `approval_required_high_risk` > `approval_required_external_recipient` > `approval_required_medium_risk` > `low_risk_in_scope`(allow). 아무 규칙도 맞지 않으면 기본값 `no_matching_rule`(deny).
+- 1단계: 승인 경로의 result는 `deny`. 2단계 8번에서 `approval_result`를 `require_approval`로 바꾸면 기대값이 바뀌는 테스트는 정확히 8개다(작업 D 변이 m의 red 증거): `test_high_risk_denied_stage1`, `test_medium_risk_denied_stage1`, `test_mail_external_recipient_denied_stage1`, `test_mail_one_external_among_internal_denied`, `test_mail_lookalike_domain_is_external`, `test_stage1_never_returns_require_approval`, `test_external_mail_never_allowed`, `test_extra_top_level_field_ignored`.
 
 ## 열린 질문
 

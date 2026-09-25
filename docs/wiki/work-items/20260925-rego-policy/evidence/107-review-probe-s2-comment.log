@@ -1,0 +1,40 @@
+# 증거 107-review-probe-s2-comment.log
+시작: 2026-09-25T18:27:18+09:00
+끝:   2026-09-25T18:27:21+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python -m pytest -q -c C:/Users/swsj1/AppData/Local/Temp/claude/C--Portpolio-agent-broker/d44764eb-9559-4620-9ecd-2459f2861e82/scratchpad/p-s2-comment/pytest.ini --rootdir=C:/Users/swsj1/AppData/Local/Temp/claude/C--Portpolio-agent-broker/d44764eb-9559-4620-9ecd-2459f2861e82/scratchpad/p-s2-comment C:/Users/swsj1/AppData/Local/Temp/claude/C--Portpolio-agent-broker/d44764eb-9559-4620-9ecd-2459f2861e82/scratchpad/p-s2-comment/tests/test_policy_static.py
+종료 코드: 1
+
+## stdout
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_____________ test_policy_has_no_runtime_env_or_network_builtins ______________
+
+request = <FixtureRequest for <Function test_policy_has_no_runtime_env_or_network_builtins>>
+
+    def test_policy_has_no_runtime_env_or_network_builtins(request):
+        files = _policy_files(request)
+        assert files, "policies/ �Ʒ� �˻� ��� .rego ������ ����"
+    
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            for forbidden in FORBIDDEN_BUILTINS:
+>               assert forbidden not in text, f"{path}: ������ ���� �Լ� {forbidden!r}�� �ִ�"
+E               AssertionError: C:\Users\swsj1\AppData\Local\Temp\claude\C--Portpolio-agent-broker\d44764eb-9559-4620-9ecd-2459f2861e82\scratchpad\p-s2-comment\policies\authz.rego: ������ ���� �Լ� 'opa.runtime'�� �ִ�
+E               assert 'opa.runtime' not in 'package bro...BROKER_DEV\n'
+E                 
+E                 'opa.runtime' is contained here:
+E                   
+E                   
+E                   # TODO: opa.runtime().env.BROKER_DEV
+E                 ?         +++++++++++
+
+C:\Users\swsj1\AppData\Local\Temp\claude\C--Portpolio-agent-broker\d44764eb-9559-4620-9ecd-2459f2861e82\scratchpad\p-s2-comment\tests\test_policy_static.py:53: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\Users\swsj1\AppData\Local\Temp\claude\C--Portpolio-agent-broker\d44764eb-9559-4620-9ecd-2459f2861e82\scratchpad\p-s2-comment\tests\test_policy_static.py::test_policy_has_no_runtime_env_or_network_builtins
+1 failed, 1 passed in 0.29s
+
+## stderr
+

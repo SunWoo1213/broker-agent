@@ -1,0 +1,16 @@
+# 증거 109-build-r2-hash-baseline.log
+시작: 2026-09-25T18:32:32+09:00
+끝:   2026-09-25T18:32:32+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: sha256sum policies/authz.rego policies/authz_test.rego tests/test_policy_static.py
+종료 코드: 0
+
+## stdout
+e2acae2792224c0d3a0053e000acf2736cb3c3df0229d95bef9c38cb1e597723 *policies/authz.rego
+ceb6e129a5dddff28ab5a7a4aa3409b5f6e4b341c8f1aa0a5c72ea01205290fc *policies/authz_test.rego
+0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e *tests/test_policy_static.py
+
+## stderr
+

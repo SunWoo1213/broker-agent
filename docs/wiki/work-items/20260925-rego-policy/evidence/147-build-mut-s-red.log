@@ -1,0 +1,157 @@
+# 증거 147-build-mut-s-red.log
+시작: 2026-09-25T18:41:30+09:00
+끝:   2026-09-25T18:41:35+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: export MSYS_NO_PATHCONV=1; sha256sum policies/authz.rego policies/authz_test.rego tests/test_policy_static.py; docker compose run --rm opa test /policies -v; a=$?; .venv/Scripts/python -m pytest -q tests/test_policy_static.py --junitxml=.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-s-red.xml; b=$?; sha256sum .claude/runs/20260925-rego-policy/evidence/pytest-build-mut-s-red.xml; echo "exit_opa=$a exit_pytest=$b"; test "$a" = 0 && test "$b" = 0
+종료 코드: 1
+
+## stdout
+d3635a427afc2f29398c218b6b34ba9190737ca25b041658f43091ba8dcae0b7 *policies/authz.rego
+ceb6e129a5dddff28ab5a7a4aa3409b5f6e4b341c8f1aa0a5c72ea01205290fc *policies/authz_test.rego
+0656b7ddafc34755e880ce219a19221e94ae097620df031770ab9670ee02a34e *tests/test_policy_static.py
+/policies/authz_test.rego:104:
+data.broker.authz_test.test_missing_action_risk_denied: PASS (537.505µs)
+/policies/authz_test.rego:161:
+data.broker.authz_test.test_bad_type_action_name_denied: PASS (7.700343ms)
+/policies/authz_test.rego:297:
+data.broker.authz_test.test_mail_external_recipient_denied_stage1: PASS (14.583097ms)
+/policies/authz_test.rego:240:
+data.broker.authz_test.test_expense_over_per_tx_limit_denied: PASS (9.044061ms)
+/policies/authz_test.rego:455:
+data.broker.authz_test.test_extra_top_level_field_ignored: PASS (24.521931ms)
+/policies/authz_test.rego:224:
+data.broker.authz_test.test_scope_requires_exact_match: PASS (27.833933ms)
+/policies/authz_test.rego:232:
+data.broker.authz_test.test_delegation_expired_denied: PASS (29.110763ms)
+/policies/authz_test.rego:73:
+data.broker.authz_test.test_non_object_input_denied: PASS (2.854645ms)
+/policies/authz_test.rego:246:
+data.broker.authz_test.test_expense_zero_limit_denies_any_amount: PASS (15.686859ms)
+/policies/authz_test.rego:64:
+data.broker.authz_test.test_default_deny: PASS (403.242µs)
+/policies/authz_test.rego:68:
+data.broker.authz_test.test_no_input_denied: PASS (461.295µs)
+/policies/authz_test.rego:80:
+data.broker.authz_test.test_missing_agent_denied: PASS (806.886µs)
+/policies/authz_test.rego:98:
+data.broker.authz_test.test_missing_action_name_denied: PASS (769.634µs)
+/policies/authz_test.rego:86:
+data.broker.authz_test.test_missing_user_denied: PASS (2.268829ms)
+/policies/authz_test.rego:92:
+data.broker.authz_test.test_missing_action_denied: PASS (2.145534ms)
+/policies/authz_test.rego:272:
+data.broker.authz_test.test_mail_unknown_field_denied: PASS (21.768165ms)
+/policies/authz_test.rego:303:
+data.broker.authz_test.test_mail_one_external_among_internal_denied: PASS (5.579938ms)
+/policies/authz_test.rego:332:
+data.broker.authz_test.test_invalid_input_beats_other_reasons: PASS (5.141031ms)
+/policies/authz_test.rego:252:
+data.broker.authz_test.test_expense_invalid_amount_denied: PASS (59.175863ms)
+/policies/authz_test.rego:349:
+data.broker.authz_test.test_over_limit_beats_approval: PASS (3.469291ms)
+/policies/authz_test.rego:343:
+data.broker.authz_test.test_out_of_scope_beats_approval: PASS (19.200929ms)
+/policies/authz_test.rego:317:
+data.broker.authz_test.test_stage1_never_returns_require_approval: PASS (28.685263ms)
+/policies/authz_test.rego:285:
+data.broker.authz_test.test_high_risk_denied_stage1: PASS (7.500745ms)
+/policies/authz_test.rego:309:
+data.broker.authz_test.test_mail_lookalike_domain_is_external: PASS (41.725143ms)
+/policies/authz_test.rego:355:
+data.broker.authz_test.test_expired_beats_approval: PASS (17.108581ms)
+/policies/authz_test.rego:361:
+data.broker.authz_test.test_default_is_deny_when_no_rule_matches: PASS (17.719299ms)
+/policies/authz_test.rego:370:
+data.broker.authz_test.test_over_limit_never_allowed: PASS (51.020155ms)
+/policies/authz_test.rego:262:
+data.broker.authz_test.test_mail_invalid_recipients_denied: PASS (61.095107ms)
+/policies/authz_test.rego:291:
+data.broker.authz_test.test_medium_risk_denied_stage1: PASS (2.555294ms)
+/policies/authz_test.rego:427:
+data.broker.authz_test.test_low_risk_in_scope_allowed: PASS (14.264056ms)
+/policies/authz_test.rego:408:
+data.broker.authz_test.test_decision_shape: PASS (9.340796ms)
+/policies/authz_test.rego:189:
+data.broker.authz_test.test_bad_type_delegation_per_tx_limit_denied: PASS (6.700828ms)
+/policies/authz_test.rego:175:
+data.broker.authz_test.test_bad_type_delegation_denied: PASS (2.135379ms)
+/policies/authz_test.rego:168:
+data.broker.authz_test.test_bad_type_action_risk_denied: PASS (5.211286ms)
+/policies/authz_test.rego:182:
+data.broker.authz_test.test_bad_type_delegation_scopes_denied: PASS (3.621207ms)
+/policies/authz_test.rego:212:
+data.broker.authz_test.test_action_not_in_scope_denied: PASS (7.834245ms)
+/policies/authz_test.rego:128:
+data.broker.authz_test.test_missing_delegation_expires_at_denied: PASS (4.789372ms)
+/policies/authz_test.rego:203:
+data.broker.authz_test.test_bad_type_args_denied: PASS (15.916939ms)
+/policies/authz_test.rego:110:
+data.broker.authz_test.test_missing_delegation_denied: PASS (3.234294ms)
+/policies/authz_test.rego:218:
+data.broker.authz_test.test_empty_scopes_denied: PASS (16.267456ms)
+/policies/authz_test.rego:378:
+data.broker.authz_test.test_external_mail_never_allowed: PASS (37.929052ms)
+/policies/authz_test.rego:122:
+data.broker.authz_test.test_missing_delegation_per_tx_limit_denied: PASS (1.749287ms)
+/policies/authz_test.rego:116:
+data.broker.authz_test.test_missing_delegation_scopes_denied: PASS (6.334431ms)
+/policies/authz_test.rego:140:
+data.broker.authz_test.test_bad_type_agent_denied: PASS (2.039182ms)
+/policies/authz_test.rego:196:
+data.broker.authz_test.test_bad_type_delegation_expires_at_denied: PASS (21.801961ms)
+/policies/authz_test.rego:391:
+data.broker.authz_test.test_out_of_scope_never_allowed: PASS (39.191279ms)
+/policies/authz_test.rego:134:
+data.broker.authz_test.test_missing_args_denied: PASS (3.727161ms)
+/policies/authz_test.rego:147:
+data.broker.authz_test.test_bad_type_user_denied: PASS (2.892695ms)
+/policies/authz_test.rego:154:
+data.broker.authz_test.test_bad_type_action_denied: PASS (1.234595ms)
+/policies/authz_test.rego:432:
+data.broker.authz_test.test_expense_at_limit_allowed: PASS (3.782467ms)
+/policies/authz_test.rego:438:
+data.broker.authz_test.test_expense_demo_180000_allowed: PASS (4.558634ms)
+/policies/authz_test.rego:449:
+data.broker.authz_test.test_not_expired_boundary_allowed: PASS (3.280787ms)
+/policies/authz_test.rego:443:
+data.broker.authz_test.test_mail_internal_recipients_allowed: PASS (7.691515ms)
+--------------------------------------------------------------------------------
+PASS: 53/53
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_____________ test_policy_has_no_runtime_env_or_network_builtins ______________
+
+request = <FixtureRequest for <Function test_policy_has_no_runtime_env_or_network_builtins>>
+
+    def test_policy_has_no_runtime_env_or_network_builtins(request):
+        files = _policy_files(request)
+        assert files, "policies/ �Ʒ� �˻� ��� .rego ������ ����"
+    
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            for forbidden in FORBIDDEN_BUILTINS:
+>               assert forbidden not in text, f"{path}: ������ ���� �Լ� {forbidden!r}�� �ִ�"
+E               AssertionError: C:\Portpolio\agent-broker\policies\authz.rego: ������ ���� �Լ� 'opa.runtime'�� �ִ�
+E               assert 'opa.runtime' not in 'package bro...ts[1])]\n}\n'
+E                 
+E                 'opa.runtime' is contained here:
+E                   s"} if {
+E                   	opa.runtime().env.BROKER_DEV == "1"
+E                 ? 	+++++++++++
+E                   }
+E                   ...
+E                 
+E                 ...Full output truncated (158 lines hidden), use '-vv' to show
+
+tests\test_policy_static.py:53: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_policy_static.py::test_policy_has_no_runtime_env_or_network_builtins
+1 failed, 1 passed in 0.35s
+18b669e729d2a14cd8508722c786ef994ea37d4f9950a4efe2f9a32b5cb65878 *.claude/runs/20260925-rego-policy/evidence/pytest-build-mut-s-red.xml
+exit_opa=0 exit_pytest=1
+
+## stderr
+ Container agent-broker-opa-run-5463a069017d Creating 
+ Container agent-broker-opa-run-5463a069017d Created

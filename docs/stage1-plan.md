@@ -23,12 +23,12 @@
 | 하네스 (agents · skills · hooks) | 완료. 오늘 규칙 추가: 권한 우회 금지, 증거 도구 `.claude/tools/evidence.py`(권한 필터 포함), 계획 검증 P10 · P11, 승인 기록 `00-approval.md`, 변이 확인 · 탐침 (`.claude/harness-notes.md`) |
 | `docker-compose.yml` | 이미지 고정(postgres 16.15 · redis 7.4.11-alpine · opa 1.20.2), OPA healthcheck, postgres 호스트 포트 5434 — 작업 A |
 | `requirements*.txt` | 전부 `==` 고정 — 작업 A |
-| `policies/` | 기본값 거부 규칙 + 테스트 1개 (변경 없음) |
-| pytest · CI | `pytest.ini`, 테스트 11개, `.github/workflows/ci.yml` — 작업 B, 완료 (Actions run #1 성공, 7c0ad0d) |
+| `policies/` | D18 계약 정책(`policies/authz.rego`) + `opa test` 54개 · 정적 pytest 2개 — 작업 D, 완료(CI 원격 확인 대기) |
+| pytest · CI | `pytest.ini`, 테스트 13개(작업 D에서 정책 정적 검사 2개 추가), `.github/workflows/ci.yml` — 작업 B, 완료 (Actions run #1 성공, 7c0ad0d) |
 | 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). main 푸시 완료 |
 | 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
 | 로컬 도구 | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
-| 결정 D15~D20 | **아직 미승인** — C · E · G 이전에 사용자 승인 필요 |
+| 결정 D15~D20 | **D18 승인(2026-09-25, K10 보강 포함)**, D15 · D16 · D17 · D19 · D20 미승인 — C · E · G 전에 승인 필요 |
 
 ## 3. 코드 전에 정할 결정 (초안)
 
@@ -51,9 +51,11 @@
 - **인자 검사:** 작업마다 JSON Schema를 `tool_actions`에 두고, 형식이 틀린 인자는 OPA에 보내기 전에 거부한다. 금액은 원 단위 정수.
 
 ### D18 OPA 입력 · 출력 계약과 역할 분담
+**승인됨 (2026-09-25). 확정 문구 · 상세는 `docs/decisions.md` D18**
 - ② 위임 확인은 게이트웨이가 DB로 한다: 위임 존재 · 작업 범위 · 만료 · 취소. 여기서 걸리면 OPA까지 가지 않고 거부한다.
 - ③ OPA는 위험도 · 건당 한도 · 범위를 판단한다. 범위는 ②와 겹치지만 이중 방어로 둔다.
 - 입력: `{agent, user, action: {name, risk}, delegation: {scopes, per_tx_limit, expires_at}, args}`
+- `mail.send` 인자 `to` · `subject` · `body`는 모두 필수, `subject` · `body`는 문자열(빈 문자열 허용) — K10
 - 출력: `{result: "allow" | "deny" | "require_approval", reason: string}`
 - **아래 경우는 모두 거부:** OPA 응답 형식이 다름, 알 수 없는 result 값, 타임아웃(200ms), 연결 실패. `require_approval`도 1단계에서는 거부로 처리한다.
 
@@ -89,7 +91,7 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 | A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — | 완료 (커밋 780b009) |
 | B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 완료 (커밋 7c0ad0d, Actions run #1 성공) |
 | C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | 대기 |
-| D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 대기 |
+| D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 완료 (로컬 · CI 원격 확인 U1 대기) |
 | E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A | 대기 |
 | F | `3. 게이트웨이 — 뼈대` | MCP 서버 기동, `tools/list`, **`tools/call`은 무조건 거부**로 시작 | C, E | 대기 |
 | G | `3. 게이트웨이 — ① 에이전트 인증` | D15 서명 검증, nonce 재사용 차단 | F | 대기 |

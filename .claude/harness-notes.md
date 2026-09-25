@@ -88,3 +88,22 @@
   - `agents/planner.md` ① 계획 모드 "변이 확인" 단락, "하지 말 것" 두 줄(H2 · H4)
   - `skills/work-item/SKILL.md` 00-approval 절: ③–⑤ 동안 메인 세션 추적 파일 수정 금지(H5)
   - `skills/code-review-invariants/SKILL.md` D4 탐침(H7)
+
+## 2026-09-25 4. 정책 (Rego) (작업 D) ⑥ 하네스 개선안 (제안, 사용자 결정 대기)
+
+- 사이클 1 (`.claude/runs/20260925-rego-policy/06-improvement-plan.r3.md` 153–172행, ⑦ `07-improvement-review.r3.md` APPROVE)
+  - H1 planner ① "변이 확인": 여러 테스트에 공통인 규칙(완전 비교 등)도 전칭 문장으로 보고 출력 분기마다 변이
+  - H2 plan-review P12: 비교 형태를 강제하는 변이가 분기마다 있는지
+  - H3 broker-builder 작업 순서: 계획의 비교 형태 그대로, 같은 원인의 다른 테스트도 함께 수정
+  - H4 broker-builder · code-review-invariants A4: 계획 밖 규칙에도 거부 테스트
+  - H5 evidence.py `--verify` 요약 줄 + 증거 개수는 요약 줄 인용(도구 변경)
+  - H6 work-item: 재시도 · 개선 사이클에서 채점 라벨은 그대로 재사용
+  - H7 planner 하지 말 것: 해시되지 않는 산출물을 근거로 쓰면 해시 · 종료 코드를 로그에 남김
+  - H8 planner ⑥: 새 채점 기준은 `checks_c<N>/`, 설계 결정 변경은 승인 직후 · 다음 ③ 전에 반영
+- 사이클 2 (`06-improvement-plan.c2.md` 46–64행, ⑦ `07-improvement-review.c2.md` APPROVE)
+  - H9 planner ① "변이 확인": 부분집합 기대도 실행 전 끝까지 추적, 한 행을 고치면 같은 결함 행 전수 확인 (+ plan-review P13)
+  - H10 broker-builder · test-gate · wiki-writer: 종료 코드는 MANIFEST `exit`, 안쪽 값은 이름을 붙여 따로
+  - H11 broker-builder · planner: 변이 전 사본 → 복원은 `cp`(역방향 Edit · git checkout 금지)
+  - H12 무효 실행 처리: 시작 · 재개 때 `docker compose ps` 증거, 요약 줄 없는 red · 탐침 로그는 무효, reviewer · code-review-invariants D4에 `MSYS_NO_PATHCONV=1` 안내
+  - H13 evidence.py가 자식에 `PYTHONIOENCODING=utf-8` 전달 + 채점 스크립트 stdout UTF-8(도구 변경, F-D9)
+  - H14 work-item 마무리 1-0 뒤: README 최신화 단계

@@ -1,0 +1,24 @@
+# 증거 267-review-c2i-hash-c2.log
+시작: 2026-09-25T22:24:21+09:00
+끝:   2026-09-25T22:24:22+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: sha256sum .claude/runs/20260925-rego-policy/checks_c2/*.py .claude/runs/20260925-rego-policy/checks/*.py && .venv/Scripts/python -c "import pathlib;print(sorted(p.name for p in pathlib.Path('.claude/runs/20260925-rego-policy').glob('07-improvement-review*.md')))" && grep -c 'opa test` 53개(필드 누락 · 타입 오류 · 경계값 · 우선순위 · 1단계 승인 경로 거부) + 변이 21종(작업 D)' docs/decisions.md
+종료 코드: 0
+
+## stdout
+46f07fb45b1325fcbdf86706d3707935356dfb44f9384b74245364b69f9e981d *.claude/runs/20260925-rego-policy/checks_c2/c2_evidence.py
+b36649e7b937723a267e2ae44c3a6430330f90851afb8dcde8030507bc43fbaa *.claude/runs/20260925-rego-policy/checks/_ev.py
+287bb79f426543910a9cfb0e88bbf6697b9fe40ea99a2cc9be15d5473947de06 *.claude/runs/20260925-rego-policy/checks/ac_build_evidence.py
+0b0c8c62487d2b346f1e151ff8d963f4c0b5b84f9d878552e3b30a5bb51f5678 *.claude/runs/20260925-rego-policy/checks/ac_forbidden_commands.py
+8c84e31dc3c8c921543e0f4bda1568825a3c23276caa39f5b46b7c61dac783b4 *.claude/runs/20260925-rego-policy/checks/ac_scope.py
+9b91e9391280b393cbfeb2e060c0f06fcbcb4c22b49272d1fe4d26a7355b1150 *.claude/runs/20260925-rego-policy/checks/ac0_env.py
+3c44191c2cdc9dfe04d59a51b8a4e5d218c25cfc0c40c9a8594cbfe457e2c0dd *.claude/runs/20260925-rego-policy/checks/check_junit.py
+fa5fbca3d2cd612040ccadc9ee100d1a20c34e90278b97dadffb98762c4caffe *.claude/runs/20260925-rego-policy/checks/check_opa.py
+42fa7ad65b1def1a3d08538ff7ad7ec5b9e8ec765a97904bf958da713db71d0f *.claude/runs/20260925-rego-policy/checks/plan_tests.py
+['07-improvement-review.md', '07-improvement-review.r2.md', '07-improvement-review.r3.md']
+1
+
+## stderr
+

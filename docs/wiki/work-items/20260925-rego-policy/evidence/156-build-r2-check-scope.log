@@ -1,0 +1,25 @@
+# 증거 156-build-r2-check-scope.log
+시작: 2026-09-25T18:43:21+09:00
+끝:   2026-09-25T18:43:22+09:00
+작업 폴더: C:\Portpolio\agent-broker
+git HEAD: 7a40f19
+변경 파일 수(git status --porcelain): 4
+명령: .venv/Scripts/python .claude/runs/20260925-rego-policy/checks/ac_scope.py
+종료 코드: 0
+
+## stdout
+INFO pre-existing lines gone before build start: ["' M .claude/skills/work-item/SKILL.md'", "' M docs/plan.md'", "' M docs/stage1-plan.md'", "' M docs/wiki/Home.md'", "' M docs/wiki/work-items/20260924-pytest-ci/index.md'", "' M docs/wiki/work-items/20260924-pytest-ci/testing.md'"]
+INFO build-start status: ["' M docs/decisions.md'"]
+INFO now status: ["' M docs/decisions.md'", "' M policies/authz.rego'", "' M policies/authz_test.rego'", "'?? tests/test_policy_static.py'"]
+OK  00-approval.md exists: '.claude\\runs\\20260925-rego-policy\\00-approval.md'
+OK  00-baseline-status has status lines: '6'
+OK  rule1: status at build start only has pre-existing lines (+ decisions.md): 'not in 00-approval: []'
+OK  rule2: planned 3 lines all present: 'missing=[]'
+OK  rule2: no other added lines: 'not in 00-approval: []'
+OK  rule3: no build-start line disappeared: 'not in 00-approval: []'
+OK  protected hashes recorded: '22 files'
+OK  rule4: protected files unchanged: 'not in 00-approval: []'
+summary: 8 ok, 0 bad
+
+## stderr
+
