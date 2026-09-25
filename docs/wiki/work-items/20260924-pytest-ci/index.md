@@ -1,13 +1,13 @@
 # 0. 개발 환경 — pytest · CI
 
 > 요약
-> - 결론: 로컬 관문(①–⑦) 전부 APPROVE로 끝났다. 원격 확인(U1 푸시 · U2 Actions 결과 · U3 plan.md 체크)이 아직 남아 있어 **로컬 완료 · 원격 확인 대기** 상태다.
+> - 결론: 로컬 관문(①–⑦) 전부 APPROVE로 끝났다. 원격 확인도 끝났다: U1 푸시(09-24 23:26) → U2 Actions run #1 성공(opa-test · pytest 두 job 모두 success, 증거 `62-u2-actions-result.log`) → U3 plan.md 체크. **완료.**
 > - 바뀐 것: `pytest.ini`, `tests/test_pytest_config.py`(T1–T7), `tests/test_ci_workflow.py`(T8–T11), `.github/workflows/ci.yml`, `tests/README.md`. 판정 스크립트(`checks/*.py`)를 계획(①) 단계에서 미리 고정하고 증거 도구(`evidence.py`)로 모든 AC를 실행하는 방식을 이번에 처음 썼다.
 > - 다음에 알아야 할 것: 사용자가 U1(푸시) 승인 → U2(Actions 결과 확인) → U3(`docs/plan.md` 체크 + 두 번째 커밋)를 진행해야 이 항목이 끝난다. `docs/plan.md` 체크박스는 아직 바꾸지 않았다.
 
 | 날짜 | plan.md 항목 | 결과 | 관문 재시도 | 개선 사이클 |
 |---|---|---|---|---|
-| 2026-09-24 | 1단계 0번 세 번째 체크박스(pytest·CI) | 로컬 완료 · 원격 확인 대기 | ② 1회(r1→r2→r3, 판정은 r3에서 1회만) · ④ 2회(1차 REVISE→2차 APPROVE) · ⑦ 1회 | 1회(코드 수정 없음) |
+| 2026-09-24 | 1단계 0번 세 번째 체크박스(pytest·CI) | 완료 (Actions run #1 성공) | ② 1회(r1→r2→r3, 판정은 r3에서 1회만) · ④ 2회(1차 REVISE→2차 APPROVE) · ⑦ 1회 | 1회(코드 수정 없음) |
 
 ## 1. 목표
 
@@ -73,6 +73,6 @@ action SHA 고정값 (`git ls-remote --tags`로 확인, `curl`·`gh` 미사용):
 
 ## 8. 관련
 
-- 커밋: 아직 없음(로컬 완료 · 원격 확인 대기, 커밋은 사용자 승인 뒤)
+- 커밋: 7c0ad0d(구현 · 로컬 완료) → 원격 확인 기록 커밋(U3)
 - 선행: `20260924-dev-env`(A. 가상환경·버전 고정·compose 기동)
 - 후속: U1(푸시)·U2(Actions 결과)·U3(plan.md 체크 + 두 번째 커밋), F1(`JOB_HEADER_RE` `_` 허용 + 헤더 누락 검출, 다음에 `test_ci_workflow.py`를 건드리는 항목 또는 사이클 2), F2(D20 승인 뒤 Selector 루프, C에서 CI에 PostgreSQL·Redis 추가), F3(action SHA 자동 갱신 검토)

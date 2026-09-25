@@ -21,7 +21,7 @@
 | 단계 | 목표 | 상태 |
 |---|---|---|
 | 0 | 개발 하네스 | 완료 |
-| 1 | 게이트웨이 ①②③⑦ + 모의 도구 + 데모 에이전트 | 진행 중 (0. 개발 환경 — venv·버전 고정·compose 기동 완료, pytest·CI **로컬 완료 · 원격 확인 대기**) |
+| 1 | 게이트웨이 ①②③⑦ + 모의 도구 + 데모 에이전트 | 진행 중 (0. 개발 환경 — venv·버전 고정·compose 기동 완료, pytest·CI 완료) |
 | 2 | 승인, 임시 토큰 | 대기 |
 | 3 | 누적 한도, 동시성, 공격 평가 1차 | 대기 |
 | 4 | 감사 로그, 취소 전파 | 대기 |
@@ -36,7 +36,7 @@
 |---|---|---|---|---|
 | 2026-09-24 | 개발 하네스 구성 | 완료 | 해당 없음(하네스 구성 전) | [개요](work-items/20260924-harness-setup/index.md) · [검증](work-items/20260924-harness-setup/verification.md) · [테스트](work-items/20260924-harness-setup/testing.md) |
 | 2026-09-24 | 0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동 | 완료 | ② 2회(REVISE→APPROVE) · ④ 1회(BLOCK→사람 해제) · ⑦ 0회 | [개요](work-items/20260924-dev-env/index.md) · [검증](work-items/20260924-dev-env/verification.md) · [테스트](work-items/20260924-dev-env/testing.md) |
-| 2026-09-24 | 0. 개발 환경 — pytest · CI | **로컬 완료 · 원격 확인 대기**(U1 푸시 · U2 Actions 결과 · U3 plan.md 체크가 사용자 승인 대기 중) | ② 1회(r3 대상 APPROVE) · ④ 2회(1차 REVISE→2차 APPROVE) · ⑦ 1회(APPROVE) | [개요](work-items/20260924-pytest-ci/index.md) · [검증](work-items/20260924-pytest-ci/verification.md) · [테스트](work-items/20260924-pytest-ci/testing.md) |
+| 2026-09-24 | 0. 개발 환경 — pytest · CI | 완료 (U1 푸시 · U2 Actions run #1 성공 · U3 plan.md 체크) | ② 1회(r3 대상 APPROVE) · ④ 2회(1차 REVISE→2차 APPROVE) · ⑦ 1회(APPROVE) | [개요](work-items/20260924-pytest-ci/index.md) · [검증](work-items/20260924-pytest-ci/verification.md) · [테스트](work-items/20260924-pytest-ci/testing.md) |
 
 ---
 

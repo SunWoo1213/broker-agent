@@ -20,7 +20,7 @@
 ### 0. 개발 환경
 - [x] 가상환경 생성, `requirements-dev.txt` 설치 후 설치된 버전을 `==`로 고정 (mcp, langgraph 포함)
 - [x] `docker compose up -d` 로 PostgreSQL · Redis · OPA 기동 확인
-- [ ] pytest가 도는 최소 테스트 1개 + GitHub Actions 워크플로 — *로컬 완료(테스트 11개 통과, 증거 `docs/wiki/work-items/20260924-pytest-ci/`). 원격 Actions 첫 실행 성공 확인 뒤 체크*
+- [x] pytest가 도는 최소 테스트 1개 + GitHub Actions 워크플로 — *테스트 11개 통과, 원격 Actions 첫 실행 성공(run #1, 7c0ad0d, [기록](https://github.com/SunWoo1213/broker-agent/actions/runs/36012835392)). 상세 `docs/wiki/work-items/20260924-pytest-ci/`*
 
 ### 1. 데이터 모델 (1차)
 - [ ] Alembic 초기화

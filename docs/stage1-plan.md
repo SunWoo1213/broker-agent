@@ -14,7 +14,7 @@
 
 여기에 시연 1개를 더한다: "어제 거래처 저녁 식사 18만 원 청구해 줘"가 데모 에이전트 → 브로커 → 모의 경비 시스템까지 끝까지 돈다.
 
-## 2. 현재 상태 (2026-09-24 밤 갱신)
+## 2. 현재 상태 (2026-09-25 갱신)
 
 > 진행 상황의 원본은 이 절과 4장 표의 "상태" 열이다. 작업이 끝날 때마다 갱신한다. 체크박스는 `docs/plan.md`, 작업별 상세는 `docs/wiki/Home.md`.
 
@@ -24,8 +24,8 @@
 | `docker-compose.yml` | 이미지 고정(postgres 16.15 · redis 7.4.11-alpine · opa 1.20.2), OPA healthcheck, postgres 호스트 포트 5434 — 작업 A |
 | `requirements*.txt` | 전부 `==` 고정 — 작업 A |
 | `policies/` | 기본값 거부 규칙 + 테스트 1개 (변경 없음) |
-| pytest · CI | `pytest.ini`, 테스트 11개, `.github/workflows/ci.yml` — 작업 B, **로컬 완료 · 원격 첫 실행 대기** |
-| 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). 푸시 전 |
+| pytest · CI | `pytest.ini`, 테스트 11개, `.github/workflows/ci.yml` — 작업 B, 완료 (Actions run #1 성공, 7c0ad0d) |
+| 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). main 푸시 완료 |
 | 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
 | 로컬 도구 | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
 | 결정 D15~D20 | **아직 미승인** — C · E · G 이전에 사용자 승인 필요 |
@@ -87,7 +87,7 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 | 순서 | `/work-item` 인자 | 범위 | 선행 | 상태 |
 |---|---|---|---|---|
 | A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — | 완료 (커밋 780b009) |
-| B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 로컬 완료 · 푸시 · Actions 확인 대기 |
+| B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 완료 (커밋 7c0ad0d, Actions run #1 성공) |
 | C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | 대기 |
 | D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 대기 |
 | E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A | 대기 |
