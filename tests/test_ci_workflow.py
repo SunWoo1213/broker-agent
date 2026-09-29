@@ -5,7 +5,7 @@ PyYAML은 import하지 않는다. ci.yml을 encoding="utf-8"로 텍스트만 읽
 
 import re
 
-REQUIRED_JOBS = {"pytest", "opa-test"}
+REQUIRED_JOBS = {"pytest", "opa-test", "pytest-integration"}
 JOB_HEADER_RE = re.compile(r"^  ([a-zA-Z][\w-]*):\s*$", re.M)
 
 USES_RE = re.compile(r"uses:\s*(\S+)(.*)$", re.M)
@@ -15,7 +15,11 @@ TAG_COMMENT_RE = re.compile(r"^\s*#\s*v\d+\.\d+\.\d+\s*$")
 EXPECTED_PYTEST_RUNS = [
     "python -m pip install -r requirements-dev.txt",
     "python -m pip check",
-    "python -m pytest -q --junitxml=test-results/pytest-junit.xml",
+    'python -m pytest -q -m "not integration" --junitxml=test-results/pytest-junit.xml',
+]
+EXPECTED_INTEGRATION_RUNS = [
+    "python -m pip install -r requirements-dev.txt",
+    "python -m pytest -q -m integration",
 ]
 EXPECTED_OPA_RUN = (
     '          out="$(docker compose run --rm opa test /policies -v)"\n'
@@ -78,6 +82,8 @@ def test_ci_workflow_runs_same_commands_as_local(request):
     text = _ci_text(request)
     for cmd in EXPECTED_PYTEST_RUNS:
         assert cmd in text
+    for cmd in EXPECTED_INTEGRATION_RUNS:
+        assert cmd in text
     assert EXPECTED_OPA_RUN in text
     assert "path: test-results/pytest-junit.xml" in text
     assert re.search(r'python-version:\s*"3\.13\.7"', text)
@@ -107,4 +113,23 @@ def test_ci_workflow_has_no_secrets_and_read_only_token(request):
     assert block == ["contents: read"], f"permissions block must be exactly ['contents: read'], got {block}"
 
     persist_count = len(re.findall(r"persist-credentials:\s*false", text))
-    assert persist_count == 2
+    assert persist_count == 3
+
+
+def test_ci_integration_job_has_postgres_service_and_marker(request):
+    text = _ci_text(request)
+    blocks = _job_blocks(text)
+    assert "pytest-integration" in blocks
+    block = blocks["pytest-integration"]
+
+    compose_path = request.config.rootpath / "docker-compose.yml"
+    compose_text = compose_path.read_text(encoding="utf-8")
+    compose_image = re.search(r"image:\s*(postgres:\S+)", compose_text)
+    assert compose_image, "docker-compose.yml postgres image tag not found"
+    assert compose_image.group(1) in block, (
+        f"pytest-integration job must use the same postgres image tag as docker-compose.yml "
+        f"({compose_image.group(1)})"
+    )
+
+    assert re.search(r"^\s*-\s*5434:5432\s*$", block, re.M), "missing port mapping 5434:5432"
+    assert "-m integration" in block

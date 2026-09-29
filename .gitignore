@@ -47,3 +47,9 @@ load/out/
 Thumbs.db
 .idea/
 .vscode/
+
+# 작업 C(2026-09-29)의 증거 로그: pytest 트레이스백에 개발용 DB 비밀번호가 평문으로 남아
+# 커밋하지 않는다. 기록 뒤 마스킹 · 해시 재계산은 증거를 무너뜨리므로 하지 않았고, 대신
+# evidence.py 가 쓰기 전에 마스킹하도록 고쳤다(작업 C H1). 다음 작업부터는 증거를 커밋한다.
+# 상세: docs/wiki/troubleshooting/pytest-traceback-leaked-db-password-into-evidence-log.md
+docs/wiki/work-items/20260929-data-model/evidence/

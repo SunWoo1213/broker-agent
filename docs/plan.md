@@ -23,10 +23,15 @@
 - [x] pytest가 도는 최소 테스트 1개 + GitHub Actions 워크플로 — *테스트 11개 통과, 원격 Actions 첫 실행 성공(run #1, 7c0ad0d, [기록](https://github.com/SunWoo1213/broker-agent/actions/runs/36012835392)). 상세 `docs/wiki/work-items/20260924-pytest-ci/`*
 
 ### 1. 데이터 모델 (1차)
-- [ ] Alembic 초기화
-- [ ] `agents`, `tools`, `tool_actions`, `delegations` 테이블 (나머지는 해당 단계에서 추가)
-- [ ] 시드 데이터: 데모 에이전트 1개, 도구 3개와 작업 목록, 직원 2명의 위임
-- [ ] **F-D4** (작업 D 후속): `tool_actions.risk` = `low`/`medium`/`high`, `delegations.per_tx_limit NOT NULL DEFAULT 0`, 범위 = 작업 이름, `expense.create` 위험도 `low`, 시드 이메일 `@example.com` (D18 계약에 맞춤)
+- [x] Alembic 초기화 — `alembic.ini` + `control/db/migrations/`, 마이그레이션 `0001_initial_schema`
+- [x] `agents`, `tools`, `tool_actions`, `delegations` 테이블 (나머지는 해당 단계에서 추가)
+- [x] 시드 데이터: 데모 에이전트 1개, 도구 3개와 작업 목록, 직원 2명의 위임
+- [x] **F-D4** (작업 D 후속): `tool_actions.risk` = `low`/`medium`/`high`, `delegations.per_tx_limit NOT NULL DEFAULT 0`, 범위 = 작업 이름, `expense.create` 위험도 `low`, 시드 이메일 `@example.com` (D18 계약에 맞춤)
+- *작업 C 완료 (2026-09-29). 단위 70 · 통합 27 통과, 변이 37종 정확 일치, 증거 134개. 설계 확정은 `docs/decisions.md` D21. 상세 `docs/wiki/work-items/20260929-data-model/`. **원격 CI(`pytest-integration`) 확인 대기.***
+- [ ] **F-C1** (작업 C 후속, 다음에 `control/db/models.py` · `control/db/migrations/versions/0001_initial_schema.py`를 건드리는 항목에서): `ck_delegations_daily_limit_nonneg` · `ck_delegations_version_min` · `tool_actions_tool_id_fkey`를 각각 제거 · 약화하는 변이 3종을 그 작업의 변이 표에 **정식 행으로** 넣고, 기대 FAIL 집합(`test_daily_limit_negative_rejected` · `test_version_below_one_rejected` · `test_tool_action_requires_existing_tool`)을 **실행 전에 손 추적**해 exact로 고정한다. 작업 C의 관측(세 테스트가 `raises(match=<제약 이름>)`으로 통과했다)은 대조용으로만 쓰고 기대값으로 옮겨 적지 않는다
+- [ ] **F-C2** (작업 C 후속, **작업 H**에서 — 게이트웨이 ② 위임 확인이 처음으로 DB 통합 테스트를 늘리는 시점. 늦어도 **작업 L 전**): `tests/dbsupport.py`의 동기 엔진 3곳에 `connect_args={"connect_timeout": 5}`를 붙이고, 그 값이 실제로 설정됐는지 확인하는 단위 테스트 1개와 그것을 깨는 변이(키 제거)를 함께 둔다. *미루는 근거: 타임아웃이 없을 때의 결과는 거짓 통과가 아니라 멈춤이고, AC4 판정은 종료 코드 ≠ 0 + ERROR 줄을 요구하며 CI는 `timeout-minutes: 10`이 상한이다. 작업 L이 완료 판정 4개를 compose에서 묶어 돌리므로 그 전에는 반드시 붙인다*
+- [ ] **F-C3** (작업 C 후속, 작업 F 또는 G에서): `control/db/session.py:19,27`의 `redact_url` 정규식 폴백이 **비밀번호에 `@`가 든 URL**에서 조각을 남기지 않는지 확인하는 단위 테스트 + 짝 변이. `make_url`이 성공하는 경로와 폴백 경로를 구분해 단언한다
+- [ ] **F-C4** (작업 C 후속, 다음에 `tests/conftest.py`를 건드리는 항목에서): pytest-asyncio 1.4.0에서 deprecated된 `event_loop_policy` 픽스처 override를 `pytest_asyncio_loop_factories` 훅으로 옮겨 `PytestDeprecationWarning`을 0으로 만든다. 시드 경로는 이미 `asyncio.run(…, loop_factory=…)`로 고정돼 D20(윈도우 Selector) 보장은 유지된다. 경고가 0이 된 **뒤에** `pytest.ini`에 `filterwarnings = error`를 넣을지 그 작업의 계획에서 판단한다
 
 ### 2. 모의 도구 (MCP 서버 3개)
 - [ ] `tools/expense`: `expense.create`, `expense.list`
@@ -225,6 +230,8 @@
 
 - [x] **F-M1** (맥 환경 이전, 2026-09-29): 훅을 `.claude/hooks/run_hook.sh`(OS별 인터프리터 탐색 + fail-closed 대체 판정)로 통일, `.claude/tools/python.sh`로 명령 원문 일원화, 윈도우 `settings.local.json`에만 있던 ask · deny 규칙을 커밋되는 `settings.json`으로 이관, `.gitattributes`로 LF 고정, `tests/test_harness_hooks.py`(35개)로 훅이 실제로 막는지 확인. *원인 · 검증: `docs/wiki/troubleshooting/hooks-dead-on-macos.md`*
 - [ ] **F-D2** (작업 D 후속): `.claude/skills/rego-policy/SKILL.md` 예시(24–28행)를 D18 모양(`action: {name, risk}`, `per_tx_limit`, `per_tx_limit_exceeded`)으로 바꾼다
+- [ ] **F-C5** (작업 C 후속, **사용자만 반영**): `.env` 접근 경로 보강. 현재 `.claude/settings.json`의 Bash deny는 `Bash(* .env.*)` 하나뿐이라 `.env.local` 형태는 막지만 **정확히 `.env`를 대상으로 하는 Bash 명령은 규칙에 걸리지 않는다**(`Read`/`Edit`는 별도 규칙으로 막힌다). `evidence.py`의 권한 필터는 이 규칙에서 조각을 뽑으므로 같은 구멍을 물려받고, `guard_critical.py`의 `CRITICAL_PATTERNS`에는 env 패턴이 아예 없다. 세 곳을 함께 고친다: ① `settings.json` deny 보강, ② `guard_critical.py`의 `CRITICAL_PATTERNS`에 env 파일 접근 패턴 추가(규칙의 글로브보다 정규식이 체인 · 서브셸까지 덮는다), ③ `tests/test_harness_hooks.py`에 훅 판정 JSON을 확인하는 테스트 + 탐침. *검증은 테스트 안에서 서브프로세스에 가짜 payload를 넘기는 방식으로만 한다(파일을 읽지 않는다). Bash 명령 원문 · `-k` 패턴에 그 조각을 넣지 않는다 — 넣으면 현행 규칙에 걸려 실행 전에 막힌다*
+- [ ] **F-C6** (작업 C 마무리 중 발견): 예전 증거 폴더 2개(`20260924-pytest-ci` 60개, `20260925-rego-policy` 268개)의 `MANIFEST.tsv`는 **CRLF 기준 sha256**이라 저장소에서 `--verify`가 통과하지 않는다. 해시는 **다시 계산하지 않는다**(기록 뒤 수정은 증거를 무너뜨린다). 대신 ① 두 작업의 위키 페이지와 README가 인용한 "증거 N개 전부 해시 일치"에 "기록 당시 윈도우 기준"이라는 단서를 달고, ② `--verify`가 불일치 때 "CRLF로 되돌리면 일치하는가"를 함께 보고해 변조와 줄바꿈 정규화를 구분하게 한다. *원인 · 검증: `docs/wiki/troubleshooting/evidence-manifest-crlf-hash-mismatch.md`*
 - [x] **F-D9** (작업 D 후속): H13 적용 — `.claude/tools/evidence.py`가 자식 프로세스에 `PYTHONIOENCODING=utf-8`을 넘긴다. *2026-09-25 적용 · 확인(로그 stdout 한글 보존, 권한 필터 126 유지). 적용 전 로그의 한국어 깨짐은 "기존 현상"으로 기록만 한다. 상세 `docs/wiki/troubleshooting/evidence-log-cp949-garbled-output.md`*
 
 ---

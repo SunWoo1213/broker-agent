@@ -25,6 +25,8 @@
 | `requirements*.txt` | 전부 `==` 고정 — 작업 A |
 | `policies/` | D18 계약 정책(`policies/authz.rego`) + `opa test` 54개 · 정적 pytest 2개 — 작업 D, 완료 (d9b6b16, Actions 성공) |
 | pytest · CI | `pytest.ini`, 테스트 13개(작업 D에서 정책 정적 검사 2개 추가), `.github/workflows/ci.yml` — 작업 B, 완료 (Actions run #1 성공, 7c0ad0d) |
+| `control/db/` · Alembic | 테이블 4개(`agents` · `tools` · `tool_actions` · `delegations`), 마이그레이션 `0001_initial_schema`, 고정 · 멱등 시드 — 작업 C, 완료 (2026-09-29). 설계 확정은 `docs/decisions.md` **D21** |
+| pytest (작업 C 이후) | 단위 70 · 통합 27 = **97개**. 통합은 `@pytest.mark.integration`, CI는 `pytest`(`-m "not integration"`) + **`pytest-integration`**(ubuntu + postgres 서비스) 두 job. `requirements.txt`에 `greenlet==3.5.6` 추가 |
 | 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). main 푸시 완료 |
 | 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
 | 로컬 도구 (윈도우) | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
@@ -96,7 +98,7 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 |---|---|---|---|---|
 | A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — | 완료 (커밋 780b009) |
 | B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 완료 (커밋 7c0ad0d, Actions run #1 성공) |
-| C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | 대기 |
+| C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | **완료** (2026-09-29, 단위 70 · 통합 27 통과, 변이 37종 정확 일치, 증거 134개. 원격 CI 확인 대기) |
 | D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 완료 (커밋 d9b6b16, Actions opa-test · pytest 성공) |
 | E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A | 대기 |
 | F | `3. 게이트웨이 — 뼈대` | MCP 서버 기동, `tools/list`, **`tools/call`은 무조건 거부**로 시작 | C, E | 대기 |

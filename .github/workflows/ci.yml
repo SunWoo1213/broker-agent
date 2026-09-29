@@ -28,13 +28,42 @@ jobs:
           python-version: "3.13.7"
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pip check
-      - run: python -m pytest -q --junitxml=test-results/pytest-junit.xml
+      - run: python -m pytest -q -m "not integration" --junitxml=test-results/pytest-junit.xml
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: pytest-junit-${{ matrix.os }}
           path: test-results/pytest-junit.xml
           if-no-files-found: error
+  pytest-integration:
+    # 서비스 컨테이너는 Linux 러너에서만 동작한다 (GitHub Docs: About service containers).
+    # 그래서 통합 테스트는 매트릭스(ubuntu + macOS) job이 아니라 이 ubuntu 전용 job에서 돌린다.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      DATABASE_URL: postgresql+psycopg://broker:broker@localhost:5434/broker
+    services:
+      postgres:
+        image: postgres:16.15
+        env:
+          POSTGRES_USER: broker
+          POSTGRES_PASSWORD: broker
+          POSTGRES_DB: broker
+        ports:
+          - 5434:5432
+        options: >-
+          --health-cmd "pg_isready -U broker -d broker"
+          --health-interval 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13.7"
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q -m integration
   opa-test:
     runs-on: ubuntu-24.04
     timeout-minutes: 10

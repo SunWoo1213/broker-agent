@@ -6,6 +6,7 @@ httpx==0.28.1
 SQLAlchemy==2.0.50
 alembic==1.19.2
 psycopg[binary]==3.3.5
+greenlet==3.5.6
 
 # 설치 버전으로 고정함 (2026-09-24, 0. 개발 환경).
 mcp==2.2.0

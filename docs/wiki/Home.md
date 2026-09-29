@@ -21,7 +21,7 @@
 | 단계 | 목표 | 상태 |
 |---|---|---|
 | 0 | 개발 하네스 | 완료 |
-| 1 | 게이트웨이 ①②③⑦ + 모의 도구 + 데모 에이전트 | 진행 중 (0. 개발 환경 — venv·버전 고정·compose 기동 완료, pytest·CI 완료, 4. 정책(Rego) 완료) |
+| 1 | 게이트웨이 ①②③⑦ + 모의 도구 + 데모 에이전트 | 진행 중 (0. 개발 환경 — venv·버전 고정·compose 기동 완료, pytest·CI 완료, 4. 정책(Rego) 완료, 1. 데이터 모델(1차) 완료) |
 | 2 | 승인, 임시 토큰 | 대기 |
 | 3 | 누적 한도, 동시성, 공격 평가 1차 | 대기 |
 | 4 | 감사 로그, 취소 전파 | 대기 |
@@ -38,6 +38,7 @@
 | 2026-09-24 | 0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동 | 완료 | ② 2회(REVISE→APPROVE) · ④ 1회(BLOCK→사람 해제) · ⑦ 0회 | [개요](work-items/20260924-dev-env/index.md) · [검증](work-items/20260924-dev-env/verification.md) · [테스트](work-items/20260924-dev-env/testing.md) |
 | 2026-09-24 | 0. 개발 환경 — pytest · CI | 완료 (U1 푸시 · U2 Actions run #1 성공 · U3 plan.md 체크) | ② 1회(r3 대상 APPROVE) · ④ 2회(1차 REVISE→2차 APPROVE) · ⑦ 1회(APPROVE) | [개요](work-items/20260924-pytest-ci/index.md) · [검증](work-items/20260924-pytest-ci/verification.md) · [테스트](work-items/20260924-pytest-ci/testing.md) |
 | 2026-09-25 | 4. 정책 (Rego) (작업 D) | 완료 (d9b6b16, Actions 성공) | ② 1회(REVISE→APPROVE) · ④ 사이클1 1회(REVISE→APPROVE)·사이클2 0회 · ⑦ 사이클1 2회(REVISE→REVISE→APPROVE)·사이클2 0회 · 개선 사이클 2회 | [개요](work-items/20260925-rego-policy/index.md) · [검증](work-items/20260925-rego-policy/verification.md) · [테스트](work-items/20260925-rego-policy/testing.md) |
+| 2026-09-29 | 1. 데이터 모델 (1차) (작업 C) | 완료 (커밋 전 — AC10 원격 CI 확인 대기) | ② 1회(REVISE→APPROVE) · ④ 1회(REVISE→APPROVE) · ⑦ 1회(REVISE→APPROVE, 문서 정정만) · 개선 사이클 1회(코드 수정 없음) | [개요](work-items/20260929-data-model/index.md) · [검증](work-items/20260929-data-model/verification.md) · [테스트](work-items/20260929-data-model/testing.md) |
 
 ---
 
@@ -57,12 +58,14 @@
 |---|---|---|---|---|
 | 훅 설정의 `command: python` 때문에 맥에서 훅이 전부 죽음 (fail-open) | 맥·리눅스에서 `git push`가 든 명령에 승인 창이 안 뜸, agent의 경로 제한(`guard_paths`)도 안 걸림. `which python` → not found | 해결 (실행기 `run_hook.sh` + 자체 점검 테스트 35개) | 2026-09-29 | [링크](troubleshooting/hooks-dead-on-macos.md) |
 | 훅 fail-closed 테스트가 `.venv`가 없던 덕에 우연히 통과하고 있었음 | `.venv`를 만든 뒤 `test_missing_interpreter_still_asks`·`_denies`가 `AssertionError: ... failed open when no interpreter was available` / `assert None is not None`로 실패 | 해결 (테스트가 실패 조건을 직접 만들도록 수정, 훅 본체는 정상) | 2026-09-29 | [링크](troubleshooting/fail-closed-test-relied-on-missing-venv.md) |
+| 증거 `MANIFEST.tsv`의 sha256이 저장소 안의 로그와 어긋남 (CRLF ↔ LF) | `evidence.py <폴더> --verify`가 예전 작업 폴더에서 `변조됨 60` · `변조됨 268`처럼 전부 불일치로 나옴. 작업 트리 파일은 git blob과 같음 | 부분 해결 (이후 로그는 LF 고정 · 기존 328개는 **미해결**) | 2026-09-29 | [링크](troubleshooting/evidence-manifest-crlf-hash-mismatch.md) |
 | 승인 훅이 인코딩 오류로 죽으면서 명령을 통과시킴 (fail-open) | 훅 출력에 `UnicodeEncodeError: 'cp949' codec can't encode character` 뒤 `(pass)` — 승인 없이 명령이 진행됨 | 해결 | 2026-09-24 | [링크](troubleshooting/hook-cp949-fail-open.md) |
 | 서브에이전트가 권한 시스템 거부 명령을 다른 명령·도구로 우회 | deny·ask에 막힌 명령을 `stat`, `Remove-Item` 같은 다른 명령·도구로 다시 시도한 흔적이 보임 | 해결(사람 확인 후 규칙 추가) | 2026-09-24 | [링크](troubleshooting/subagent-permission-bypass.md) |
 | 임시 폴더 삭제가 ask 규칙에 걸려 확인 요청이 반복됨 | 같은 작업 안에서 삭제 확인 창이 여러 번 뜸 | 해결(정책 결정: 계획에서 삭제 단계 제거) | 2026-09-24 | [링크](troubleshooting/delete-ask-repeated-prompt.md) |
 | 증거 도구(evidence.py)로 명령을 감싸면 ask·deny 권한 규칙을 비껴감 | `evidence.py <run> <라벨> "curl ..."`처럼 ask 대상 명령을 감쌌는데 확인 창이 안 뜨고 바로 실행됨 | 해결(126 필터 추가) | 2026-09-24 | [링크](troubleshooting/evidence-tool-permission-bypass.md) |
 | evidence 로그에서 자식 Python의 한국어 출력이 깨짐 | 로그에 한국어 부분이 `U+FFFD`(깨진 문자)로 저장됨. 판정 토큰(`OK`·`HUMAN`·`BAD`)은 정상 | 해결 (H13, 2026-09-25) | 2026-09-25 | [링크](troubleshooting/evidence-log-cp949-garbled-output.md) |
 | 개선 사이클에서 사용자 승인된 설계 결정(decisions.md) 반영 시점이 규칙과 어긋남 | ⑦ 검토에서 "decisions.md 보강을 '마무리'로 미룸이 `work-item/SKILL.md`·`CLAUDE.md`와 어긋난다"는 REVISE가 남 | 해결(승인 직후·다음 ③ 전으로 순서 교정) | 2026-09-25 | [링크](troubleshooting/improvement-cycle-decision-timing.md) |
+| pytest 긴 트레이스백이 증거 로그에 DB 비밀번호를 평문으로 남김 | 증거 로그에서 `password=broker` · `'password': 'broker'` 문자열 발견(psycopg 연결 프레임 지역 변수 repr) | 미해결(마스킹 개선안 H1, 제안 단계) | 2026-09-29 | [링크](troubleshooting/pytest-traceback-leaked-db-password-into-evidence-log.md) |
 
 ### 구현
 
@@ -76,6 +79,7 @@
 | 문제 | 이럴 때 보세요 (증상 · 에러 문구) | 상태 | 날짜 | 링크 |
 |---|---|---|---|---|
 | CI 회귀 테스트가 계획의 "모든·하나다" 조건을 놓침 | 탐침(임시로 `permissions:`에 권한 한 줄 추가, timeout 없는 job 추가)에서 테스트가 실패해야 하는데 통과해버림 | 해결(주요 2건, T11·T8 강화) + 미해결(F1, `_`로 시작하는 job id 경계값) + 2026-09-25 재발(정책 테스트 46개, 완전 비교로 강화) | 2026-09-24 | [링크](troubleshooting/ci-test-spec-quantifier-weakening.md) |
+| 가드를 검증하는 테스트가 가드를 뺀 순간 보호 대상(개발용 DB)을 실제로 부숨 | 변이(가드 제거) red 로그에 `DID NOT RAISE`, 그 직후 개발용 DB의 `public` 스키마가 실제로 `DROP SCHEMA … CASCADE`됨 | 해결(코드) · 규칙 승격은 제안 단계 | 2026-09-29 | [링크](troubleshooting/guard-test-destroyed-the-resource-it-guards.md) |
 
 ---
 
@@ -102,4 +106,9 @@
 | 하네스가 살아 있는지 확인하는 방법 | `sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`. 실제 훅을 돌려 판정을 보므로, 환경을 옮겼을 때 이 한 번이 점검 절차다. 훅은 실패가 곧 통과이므로 "설정에 적혀 있다"로는 확인이 되지 않는다. **안전장치 테스트는 "이 기계에 무엇이 없다"는 환경 상태에 기대지 않고 실패 조건을 직접 만든다** | [hooks-dead-on-macos.md](troubleshooting/hooks-dead-on-macos.md) "재발 방지", [fail-closed-test-relied-on-missing-venv.md](troubleshooting/fail-closed-test-relied-on-missing-venv.md) |
 | 로컬 Python 버전과 `.venv` 위치 | CI(`.github/workflows/ci.yml`)가 `3.13.7`로 패치 번호까지 고정하므로 로컬도 같은 값을 쓴다. 맥은 `uv`로 설치했다(Homebrew `python@3.13`은 3.13.15라 어긋난다). `.venv`는 반드시 저장소 루트에 둔다 — `python.sh`·`run_hook.sh`가 `<저장소>/.venv`를 가장 먼저 찾는다 | `docs/stage1-plan.md` 2장 "로컬 도구 (맥)", `.claude/tools/python.sh` |
 | 줄바꿈은 LF 고정 | `.gitattributes`의 `* text=auto eol=lf`. 윈도우에서 CRLF로 받으면 `.sh` 실행기가 돌지 않고 증거 로그의 sha256이 OS마다 달라진다 | `.gitattributes` |
+| 증거 로그는 LF로 쓰고 비밀은 마스킹한다 | `evidence.py`는 로그를 `newline=""`로 써서 OS와 무관하게 LF로 남기고(윈도우 CRLF ↔ git LF 정규화가 sha256을 깨뜨렸다), 파일에 쓰기 **전에** 비밀번호 패턴 3종을 `***`로 바꾼 뒤 그 내용으로 해시를 계산한다. **이미 만들어진 로그는 다시 쓰지 않는다** — 기록 뒤 해시를 고치는 것은 증거의 의미를 무너뜨린다 | [evidence-manifest-crlf-hash-mismatch.md](troubleshooting/evidence-manifest-crlf-hash-mismatch.md), [pytest-traceback-leaked-db-password-into-evidence-log.md](troubleshooting/pytest-traceback-leaked-db-password-into-evidence-log.md) |
 | 변이는 exact 집합을 실행 전에 손으로 추적한다 | 변이의 기대 FAIL 집합은 "부분집합"이 아니라 가능하면 정확 집합(exact)으로 실행 **전에** 손 추적해 고정한다. 결과를 본 뒤 채점 기준을 그 결과에 맞춰 고치면(더 엄격한 방향이라도) 원칙 7 위반이다 | `06-improvement-plan.c2.md`(F-D8, H9), [work-items/20260925-rego-policy/testing.md](work-items/20260925-rego-policy/testing.md) |
+| 1차 데이터 모델(D21) — 테이블 배치·제약·시드 | 모델·마이그레이션·시드는 `control/db/`(`alembic.ini`는 루트). `tool_actions.risk`·`agents.status`는 `TEXT + CHECK`(네이티브 ENUM 아님). `delegations.scopes`는 `TEXT[]`(작업 이름 문자열, `tool_actions`로의 FK 없음). 기본값은 전부 닫히는 쪽(`status`=`suspended`, `per_tx_limit`·`daily_limit`=`0`, `scopes`=`{}`). 시드 에이전트는 공개 테스트 벡터 공개키라 `suspended`로 시작. `mail.send`는 위험도 `medium`(허용 조건이 `risk=="low"`라 항상 승인 경로를 거치게). 테스트 DB는 `broker_test`·`broker_test_mig` | `docs/decisions.md` D21, [work-items/20260929-data-model/index.md](work-items/20260929-data-model/index.md) |
+| CI가 `pytest`·`pytest-integration` 두 job으로 갈리는 이유 | 서비스 컨테이너는 Linux 러너에서만 동작한다(GitHub Docs). 매트릭스(ubuntu+macOS) job에 통합 테스트를 두면 macOS에서 서비스 없이 돌아 무조건 실패하므로, 통합 테스트는 `-m "not integration"`으로 매트릭스에서 빼고 ubuntu 전용 `pytest-integration` job(postgres 서비스 포함)에서 돈다 | `.github/workflows/ci.yml`, [work-items/20260929-data-model/index.md](work-items/20260929-data-model/index.md) |
+| 로컬 Python 3.13.7 · `.venv` 위치(맥) | CI가 `3.13.7`로 패치 번호까지 고정하므로 로컬도 같은 값. 맥은 `uv`로 설치(Homebrew `python@3.13`은 3.13.15라 어긋남). `.venv`는 반드시 저장소 루트 | `docs/stage1-plan.md` 2장, [work-items/20260929-data-model/index.md](work-items/20260929-data-model/index.md) |
+| 원칙 7은 "새 증거를 못 만든다"는 뜻이 아니다 | 원칙 7이 금지하는 것은 결과를 본 뒤 **기대값·채점 기준을 결과에 맞춰 바꾸는 것**이다. 채점 밖 `review-*` 라벨로 red→되돌림→green 증거를 남기는 것은 이 원칙과 무관하며, 계획 밖에서 발견된 검사가 필요할 때 쓸 수 있는 길이다 | [work-items/20260929-data-model/verification.md](work-items/20260929-data-model/verification.md) ⑦ 1차 지적 1 |

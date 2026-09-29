@@ -15,9 +15,22 @@ python 을 부를 때는 `.claude/tools/python.sh` 를 거친다. 맥에는 `pyt
 - NN-<라벨>.log : 실행 시각(시작 · 끝), 작업 폴더, git HEAD · 변경 파일 수, 명령 원문, 종료 코드, stdout · stderr 전체
 - MANIFEST.tsv  : 로그마다 순번 · 라벨 · 종료 코드 · 시작 시각 · sha256 (한 줄씩 추가만 함)
 
+로그는 OS와 상관없이 항상 LF로 쓴다(`newline=""`). 윈도우 기본 동작대로 CRLF로 저장하면
+`.gitattributes`가 커밋 때 LF로 되돌려 MANIFEST의 sha256과 어긋나고, 증거 검증이 기록한
+기계에서만 통과하게 된다.
+
 --verify 는 MANIFEST의 sha256과 실제 로그 파일을 대조해, 나중에 로그가 고쳐졌는지 보여 준다.
 마지막 줄에 `합계 N  일치 A  변조됨 B  없음 C` 요약을 출력한다(증거 개수는 이 줄을 인용한다).
 이 도구는 명령의 종료 코드를 그대로 돌려준다. 판정은 사람이 아니라 로그 원문으로 한다.
+
+비밀 마스킹: 로그를 파일에 쓰기 **전에** 비밀번호로 보이는 조각(libpq `password=`,
+psycopg kwargs repr의 `'password': '...'`, 접속 URL의 `://사용자:비밀번호@`)을 `***` 로 바꾼다.
+치환한 내용으로 sha256을 계산하므로 파일과 해시가 같은 것을 가리키고 `--verify` 와 충돌하지 않는다.
+따라서 **로그는 명령의 출력과 글자 단위로 같지 않을 수 있다.** 마스킹 범위는 위 세 패턴으로만
+좁게 유지한다(증거를 임의로 줄이지 않는다). 이미 만들어진 로그는 다시 쓰지 않는다 —
+기록 뒤에 고치는 것은 증거의 의미를 무너뜨린다. 계기는 작업 C에서 pytest의 긴 트레이스백이
+psycopg 연결 프레임의 지역 변수를 repr로 찍어 개발용 DB 비밀번호가 평문으로 남은 일이다
+(`docs/wiki/troubleshooting/pytest-traceback-leaked-db-password-into-evidence-log.md`, 개선안 작업 C H1).
 
 권한 규칙 보호: Claude Code의 ask · deny 규칙은 명령 앞부분만 본다. 이 도구로 감싸면
 안쪽 명령이 규칙을 비껴갈 수 있으므로, `.claude/settings*.json`의 Bash · PowerShell
@@ -96,6 +109,21 @@ def blocked_by(command: str) -> str | None:
         if re.search(pattern, command, flags=re.IGNORECASE):
             return core
     return None
+
+
+# 로그에 쓰기 전에 가릴 비밀 패턴. 좁게 유지한다(증거를 임의로 줄이지 않기 위해).
+SECRET_PATTERNS = [
+    (re.compile(r"(password=)[^\s'\"]+"), r"\1***"),                 # libpq conninfo
+    (re.compile(r"('password':\s*')[^']*(')"), r"\1***\2"),          # psycopg kwargs repr
+    (re.compile(r"(://[^:\s'\"/@]+:)[^@\s'\"]+(@)"), r"\1***\2"),    # 접속 URL의 userinfo
+]
+
+
+def mask_secrets(text: str) -> str:
+    """비밀번호로 보이는 조각을 *** 로 바꾼다. 파일에 쓰기 전에 부른다."""
+    for pattern, repl in SECRET_PATTERNS:
+        text = pattern.sub(repl, text)
+    return text
 
 
 def find_bash() -> str:
@@ -185,14 +213,22 @@ def main() -> int:
         proc.stderr.rstrip(),
         "",
     ])
+    # 파일에 쓰기 전에 마스킹한다. 해시는 이 내용으로 계산되므로 --verify 와 어긋나지 않는다.
+    body = mask_secrets(body)
     path = evidence_dir / name
-    path.write_text(body, encoding="utf-8")
+    # newline="" 로 줄바꿈 변환을 끈다. 기본값이면 윈도우에서 "\n" 이 "\r\n" 으로 바뀌어
+    # 로그가 CRLF 로 저장되는데, .gitattributes(* text=auto eol=lf)가 커밋할 때 LF 로
+    # 되돌리므로 MANIFEST 의 sha256(CRLF 기준)과 저장소 안의 파일이 어긋난다.
+    # 그러면 증거 무결성 검증이 기록한 기계에서만 통과하고 다른 기계 · CI 에서는 실패한다.
+    with path.open("w", encoding="utf-8", newline="") as f:
+        f.write(body)
     with manifest.open("a", encoding="utf-8") as f:
         f.write(f"{seq}\t{label}\t{proc.returncode}\t{started}\t{sha256(path)}\t{name}\n")
 
-    # 호출한 쪽도 결과를 바로 볼 수 있게 원문을 그대로 흘려 보낸다
-    sys.stdout.write(proc.stdout)
-    sys.stderr.write(proc.stderr)
+    # 호출한 쪽도 결과를 바로 볼 수 있게 흘려 보낸다. 터미널 출력을 그대로 복사해
+    # 붙이는 일이 있으므로 여기에도 같은 마스킹을 적용한다.
+    sys.stdout.write(mask_secrets(proc.stdout))
+    sys.stderr.write(mask_secrets(proc.stderr))
     print(f"\n[evidence] {path} (exit={proc.returncode})")
     return proc.returncode
 
