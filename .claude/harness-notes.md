@@ -143,5 +143,9 @@
   - `pytest -q` 48개 통과(기존 13 + 신규 35)
 - **재발 방지 — `tests/test_harness_hooks.py` (신규 35개):** 목을 쓰지 않고 실제 `run_hook.sh`를 서브프로세스로 돌려 판정 JSON을 본다. 위험 명령 14종의 `ask`, 경로 제한 `deny`, **인터프리터가 없을 때도 판정이 나오는지**, 설정 · agent가 실행기를 거치는지, `command: python` 형태로 되돌아가지 않았는지, ask · deny가 Bash · PowerShell 양쪽을 덮는지, `evidence.py` 126 필터가 사는지를 확인한다. 탐침 3건(설정 되돌리기 · fail-open 만들기 · `command: python3`)으로 실제 실패하는 것까지 확인했다.
   - 환경을 또 옮길 때의 점검 절차: `sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`
-- **남은 일 (사용자 확인 필요):** 이 맥에는 Python 3.14.7만 있고 프로젝트 고정 버전은 3.13.7(CI · 윈도우와 동일)이다. `.venv`는 아직 만들지 않았다 — 3.13.7을 설치한 뒤 만들어야 버전이 어긋나지 않는다. 검증은 저장소 밖 스크래치 venv로 했다.
+- **이어진 조치 (2026-09-29, 세션 재개):** 맥에 `uv`(Homebrew)로 Python **3.13.7**을 설치하고 저장소 루트에 `.venv`를 만들어 `requirements-dev.txt`를 설치했다. CI(`ci.yml`)가 패치 번호까지 고정한 값과 맞추려고 Homebrew `python@3.13`(3.13.15)이 아니라 `uv`를 썼다. 위 검증은 저장소 밖 스크래치 venv로 했던 것이고, 이제 저장소 `.venv`로 다시 돌려 48개 통과를 확인했다.
+- **그때 드러난 것 — fail-closed 테스트가 `.venv` 부재에 기대고 있었다:** `.venv`를 만들자 `test_missing_interpreter_still_asks` · `_denies` 2개가 실패했다. `run_hook.sh`의 `find_python`은 PATH보다 **먼저** `<저장소>/.venv/bin/python`을 절대 경로로 확인하므로, 저장소 안에서 PATH만 비우는 방식(`_env_without_python`)으로는 "인터프리터 없음" 상황이 만들어지지 않는다. 훅은 정상이었고 테스트의 전제가 틀렸다.
+  - 고침: `tests/test_harness_hooks.py`에 `_runner_without_a_venv()`를 두어 `.venv`가 없는 임시 폴더(= 갓 clone한 기계)에 `run_hook.sh`와 훅 스크립트를 복사해 거기서 실행한다. `_run_hook()`에 `runner` 인자 추가. `run_hook.sh`와 훅 본체는 고치지 않았다.
+  - 규칙: **안전장치 테스트는 "이 기계에 무엇이 없다"는 환경 상태를 조건으로 삼지 않고, 없어야 하는 것을 테스트가 직접 만든다.** 환경이 바뀌면 조용히 무력해지기 때문이다.
+  - 기록: `docs/wiki/troubleshooting/fail-closed-test-relied-on-missing-venv.md`
 - **상기:** `settings.json`의 훅은 세션 시작 때 읽히므로, 이 변경은 Claude Code를 다시 열어야 현재 세션에 적용된다.

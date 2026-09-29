@@ -28,7 +28,7 @@
 | 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). main 푸시 완료 |
 | 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
 | 로컬 도구 (윈도우) | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
-| 로컬 도구 (맥) | Docker 29.8, gh CLI 있음, OPA CLI 없음 → `opa test`는 Docker 이미지로 실행. **Python은 3.14.7만 설치돼 있고 프로젝트 고정 버전은 3.13.7이다 — 3.13.7 설치 후 `.venv`를 만들어야 한다(미완).** 검증용 venv는 저장소 밖 스크래치에서 씀 |
+| 로컬 도구 (맥) | Docker 29.8, gh CLI 있음, OPA CLI 없음 → `opa test`는 Docker 이미지로 실행. **2026-09-29 환경 준비 완료:** `uv`(Homebrew)로 Python 3.13.7을 설치하고 저장소 루트에 `.venv` 생성, `requirements-dev.txt` 설치. CI가 고정한 3.13.7과 패치 버전까지 일치시키려고 Homebrew `python@3.13`(3.13.15) 대신 `uv`를 썼다. 확인: `sh .claude/tools/python.sh -m pytest -q` 48개 통과 |
 | 결정 D15~D20 | **전부 승인(2026-09-25)** — `docs/decisions.md` D15~D20. D18은 K10 보강 포함 |
 
 ## 3. 코드 전에 정할 결정 (초안)

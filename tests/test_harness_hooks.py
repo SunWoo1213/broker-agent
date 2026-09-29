@@ -44,9 +44,10 @@ def _sh() -> str:
 
 
 def _run_hook(decision: str, script: str, *args: str, payload: object,
-              env: dict | None = None) -> subprocess.CompletedProcess:
+              env: dict | None = None,
+              runner: Path | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [_sh(), str(RUNNER), decision, script, *args],
+        [_sh(), str(runner or RUNNER), decision, script, *args],
         input=json.dumps(payload),
         capture_output=True, text=True, encoding="utf-8", timeout=30,
         cwd=REPO, env=env,
@@ -161,11 +162,29 @@ def _env_without_python(tmp_path: Path) -> dict:
     return env
 
 
+def _runner_without_a_venv(tmp_path: Path, script: str) -> Path:
+    """.venv 가 없는 임시 저장소에 실행기와 훅 스크립트만 복사해 돌려준다.
+
+    run_hook.sh 는 PATH 와 상관없이 `<저장소>/.venv/bin/python` 을 먼저 찾는다(그래야
+    PATH 가 이상해도 훅이 산다). 그래서 이 저장소 안에서는 PATH 만 비워도
+    "인터프리터가 하나도 없는 상태"가 만들어지지 않는다 — .venv 가 생긴 뒤로는 그렇다.
+    아래 두 테스트가 보려는 상황은 갓 clone 해서 .venv 가 아직 없는 기계이므로,
+    그 조건을 임시 폴더로 실제로 만든다. 훅 스크립트는 표준 라이브러리만 쓰기 때문에
+    복사해도 동작이 같다.
+    """
+    hooks = tmp_path / "fresh-clone" / ".claude" / "hooks"
+    hooks.mkdir(parents=True)
+    shutil.copy2(RUNNER, hooks / RUNNER.name)
+    shutil.copy2(HOOKS / script, hooks / script)
+    return hooks / RUNNER.name
+
+
 def test_missing_interpreter_still_asks(tmp_path):
     """훅이 시작하지 못해도 통과시키지 않는다. 이것이 2026-09-29에 뚫린 구멍이다."""
     out = _decision(_run_hook("ask", "guard_critical.py",
                               payload={"tool_input": {"command": "ls"}},
-                              env=_env_without_python(tmp_path)))
+                              env=_env_without_python(tmp_path),
+                              runner=_runner_without_a_venv(tmp_path, "guard_critical.py")))
     assert out is not None, "hook failed open when no interpreter was available"
     assert out["permissionDecision"] == "ask"
 
@@ -173,7 +192,8 @@ def test_missing_interpreter_still_asks(tmp_path):
 def test_missing_interpreter_still_denies(tmp_path):
     out = _decision(_run_hook("deny", "guard_paths.py", ".claude/runs",
                               payload={"tool_input": {"file_path": ".claude/runs/ok.md"}},
-                              env=_env_without_python(tmp_path)))
+                              env=_env_without_python(tmp_path),
+                              runner=_runner_without_a_venv(tmp_path, "guard_paths.py")))
     assert out is not None, "guard_paths failed open when no interpreter was available"
     assert out["permissionDecision"] == "deny"
 
