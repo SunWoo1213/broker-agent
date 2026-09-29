@@ -1,0 +1,11 @@
+# 줄바꿈은 저장소에 LF 하나로만 둔다.
+# 윈도우에서 core.autocrlf=true 로 받으면 셸 스크립트(.sh)가 CRLF가 되어 실행되지 않고,
+# 증거 로그(.claude/tools/evidence.py)의 sha256이 OS마다 달라진다. 맥 · 윈도우에서
+# 같은 하네스를 쓰려면 이 파일이 필요하다.
+* text=auto eol=lf
+
+# 실행 형식은 그대로 둔다
+*.png binary
+*.jpg binary
+*.pdf binary
+*.ico binary

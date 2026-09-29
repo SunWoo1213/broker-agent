@@ -12,8 +12,8 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: python
-          args: ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_paths.py", "docs/wiki"]
+          shell: bash
+          command: 'sh "$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh" deny guard_paths.py docs/wiki'
 ---
 
 # 역할: 기록 담당

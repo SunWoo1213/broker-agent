@@ -11,7 +11,13 @@ defaults:
     shell: bash        # 명시하면 GitHub가 -eo pipefail 로 실행한다
 jobs:
   pytest:
-    runs-on: ubuntu-24.04
+    # 하네스(훅 · 권한 규칙)는 OS마다 실행 파일 이름과 경로가 달라 한쪽에서만 도는 일이
+    # 실제로 있었다(docs/wiki/troubleshooting/hooks-dead-on-macos.md). 두 OS에서 모두 돌린다.
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -26,7 +32,7 @@ jobs:
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
-          name: pytest-junit
+          name: pytest-junit-${{ matrix.os }}
           path: test-results/pytest-junit.xml
           if-no-files-found: error
   opa-test:

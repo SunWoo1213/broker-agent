@@ -58,20 +58,21 @@ AI 에이전트가 사람 대신 사내 시스템을 호출할 때 반드시 거
 
 ### 3. 검문소를 만드는 개발 도구 자신이 "문제가 생기면 통과"였다
 
-**문제.** 이 프로젝트의 첫째 원칙은 "문제가 생기면 전부 막는다(fail-closed)"입니다. 그런데 개발 하네스에서 이 원칙이 두 번 깨졌습니다.
+**문제.** 이 프로젝트의 첫째 원칙은 "문제가 생기면 전부 막는다(fail-closed)"입니다. 그런데 개발 하네스에서 이 원칙이 세 번 깨졌습니다.
 - 위험한 명령에 사람 승인을 요구하는 훅이 Windows 인코딩(cp949) 오류로 죽으면, 명령이 그대로 실행됐습니다.
 - 권한 규칙이 명령 앞부분만 보기 때문에, 증거 기록 도구(`evidence.py`)로 명령을 감싸면 승인 요구를 피할 수 있었습니다.
+- 개발 환경을 맥으로 옮기자 훅 6종이 **전부 조용히 꺼졌습니다.** 훅 설정이 `command: python`이었는데 맥에는 그 이름의 실행 파일이 없습니다(있는 것은 `python3`). 훅이 시작하지 못하면 명령은 그대로 통과합니다 — 훅이 "허용"한 것과 훅이 죽은 것을 밖에서는 구분할 수 없습니다.
 
-**해결.** 훅은 출력을 ASCII로 바꾸고, 입력 해석 실패를 포함한 모든 예외를 "사람에게 묻기"로 처리했습니다. `evidence.py`는 실행 전에 권한 설정의 ask · deny 규칙을 명령 문자열 전체에서 찾아, 걸리면 실행하지 않고 종료 코드 126으로 거부합니다. 설정을 읽지 못해도 거부합니다.
+**해결.** 훅은 출력을 ASCII로 바꾸고, 입력 해석 실패를 포함한 모든 예외를 "사람에게 묻기"로 처리했습니다. `evidence.py`는 실행 전에 권한 설정의 ask · deny 규칙을 명령 문자열 전체에서 찾아, 걸리면 실행하지 않고 종료 코드 126으로 거부합니다. 설정을 읽지 못해도 거부합니다. 세 번째 문제는 훅을 `run_hook.sh` 실행기를 거쳐 부르게 바꿔, OS에 맞는 인터프리터를 찾고 **못 찾으면 실행기가 직접 승인 요구 · 거부를 내도록** 했습니다.
 
-**결과.** 훅은 명령 26개 × 셸 2종(52건)과 잘못된 입력 3건을 넣어 확인했고, 기대와 다른 판정은 0건이었습니다. `evidence.py`는 차단해야 할 명령 17건과 허용해야 할 명령 9건이 모두 기대대로 처리됐습니다. 실제로 `curl --version`을 감싸 보내도 126으로 거부되고, 증거 파일도 생기지 않았습니다. → [훅 문제](docs/wiki/troubleshooting/hook-cp949-fail-open.md) · [권한 우회 문제](docs/wiki/troubleshooting/evidence-tool-permission-bypass.md)
+**결과.** 훅은 명령 26개 × 셸 2종(52건)과 잘못된 입력 3건을 넣어 확인했고, 기대와 다른 판정은 0건이었습니다. `evidence.py`는 차단해야 할 명령 17건과 허용해야 할 명령 9건이 모두 기대대로 처리됐습니다. 실제로 `curl --version`을 감싸 보내도 126으로 거부되고, 증거 파일도 생기지 않았습니다. 세 번째 문제는 실제 Claude Code 세션에서 `git push`가 든 명령이 차단되는 것을 확인했고, **하네스가 이 OS에서 살아 있는지를 판정하는 테스트 35개**를 추가해 다음에 환경을 옮길 때는 `pytest` 한 번으로 드러나게 했습니다. → [훅 인코딩 문제](docs/wiki/troubleshooting/hook-cp949-fail-open.md) · [권한 우회 문제](docs/wiki/troubleshooting/evidence-tool-permission-bypass.md) · [맥에서 훅이 죽은 문제](docs/wiki/troubleshooting/hooks-dead-on-macos.md)
 
 ### 지금까지의 테스트 결과 (작업 D 기준)
 
 | 항목 | 결과 |
 |---|---|
 | `opa test` 정책 단위 테스트 | 54/54 통과, 3회 반복해도 같은 결과 |
-| pytest (CI 설정 · 정책 정적 검사 포함) | 13 passed |
+| pytest (CI 설정 · 정책 정적 검사 · 하네스 훅 점검 포함) | 48 passed |
 | 변이 테스트 | 25종 전부 기대한 테스트에서 실패 → 되돌리면 전부 통과 |
 | 증거 무결성 (`evidence.py --verify`) | 로그 268개 전부 해시 일치 |
 
@@ -85,18 +86,22 @@ AI 에이전트가 사람 대신 사내 시스템을 호출할 때 반드시 거
 
 ## 로컬 실행 (현재)
 
+맥 · 윈도우(Git Bash) · 리눅스에서 같은 명령을 씁니다.
+
 ```bash
 cp env.example .env
-docker compose up -d          # PostgreSQL · Redis · OPA
-python -m venv .venv && .venv/Scripts/activate
-pip install -r requirements-dev.txt
+docker compose up -d                    # PostgreSQL · Redis · OPA
+sh .claude/tools/python.sh -m venv .venv
+sh .claude/tools/python.sh -m pip install -r requirements-dev.txt
 ```
+
+`.claude/tools/python.sh`는 `.venv/bin/python`(맥 · 리눅스)과 `.venv/Scripts/python.exe`(윈도우)를 먼저 찾고, 없으면 `python3` → `python` → `py` 순서로 찾습니다. 맥에는 `python`이라는 이름의 명령이 없어서, 이 실행기를 거치면 두 OS의 명령 원문이 같아집니다. venv를 직접 켜고 싶다면 `.venv/bin/activate`(맥 · 리눅스) 또는 `.venv/Scripts/activate`(윈도우)입니다.
 
 ## 테스트 실행
 
 ```bash
-docker compose run --rm opa test /policies -v   # 정책 단위 테스트 (작업 D 기준 54개)
-python -m pytest -q                              # pytest (작업 D 기준 13개). Windows venv: .venv/Scripts/python -m pytest -q
+MSYS_NO_PATHCONV=1 docker compose run --rm opa test /policies -v   # 정책 단위 테스트 (작업 D 기준 54개)
+sh .claude/tools/python.sh -m pytest -q                            # pytest
 ```
 
-Windows Git Bash에서는 첫 명령 앞에 `MSYS_NO_PATHCONV=1`을 붙입니다(컨테이너 안 경로 `/policies`가 바뀌지 않게). CI(`.github/workflows/ci.yml`)가 main 푸시 · PR마다 같은 두 명령을 실행합니다(pytest는 junit xml 옵션만 추가).
+첫 명령의 `MSYS_NO_PATHCONV=1`은 윈도우 Git Bash가 컨테이너 **안**의 경로 `/policies`를 윈도우 경로로 바꾸지 못하게 막는 설정입니다. 맥 · 리눅스에서는 아무 일도 하지 않으므로 OS와 상관없이 항상 붙입니다. CI(`.github/workflows/ci.yml`)가 main 푸시 · PR마다 같은 두 명령을 실행합니다(pytest는 junit xml 옵션만 추가).

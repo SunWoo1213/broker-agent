@@ -1,13 +1,17 @@
 """테스트 · 검증 명령을 실행하고 그 흔적을 증거 파일로 남긴다.
 
 사용법 (저장소 루트에서):
-    python .claude/tools/evidence.py <run 폴더> <라벨> "<명령>"
-    python .claude/tools/evidence.py <run 폴더> --verify
+    sh .claude/tools/python.sh .claude/tools/evidence.py <run 폴더> <라벨> "<명령>"
+    sh .claude/tools/python.sh .claude/tools/evidence.py <run 폴더> --verify
 
 예:
-    python .claude/tools/evidence.py .claude/runs/20260924-pytest-ci ac1-pytest ".venv/Scripts/python -m pytest -q"
+    sh .claude/tools/python.sh .claude/tools/evidence.py .claude/runs/20260924-pytest-ci ac1-pytest "sh .claude/tools/python.sh -m pytest -q"
 
-명령은 Bash(Git Bash)로 실행한다. 결과는 <run 폴더>/evidence/ 아래에 쌓인다.
+python 을 부를 때는 `.claude/tools/python.sh` 를 거친다. 맥에는 `python` 이라는 이름이 없고
+(있는 것은 `python3`), venv 경로도 `.venv/bin` 과 `.venv/Scripts` 로 갈리기 때문이다.
+이렇게 해야 증거 로그에 남는 명령 원문이 두 OS에서 같다.
+
+명령은 bash 로 실행한다 (맥 · 리눅스는 시스템 bash, 윈도우는 Git Bash). 결과는 <run 폴더>/evidence/ 아래에 쌓인다.
 - NN-<라벨>.log : 실행 시각(시작 · 끝), 작업 폴더, git HEAD · 변경 파일 수, 명령 원문, 종료 코드, stdout · stderr 전체
 - MANIFEST.tsv  : 로그마다 순번 · 라벨 · 종료 코드 · 시작 시각 · sha256 (한 줄씩 추가만 함)
 
@@ -98,7 +102,7 @@ def find_bash() -> str:
     for cand in (shutil.which("bash"), r"C:\Program Files\Git\bin\bash.exe"):
         if cand and Path(cand).exists():
             return cand
-    sys.exit("bash를 찾지 못했다. Git Bash가 필요하다.")
+    sys.exit("bash를 찾지 못했다. 맥 · 리눅스는 시스템 bash, 윈도우는 Git Bash가 필요하다.")
 
 
 def verify(evidence_dir: Path) -> int:
@@ -128,7 +132,7 @@ def verify(evidence_dir: Path) -> int:
 
 
 def main() -> int:
-    # Windows 콘솔(cp949)에서도 한글 출력이 깨지거나 예외로 죽지 않게 한다
+    # 윈도우 콘솔(cp949)에서도 한글 출력이 깨지거나 예외로 죽지 않게 한다 (맥 · 리눅스에서는 무해)
     for stream in (sys.stdout, sys.stderr):
         stream.reconfigure(encoding="utf-8", errors="replace")
     if len(sys.argv) == 3 and sys.argv[2] == "--verify":
@@ -156,7 +160,7 @@ def main() -> int:
     name = f"{seq:02d}-{label}.log"
 
     started = now()
-    # 자식 Python의 stdout · stderr가 파이프에서도 UTF-8로 쓰이게 한다(한국어 Windows 기본은 cp949).
+    # 자식 Python의 stdout · stderr가 파이프에서도 UTF-8로 쓰이게 한다(한국어 윈도우 기본은 cp949).
     # PYTHONUTF8=1보다 범위가 좁다: 표준 입출력만 바뀌고 open() 기본값은 그대로다.
     proc = subprocess.run([find_bash(), "-lc", command], capture_output=True,
                           text=True, encoding="utf-8", errors="replace",

@@ -14,20 +14,21 @@
 
 여기에 시연 1개를 더한다: "어제 거래처 저녁 식사 18만 원 청구해 줘"가 데모 에이전트 → 브로커 → 모의 경비 시스템까지 끝까지 돈다.
 
-## 2. 현재 상태 (2026-09-25 갱신)
+## 2. 현재 상태 (2026-09-29 갱신)
 
 > 진행 상황의 원본은 이 절과 4장 표의 "상태" 열이다. 작업이 끝날 때마다 갱신한다. 체크박스는 `docs/plan.md`, 작업별 상세는 `docs/wiki/Home.md`.
 
 | 항목 | 상태 |
 |---|---|
-| 하네스 (agents · skills · hooks) | 완료. 오늘 규칙 추가: 권한 우회 금지, 증거 도구 `.claude/tools/evidence.py`(권한 필터 포함), 계획 검증 P10 · P11, 승인 기록 `00-approval.md`, 변이 확인 · 탐침 (`.claude/harness-notes.md`) |
+| 하네스 (agents · skills · hooks) | 완료. 규칙: 권한 우회 금지, 증거 도구 `.claude/tools/evidence.py`(권한 필터 포함), 계획 검증 P10 · P11, 승인 기록 `00-approval.md`, 변이 확인 · 탐침 (`.claude/harness-notes.md`). **2026-09-29 맥 · 윈도우 공용화:** 훅은 `.claude/hooks/run_hook.sh`를 거치고(인터프리터를 못 찾으면 fail-closed 판정), python 호출은 `sh .claude/tools/python.sh`로 통일, ask · deny 규칙은 커밋되는 `settings.json` 한 곳, `tests/test_harness_hooks.py` 35개가 훅이 실제로 막는지 확인 |
 | `docker-compose.yml` | 이미지 고정(postgres 16.15 · redis 7.4.11-alpine · opa 1.20.2), OPA healthcheck, postgres 호스트 포트 5434 — 작업 A |
 | `requirements*.txt` | 전부 `==` 고정 — 작업 A |
 | `policies/` | D18 계약 정책(`policies/authz.rego`) + `opa test` 54개 · 정적 pytest 2개 — 작업 D, 완료 (d9b6b16, Actions 성공) |
 | pytest · CI | `pytest.ini`, 테스트 13개(작업 D에서 정책 정적 검사 2개 추가), `.github/workflows/ci.yml` — 작업 B, 완료 (Actions run #1 성공, 7c0ad0d) |
 | 원격 저장소 | `origin` = https://github.com/SunWoo1213/broker-agent (공개). main 푸시 완료 |
 | 변수 이름 목록 | `env.example` (`.env.*`는 권한에서 전부 차단) |
-| 로컬 도구 | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
+| 로컬 도구 (윈도우) | Python 3.13.7, Docker 29.3 / Compose v5.1. **OPA CLI · gh CLI 없음** → `opa test`는 Docker 이미지로 실행 |
+| 로컬 도구 (맥) | Docker 29.8, gh CLI 있음, OPA CLI 없음 → `opa test`는 Docker 이미지로 실행. **Python은 3.14.7만 설치돼 있고 프로젝트 고정 버전은 3.13.7이다 — 3.13.7 설치 후 `.venv`를 만들어야 한다(미완).** 검증용 venv는 저장소 밖 스크래치에서 씀 |
 | 결정 D15~D20 | **전부 승인(2026-09-25)** — `docs/decisions.md` D15~D20. D18은 K10 보강 포함 |
 
 ## 3. 코드 전에 정할 결정 (초안)
@@ -122,7 +123,8 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 | 위험 | 대응 |
 |---|---|
 | MCP SDK · LangGraph API가 버전마다 바뀜 | A에서 `==` 고정. 예제 코드는 고정 버전 기준으로만 참고 |
-| Windows 환경 문제 (이벤트 루프, 인코딩) | D20 설정. 실제로 문제가 생기면 `/dev-wiki`로 트러블슈팅 기록 |
+| Windows 환경 문제 (이벤트 루프, 인코딩) | D20 설정을 `sys.platform` 조건부로 적용. 실제로 문제가 생기면 `/dev-wiki`로 트러블슈팅 기록 |
+| 맥 · 윈도우 두 환경을 오가며 생기는 차이 (실행 파일 이름, venv 경로, 줄바꿈) | 훅 · 명령 원문은 `run_hook.sh` · `python.sh`로 통일하고 `.gitattributes`로 LF 고정. 환경을 옮기면 먼저 `sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`로 하네스가 살아 있는지 확인한다 |
 | 에이전트가 도구 포트에 직접 닿을 수 있음 (로컬) | 1단계 방어는 공유 비밀(D19). "직접 호출 실패" 테스트로 확인하고, 네트워크 격리는 5단계(보안 그룹)에서 |
 | D16 사칭 한계 | 결정 기록 · 평가 원인 분석에 명시. 숨기지 않음 |
 | 데모 에이전트 LLM 비결정성 | 시연은 모델 · temperature 고정. 완료 판정 테스트(L)는 LLM 없이 MCP 클라이언트로 직접 호출 |

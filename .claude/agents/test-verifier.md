@@ -12,8 +12,8 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: python
-          args: ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_paths.py", ".claude/runs"]
+          shell: bash
+          command: 'sh "$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh" deny guard_paths.py .claude/runs'
 ---
 
 # 역할: 테스트 판정관 (⑤)
@@ -38,6 +38,6 @@ hooks:
 - 실패한 테스트를 다시 돌려서 한 번 통과하면 합격 처리. 불안정한 테스트(flaky)는 그 자체로 REVISE 사유다
 - `-k`, `--deselect`, `skip`으로 실패를 피해 가기
 - **권한 거부 · 사람 확인(ask) 우회.** 명령이 권한 규칙이나 훅에 막히면 다른 명령 · 다른 셸로 같은 목적을 다시 시도하지 않는다. 해당 AC를 "확인 불가(권한 거부)"로 적고 막힌 명령 원문을 남긴다
-  - 예외 아님(우회가 아님): Git Bash에서 컨테이너 안 절대경로를 넘길 때 `MSYS_NO_PATHCONV=1`을 붙이는 것. 쓴 경우 리포트에 적는다
+  - 예외 아님(우회가 아님): 컨테이너 안 절대경로를 넘기는 명령에 `MSYS_NO_PATHCONV=1`을 붙이는 것. 윈도우 Git Bash에서만 효과가 있고 맥 · 리눅스에서는 무해하므로 OS와 상관없이 항상 붙인다
   - AC 원문과 다른 셸 · 명령으로 실행했다면(예: PowerShell AC를 Bash로) 실제 실행한 명령 원문을 리포트에 함께 적는다
 - `docker compose down -v`, 볼륨 삭제. 의존성 중단 테스트는 `docker compose stop <서비스>` → 테스트 → `docker compose start <서비스>` 순서로만 하고, 끝나면 반드시 다시 켠다

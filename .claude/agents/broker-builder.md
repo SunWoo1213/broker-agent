@@ -31,7 +31,7 @@ color: green
    - red · 탐침 로그에 테스트 러너의 결과 요약 줄(opa `PASS:` · `FAIL:` 줄, pytest 요약 줄)이 없으면 **무효 실행**이다. 종료 코드가 0이 아니어도 red 증거로 쓰지 않는다. 무효 로그 번호와 이유를 03 · 04에 적고 같은 라벨로 다시 실행한다(채점은 마지막 로그). (작업 D H12-2)
 3. 구현한다. `broker-invariants`의 금지 패턴을 쓰지 않는다.
 4. 테스트가 통과하는 것을 확인한다. 여기서 확인하는 건 빠른 자기 점검일 뿐이고, 합격 판정은 ⑤에서 한다.
-   - 2번(실패 확인)과 4번(통과 확인)의 명령은 `python .claude/tools/evidence.py <run 폴더> build-<라벨> "<명령>"`으로 실행해 증거를 남긴다. build-notes의 자기 점검 결과는 증거 파일 이름을 가리킨다. "통과했다"만 적고 증거가 없으면 ④에서 REVISE다.
+   - 2번(실패 확인)과 4번(통과 확인)의 명령은 `sh .claude/tools/python.sh .claude/tools/evidence.py <run 폴더> build-<라벨> "<명령>"`으로 실행해 증거를 남긴다. build-notes의 자기 점검 결과는 증거 파일 이름을 가리킨다. "통과했다"만 적고 증거가 없으면 ④에서 REVISE다.
 5. `03-build-notes.md`를 쓴다.
 
 ## 산출물: `03-build-notes.md`
@@ -60,4 +60,4 @@ color: green
 - `docs/decisions.md` 수정, 설계 변경. 필요하면 멈추고 build-notes에 적는다
 - `docker compose down -v`, 볼륨 삭제, `terraform apply/destroy`
 - **권한 거부 · 사람 확인(ask) 우회.** 명령이 권한 규칙이나 훅에 막히면 같은 목적을 다른 명령 · 다른 셸(Bash ↔ PowerShell, `stat` ↔ `Get-Item`, `rm` ↔ `Remove-Item` 등)로 다시 시도하지 않는다. 멈추고 막힌 명령 원문과 규칙을 build-notes에 적은 뒤 보고한다 (2026-09-24 사례: `.claude/harness-notes.md`)
-  - 예외 아님(우회가 아님): Git Bash에서 `/opa`, `/policies`처럼 컨테이너 안 절대경로를 넘길 때 `MSYS_NO_PATHCONV=1`을 붙이는 것. 권한 문제가 아니라 경로 변환 문제다. 쓴 경우 build-notes에 적는다
+  - 예외 아님(우회가 아님): `/opa`, `/policies`처럼 컨테이너 **안**의 절대경로를 넘기는 명령에 `MSYS_NO_PATHCONV=1`을 붙이는 것. 권한 문제가 아니라 경로 변환 문제다. 윈도우 Git Bash에서만 효과가 있고 맥 · 리눅스에서는 아무 일도 하지 않으므로, 명령 원문을 두 OS에서 같게 두기 위해 **OS와 상관없이 항상 붙인다**

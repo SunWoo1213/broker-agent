@@ -45,7 +45,7 @@ docs/wiki/
 - **실행 기록**: 환경(서비스 상태, 도구 버전), 실행한 명령, 결과 마지막 줄 원문, flaky 반복 결과, 의존성 중단 테스트 결과.
 - **완료 조건 대조표**: 모든 AC가 어떤 테스트로 확인됐는지.
 - 개선 사이클이 있었다면 회차마다 따로 남긴다. 실패한 회차의 출력도 지우지 않는다.
-- **증거 보존:** run 폴더는 git에서 제외되므로, `.claude/runs/<run>/evidence/`를 통째로 `docs/wiki/work-items/<run>/evidence/`에 복사한다(MANIFEST.tsv 포함, 파일 내용 수정 금지). 복사 뒤 `python .claude/tools/evidence.py docs/wiki/work-items/<run> --verify`로 전부 "일치"인지 확인하고 그 출력을 testing.md에 붙인다. testing.md의 모든 결과 줄은 `evidence/NN-….log` 링크를 단다.
+- **증거 보존:** run 폴더는 git에서 제외되므로, `.claude/runs/<run>/evidence/`를 통째로 `docs/wiki/work-items/<run>/evidence/`에 복사한다(MANIFEST.tsv 포함, 파일 내용 수정 금지). 복사 뒤 `sh .claude/tools/python.sh .claude/tools/evidence.py docs/wiki/work-items/<run> --verify`로 전부 "일치"인지 확인하고 그 출력을 testing.md에 붙인다. testing.md의 모든 결과 줄은 `evidence/NN-….log` 링크를 단다.
 - 복사 전에 로그에 비밀 값(토큰, 비밀번호, 키)이 섞였는지 확인한다. 섞였으면 복사하지 않고 멈춰 오케스트레이터에게 보고한다(가려서 고치면 sha256이 달라져 증거가 깨진다).
 
 ## 무엇이 "문제 상황"인가

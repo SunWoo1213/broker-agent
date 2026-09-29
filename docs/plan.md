@@ -223,6 +223,7 @@
 
 ## 하네스 후속 항목 (`.claude/` 규칙 · 도구)
 
+- [x] **F-M1** (맥 환경 이전, 2026-09-29): 훅을 `.claude/hooks/run_hook.sh`(OS별 인터프리터 탐색 + fail-closed 대체 판정)로 통일, `.claude/tools/python.sh`로 명령 원문 일원화, 윈도우 `settings.local.json`에만 있던 ask · deny 규칙을 커밋되는 `settings.json`으로 이관, `.gitattributes`로 LF 고정, `tests/test_harness_hooks.py`(35개)로 훅이 실제로 막는지 확인. *원인 · 검증: `docs/wiki/troubleshooting/hooks-dead-on-macos.md`*
 - [ ] **F-D2** (작업 D 후속): `.claude/skills/rego-policy/SKILL.md` 예시(24–28행)를 D18 모양(`action: {name, risk}`, `per_tx_limit`, `per_tx_limit_exceeded`)으로 바꾼다
 - [x] **F-D9** (작업 D 후속): H13 적용 — `.claude/tools/evidence.py`가 자식 프로세스에 `PYTHONIOENCODING=utf-8`을 넘긴다. *2026-09-25 적용 · 확인(로그 stdout 한글 보존, 권한 필터 126 유지). 적용 전 로그의 한국어 깨짐은 "기존 현상"으로 기록만 한다. 상세 `docs/wiki/troubleshooting/evidence-log-cp949-garbled-output.md`*
 

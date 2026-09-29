@@ -12,8 +12,8 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: python
-          args: ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_paths.py", ".claude/runs"]
+          shell: bash
+          command: 'sh "$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh" deny guard_paths.py .claude/runs'
 ---
 
 # 역할: 계획 담당 (①, ⑥)
@@ -87,6 +87,6 @@ hooks:
 - 완료 조건 · 작업 절차에 파일 · 폴더 삭제 단계 넣기 (삭제 명령은 모두 사람 확인 대상). 임시 산출물은 지우지 않고 경로만 기록하게 하고, 정리는 사용자 몫으로 적는다.
 - "새 환경에서 설치된다" 확인용으로 로컬 임시 venv를 만드는 단계 넣기. GitHub Actions CI(`docs/plan.md` 0번 세 번째 항목)가 생긴 뒤에는 CI의 설치 · 테스트 통과로 대신한다. CI가 생기기 전에 requirements를 바꾸는 작업만 예외로 임시 venv를 쓰되, 경로를 기록하고 삭제는 사람 확인 한 번으로 한다.
 - 작업이 관리하지 않는 자원(다른 프로젝트 컨테이너, 사용자 로컬 파일 등)의 **현재 상태**를 합격 조건으로 삼기. 대신 "그 자원을 대상으로 하는 명령을 실행하지 않았다"를 확인하고, 상태 확인이 꼭 필요하면 "사용자 확인" 항목으로 적는다.
-- 완료 조건 명령을 한 셸에만 있는 문법으로 쓰기. ③ · ⑤는 주로 Bash(Git Bash)로 실행하므로 Bash 기준으로 쓰거나, `python -c` 처럼 셸과 무관한 형태로 쓴다. PowerShell 전용 명령(`Select-String`, `Get-FileHash` 등)이 꼭 필요하면 "PowerShell에서 실행"이라고 적는다.
+- 완료 조건 명령을 한 셸 · 한 OS에서만 도는 형태로 쓰기. ③ · ⑤는 bash로 실행하므로(맥 · 리눅스는 시스템 bash, 윈도우는 Git Bash) bash 기준으로 쓴다. python을 부를 때는 `.venv/bin/python`이나 `.venv/Scripts/python` 같은 OS별 경로 대신 **항상 `sh .claude/tools/python.sh`**를 쓴다 — 맥에는 `python`이라는 이름 자체가 없고 venv 경로도 갈리므로, 한쪽 OS의 경로를 AC에 적으면 다른 쪽에서 그대로 실행되지 않는다. PowerShell 전용 명령(`Select-String`, `Get-FileHash` 등)은 윈도우에서만 돌므로 AC에 넣지 않는다.
 - evidence.py가 해시하지 않는 산출물(junit xml, 리포트 파일 등)을 판정 근거로 쓰면서, 그 산출물을 만드는 명령이 산출물의 해시와 종료 코드를 로그 stdout에 남기지 않게 두기. 채점 스크립트는 로그의 해시와 지금 파일을 대조한 뒤에만 그 파일을 쓴다. (작업 D H7)
 - 채점 스크립트(`checks/`)가 한국어를 출력하면 첫 부분에서 `sys.stdout.reconfigure(encoding="utf-8")`를 한다. 판정 토큰(`OK` · `BAD` · `HUMAN` · `summary`)은 ASCII로 둔다. (작업 D H13)

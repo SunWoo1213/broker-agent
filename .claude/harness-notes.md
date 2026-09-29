@@ -120,3 +120,28 @@
   - `.claude/tools/evidence.py` — H5: `--verify` 끝 `합계 N  일치 A  변조됨 B  없음 C` 요약 줄(126행, 판정 반환값은 그대로 `bad` 기준) / H13: 자식 `subprocess.run`에 `env={**os.environ, "PYTHONIOENCODING": "utf-8"}`(163행). 권한 필터 코드는 바꾸지 않음
   - 중복으로 건너뛴 것: 없음. 작업 B 반영분(planner "변이 확인" 첫 문장, broker-builder · test-verifier의 `MSYS_NO_PATHCONV=1` 예외, test-gate 절차 1번의 `docker compose ps`, D4 탐침)과 취지는 이어지지만 새 문장이 다루는 내용(출력 분기별 변이, exact 여부, 재개 시 healthy 확인 · 무효 실행, reviewer · D4의 경로 안내)이 달라 보강으로 넣었다
   - **효과 확인(H13 · H5):** 스크래치 run 폴더에서 `enc-check`(`print('한글')`) → 로그 stdout에 `한글` 그대로, exit 0. 대조: 환경 변수 없이 파이프 캡처하면 `c7 d1 b1 db`(cp949), 있으면 `ed 95 9c ea b8 80`(UTF-8). `curl --version` → 126 거부, 로그 생성 없음. `--verify` 요약 줄 출력, 기존 증거 폴더 4곳(위키 pytest-ci 60 · 위키 rego-policy 268 · run pytest-ci 62 · run rego-policy 268) 전부 일치. 트러블슈팅 `evidence-log-cp949-garbled-output.md`를 `해결`로 바꿈
+
+## 2026-09-29 맥 환경으로 옮김 — 훅이 전부 죽어 있었음 (사용자 요청)
+
+- **요청:** "이 프로젝트는 윈도우 환경에서 하네스가 조성되었습니다. 이제 맥 환경에서도 동일하게 적용되도록 만들고 싶습니다."
+- **새어 나간 것:** 훅 설정이 `command: python` + `args`(exec form)였는데 맥에는 `python`이라는 이름의 실행 파일이 없다(있는 것은 `python3`). 훅 프로세스가 뜨지 못하면 Claude Code는 도구 호출을 그대로 진행하므로, `guard_critical`(승인 요구)과 agent 6종의 `guard_paths`(경로 제한)가 **전부 조용히 꺼진 상태**로 세션이 돌았다. `hook-cp949-fail-open.md`와 같은 계열의 fail-open이며, 그때 "python 미설치 등"으로 예상만 해 두었던 경우가 실제로 발생했다.
+  - 두 번째 방어선(`permissions.ask`)도 부분적으로만 막았다. 권한 규칙은 명령 **앞부분**만 보므로 `echo "... git push ..."`처럼 감싼 형태는 걸리지 않는다. `guard_paths`가 하는 경로 제한은 `permissions`로 표현할 수 없어 대체 방어선이 아예 없었다.
+  - 윈도우 쪽 ask · deny 규칙 일부가 `.claude/settings.local.json`(git 제외)에만 있어서 맥에는 오지 않았다. `evidence.py`의 126 필터도 그만큼 약해져 있었다.
+- **잡은 곳:** 없음. 관문이 아니라 환경을 옮기며 사람이 발견했다. 하네스가 살아 있는지 판정하는 테스트가 없었던 것이 근본 원인이다.
+- **고친 곳:**
+  - `.claude/hooks/run_hook.sh` (신규): OS에 맞는 python을 찾아 훅 스크립트를 실행한다(`.venv/bin/python` → `.venv/Scripts/python.exe` → `python3` → `python` → `py`, 후보는 `-c ''`가 실제로 도는 것만). **못 찾거나 스크립트가 0이 아닌 코드로 끝나면 첫 인자의 판정(`ask` · `deny`)을 직접 출력한다** — 훅 자신에게 원칙 1을 적용. `dirname` 등 외부 명령에도 기대지 않는다(`${0%/*}`).
+  - `.claude/settings.json` · agent 5종(`planner` · `reviewer` · `test-verifier` · `wiki-writer` · `eval-runner`): 훅을 셸 형식 + `shell: bash`로 바꾸고 전부 `run_hook.sh`를 거치게 했다. 셸 형식은 맥 · 리눅스에서 `sh -c`, 윈도우에서 Git Bash로 돌아 한 문자열이 두 OS에서 그대로 쓰인다.
+  - `.claude/settings.json` `permissions`: `settings.local.json`에만 있던 규칙(`rm -rf` · `rm -r` · `git clean` · `git branch -D` · `gh pr` · `gh release` · `Remove-Item` · `* .env.*`)을 커밋되는 파일로 옮겨 두 OS가 같은 규칙을 쓰게 했다.
+  - `.claude/tools/python.sh` (신규): 문서 · 완료 조건(AC) · 증거 로그의 명령 원문을 한 벌로 만든다. `.venv/Scripts/python -m pytest -q`처럼 한쪽 OS 경로를 적으면 다른 쪽에서 실행되지 않으므로 `sh .claude/tools/python.sh -m pytest -q`로 통일.
+    - 반영: `tools/evidence.py`(docstring · bash 안내), `skills/test-gate`, `skills/dev-wiki`, `skills/code-review-invariants` D3, `skills/improvement-review` I8, `agents/broker-builder`, `README.md`, `tests/README.md`
+  - `MSYS_NO_PATHCONV=1`: "윈도우 Git Bash에서"가 아니라 **OS와 상관없이 항상 붙인다**로 바꿨다(맥 · 리눅스에서는 무해한 환경 변수라 명령 원문이 같아진다). `agents/broker-builder` · `agents/test-verifier` · `agents/reviewer` · `skills/code-review-invariants` D4 · `README.md`
+  - `agents/planner.md` "하지 말 것": AC 명령은 bash 기준으로 쓰고 python은 `sh .claude/tools/python.sh`로 부른다. PowerShell 전용 명령은 AC에 넣지 않는다(윈도우에서만 돈다)
+  - `.gitattributes` (신규): `* text=auto eol=lf`. CRLF로 받으면 `.sh` 실행기가 돌지 않고 증거 로그 sha256이 OS마다 달라진다
+- **효과 확인:**
+  - `run_hook.sh` 직접 실행 9경로: 위험 명령 → `ask`, 평범한 명령 → 출력 없음, 경로 밖 쓰기 → `deny`, 경로 안 쓰기 → 출력 없음, 깨진 JSON → `ask`, 없는 스크립트 → `ask`, PATH 비움(인터프리터 없음) → `ask` · `deny`, 스크립트 exit 3 → `ask`
+  - 실제 세션(`claude -p`, 저장소 루트)에서 `echo 'git push origin dev'` → **차단됨**. 고치기 전 같은 명령은 그대로 실행됐다
+  - `pytest -q` 48개 통과(기존 13 + 신규 35)
+- **재발 방지 — `tests/test_harness_hooks.py` (신규 35개):** 목을 쓰지 않고 실제 `run_hook.sh`를 서브프로세스로 돌려 판정 JSON을 본다. 위험 명령 14종의 `ask`, 경로 제한 `deny`, **인터프리터가 없을 때도 판정이 나오는지**, 설정 · agent가 실행기를 거치는지, `command: python` 형태로 되돌아가지 않았는지, ask · deny가 Bash · PowerShell 양쪽을 덮는지, `evidence.py` 126 필터가 사는지를 확인한다. 탐침 3건(설정 되돌리기 · fail-open 만들기 · `command: python3`)으로 실제 실패하는 것까지 확인했다.
+  - 환경을 또 옮길 때의 점검 절차: `sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`
+- **남은 일 (사용자 확인 필요):** 이 맥에는 Python 3.14.7만 있고 프로젝트 고정 버전은 3.13.7(CI · 윈도우와 동일)이다. `.venv`는 아직 만들지 않았다 — 3.13.7을 설치한 뒤 만들어야 버전이 어긋나지 않는다. 검증은 저장소 밖 스크래치 venv로 했다.
+- **상기:** `settings.json`의 훅은 세션 시작 때 읽히므로, 이 변경은 Claude Code를 다시 열어야 현재 세션에 적용된다.

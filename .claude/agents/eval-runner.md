@@ -12,8 +12,8 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: python
-          args: ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_paths.py", "eval/out", "eval/reports", ".claude/runs"]
+          shell: bash
+          command: 'sh "$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh" deny guard_paths.py eval/out eval/reports .claude/runs'
 ---
 
 # 역할: 공격 평가자

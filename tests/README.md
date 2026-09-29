@@ -6,9 +6,11 @@ pytest. 1단계 완료 판정 테스트(docs/plan.md 6번)부터 시작한다.
 
 저장소 루트에서 실행한다 (`pytest.ini`가 `testpaths = tests`를 지정한다).
 
-- 전체: `.venv/Scripts/python -m pytest -q` (CI에서는 `python -m pytest -q --junitxml=...`)
-- 단위만 (통합 제외): `.venv/Scripts/python -m pytest -q -m "not integration"`
-- 통합만: `.venv/Scripts/python -m pytest -q -m integration`
+`sh .claude/tools/python.sh`는 OS에 맞는 python을 찾아 주는 실행기다 (`.venv` → `python3` → `python` → `py`). 맥과 윈도우에서 명령 원문이 같아진다.
+
+- 전체: `sh .claude/tools/python.sh -m pytest -q` (CI에서는 `python -m pytest -q --junitxml=...`)
+- 단위만 (통합 제외): `sh .claude/tools/python.sh -m pytest -q -m "not integration"`
+- 통합만: `sh .claude/tools/python.sh -m pytest -q -m integration`
 
 `-m "not integration"`을 **기본 `addopts`에 넣지 않는다.** 옵션 없이 실행하면 통합 테스트도 함께 돈다.
 

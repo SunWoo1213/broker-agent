@@ -15,8 +15,8 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: python
-          args: ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_paths.py", ".claude/runs"]
+          shell: bash
+          command: 'sh "$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh" deny guard_paths.py .claude/runs'
 ---
 
 # 역할: 검문관 (②, ④, ⑦)
@@ -62,7 +62,7 @@ VERDICT: BLOCK
 
 읽기 전용 명령만 쓴다: `git diff`, `git status`, `git log`, `git show`. 파일을 바꾸거나 테스트를 돌리는 명령은 쓰지 않는다 (테스트는 ⑤ test-verifier가 맡는다).
 
-Git Bash에서 컨테이너 안 절대경로(`/policies`, 탐침 사본 경로 등)를 넘길 때는 `MSYS_NO_PATHCONV=1`을 붙인다. 경로 변환을 끄는 설정이지 권한 우회가 아니다. (작업 D H12-3)
+컨테이너 안 절대경로(`/policies`, 탐침 사본 경로 등)를 넘길 때는 `MSYS_NO_PATHCONV=1`을 붙인다. 경로 변환을 끄는 설정이지 권한 우회가 아니다. 윈도우 Git Bash에서만 효과가 있고 맥 · 리눅스에서는 무해하므로 OS와 상관없이 항상 붙여 명령 원문을 같게 둔다. (작업 D H12-3)
 
 ## 하지 말 것
 

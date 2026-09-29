@@ -4,25 +4,38 @@
       "Bash(git commit *)",
       "Bash(git push *)",
       "Bash(git reset --hard *)",
+      "Bash(git clean *)",
+      "Bash(git branch -D *)",
+      "Bash(gh pr *)",
+      "Bash(gh release *)",
       "Bash(terraform apply *)",
       "Bash(terraform destroy *)",
       "Bash(docker compose down -v *)",
       "Bash(docker volume rm *)",
       "Bash(docker system prune *)",
+      "Bash(rm -rf *)",
+      "Bash(rm -r *)",
       "PowerShell(git commit *)",
       "PowerShell(git push *)",
       "PowerShell(git reset --hard *)",
+      "PowerShell(git clean *)",
+      "PowerShell(git branch -D *)",
+      "PowerShell(gh pr *)",
+      "PowerShell(gh release *)",
       "PowerShell(terraform apply *)",
       "PowerShell(terraform destroy *)",
       "PowerShell(docker compose down -v *)",
       "PowerShell(docker volume rm *)",
-      "PowerShell(docker system prune *)"
+      "PowerShell(docker system prune *)",
+      "PowerShell(Remove-Item *)"
     ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
       "Edit(./.env)",
-      "Edit(./.env.*)"
+      "Edit(./.env.*)",
+      "Bash(* .env.*)",
+      "PowerShell(* .env.*)"
     ]
   },
   "hooks": {
@@ -32,8 +45,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_critical.py"],
+            "shell": "bash",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh\" ask guard_critical.py",
             "timeout": 10,
             "statusMessage": "중요 작업 여부 확인 중"
           }

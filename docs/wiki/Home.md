@@ -55,6 +55,7 @@
 
 | 문제 | 이럴 때 보세요 (증상 · 에러 문구) | 상태 | 날짜 | 링크 |
 |---|---|---|---|---|
+| 훅 설정의 `command: python` 때문에 맥에서 훅이 전부 죽음 (fail-open) | 맥·리눅스에서 `git push`가 든 명령에 승인 창이 안 뜸, agent의 경로 제한(`guard_paths`)도 안 걸림. `which python` → not found | 해결 (실행기 `run_hook.sh` + 자체 점검 테스트 35개) | 2026-09-29 | [링크](troubleshooting/hooks-dead-on-macos.md) |
 | 승인 훅이 인코딩 오류로 죽으면서 명령을 통과시킴 (fail-open) | 훅 출력에 `UnicodeEncodeError: 'cp949' codec can't encode character` 뒤 `(pass)` — 승인 없이 명령이 진행됨 | 해결 | 2026-09-24 | [링크](troubleshooting/hook-cp949-fail-open.md) |
 | 서브에이전트가 권한 시스템 거부 명령을 다른 명령·도구로 우회 | deny·ask에 막힌 명령을 `stat`, `Remove-Item` 같은 다른 명령·도구로 다시 시도한 흔적이 보임 | 해결(사람 확인 후 규칙 추가) | 2026-09-24 | [링크](troubleshooting/subagent-permission-bypass.md) |
 | 임시 폴더 삭제가 ask 규칙에 걸려 확인 요청이 반복됨 | 같은 작업 안에서 삭제 확인 창이 여러 번 뜸 | 해결(정책 결정: 계획에서 삭제 단계 제거) | 2026-09-24 | [링크](troubleshooting/delete-ask-repeated-prompt.md) |
@@ -95,4 +96,8 @@
 | OPA 정책 D18 입력·출력 계약 | 입력 `{agent, user, action:{name, risk}, delegation:{scopes, per_tx_limit, expires_at}, args}` → 출력 `{result: allow\|deny\|require_approval, reason}`. 1단계는 승인 경로도 `deny`로 낸다(상수 `approval_result` 하나, 2단계에서 교체). `mail.send`의 `to`·`subject`·`body`는 모두 필수 | `docs/decisions.md` D18, [work-items/20260925-rego-policy](work-items/20260925-rego-policy/index.md) |
 | 계획 밖 규칙에도 거부 테스트를 같이 쓴다 | 계획에 없는 규칙(더 엄격한 검사 포함)을 구현에 넣으면, "계획의 테스트 목록에 없다"는 이유로 테스트 없이 두지 않고 그 규칙의 거부 테스트를 함께 쓴다 | [strict-rule-without-deny-test.md](troubleshooting/strict-rule-without-deny-test.md) |
 | 개선 사이클의 설계 결정 반영 시점 | 사용자 확인을 받은 설계 결정(decisions.md)은 다음 구현(③) 시작 **전에** 반영한다. 범위 검사(AC6)의 해시 보호는 미룰 이유가 아니라 `00-approval.md` 표에 기록할 대상이다 | [improvement-cycle-decision-timing.md](troubleshooting/improvement-cycle-decision-timing.md) |
+| 훅은 `run_hook.sh`를 거쳐 부른다 | 훅 설정에 `python` 같은 인터프리터 이름을 직접 적지 않는다. `sh "$CLAUDE_PROJECT_DIR/.claude/hooks/run_hook.sh" <ask\|deny> <스크립트>` 셸 형식에 `shell: bash`를 고정해 맥·윈도우가 같은 설정을 쓴다. 실행기는 `.venv` → `python3` → `python` → `py` 순서로 찾고, 못 찾으면 통과시키지 않고 첫 인자의 판정(`ask`·`deny`)을 직접 낸다 | [hooks-dead-on-macos.md](troubleshooting/hooks-dead-on-macos.md), `.claude/hooks/run_hook.sh` |
+| python 호출은 `sh .claude/tools/python.sh` | 문서·완료 조건(AC)·증거 로그의 명령 원문을 두 OS에서 같게 두기 위해, `.venv/bin/python`·`.venv/Scripts/python`을 직접 적지 않고 이 실행기를 거친다. 컨테이너 안 절대경로에 붙이는 `MSYS_NO_PATHCONV=1`도 맥에서는 무해하므로 OS와 상관없이 항상 붙인다 | `.claude/tools/python.sh`, `.claude/agents/planner.md` "하지 말 것" |
+| 하네스가 살아 있는지 확인하는 방법 | `sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`. 실제 훅을 돌려 판정을 보므로, 환경을 옮겼을 때 이 한 번이 점검 절차다. 훅은 실패가 곧 통과이므로 "설정에 적혀 있다"로는 확인이 되지 않는다 | [hooks-dead-on-macos.md](troubleshooting/hooks-dead-on-macos.md) "재발 방지" |
+| 줄바꿈은 LF 고정 | `.gitattributes`의 `* text=auto eol=lf`. 윈도우에서 CRLF로 받으면 `.sh` 실행기가 돌지 않고 증거 로그의 sha256이 OS마다 달라진다 | `.gitattributes` |
 | 변이는 exact 집합을 실행 전에 손으로 추적한다 | 변이의 기대 FAIL 집합은 "부분집합"이 아니라 가능하면 정확 집합(exact)으로 실행 **전에** 손 추적해 고정한다. 결과를 본 뒤 채점 기준을 그 결과에 맞춰 고치면(더 엄격한 방향이라도) 원칙 7 위반이다 | `06-improvement-plan.c2.md`(F-D8, H9), [work-items/20260925-rego-policy/testing.md](work-items/20260925-rego-policy/testing.md) |

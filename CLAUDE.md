@@ -69,3 +69,4 @@ AI 에이전트가 사람 대신 사내 시스템(경비, 메일, 고객 DB)을 
 - 산출물은 `.claude/runs/<날짜>-<항목>/01~07`(git 제외), 하네스 규칙 변경 기록은 `.claude/harness-notes.md`
 - 개발 기록은 `docs/wiki/`에 남긴다: 작업마다 `work-items/<항목>/`(index · verification · testing), 문제마다 `troubleshooting/`. 절차 설명은 `docs/wiki/process.md`. `/work-item` 밖에서 생긴 문제는 `/dev-wiki <내용>`으로 기록
 - 커밋 · 푸시 · `terraform apply/destroy` · 볼륨 삭제는 훅(`.claude/hooks/guard_critical.py`)이 항상 사람 승인을 요구한다
+- **맥 · 윈도우 공용.** 훅은 `.claude/hooks/run_hook.sh`를 거쳐 부르고(인터프리터를 못 찾으면 통과시키지 않고 `ask` · `deny`를 낸다), python은 `sh .claude/tools/python.sh`로 부른다 — `python` · `.venv/Scripts/...`처럼 한쪽 OS에서만 도는 이름을 설정 · 완료 조건 · 문서에 적지 않는다. 환경을 옮기면 `sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`로 훅이 실제로 막는지 먼저 확인한다
