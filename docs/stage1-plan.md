@@ -18,6 +18,52 @@
 
 > 진행 상황의 원본은 이 절과 4장 표의 "상태" 열이다. 작업이 끝날 때마다 갱신한다. 체크박스는 `docs/plan.md`, 작업별 상세는 `docs/wiki/Home.md`.
 
+### 다음 세션 시작점 (2026-09-29 세션 종료 시점)
+
+**직전까지 한 일.** 작업 C(`1. 데이터 모델 (1차)`)를 `/work-item` 7단계로 끝내고 커밋 · 푸시했다
+(`b0d7991`, `origin/dev`). 원격 CI 전 job 성공 —
+[run 36561845563](https://github.com/SunWoo1213/broker-agent/actions/runs/36561845563).
+그 앞에 맥 환경 준비와 하네스 자체 점검 테스트 수정도 커밋했다(`ba742dd`). README는 사용자가
+직접 개편해 커밋했다(`0a65ab9`) — 목적 · 기술 스택 · 아키텍처 · 역할과 기여도 · 트러블슈팅 · 결과
+구조이며, 앞으로 이 구조를 기준으로 갱신한다.
+
+**커밋되지 않은 변경 2개 (다음 세션에서 가장 먼저 처리할 것).**
+`docs/plan.md`와 이 파일(`docs/stage1-plan.md`)에 AC10(원격 CI) 결과를 반영한 줄이 워킹트리에만
+있다. 사용자 승인을 받아 커밋하거나, 다음 작업 커밋에 함께 넣는다. 그대로 두고 `/work-item`을
+시작하면 새 작업의 범위 검사(AC6)가 이 두 경로를 범위 밖 변경으로 잡으므로, 그때는 새 작업의
+`00-approval.md` "작업 중 사람이 한 변경" 표에 적어야 한다.
+
+**다음에 할 수 있는 작업 (사용자가 고른다).**
+
+| 후보 | 내용 | 선행 |
+|---|---|---|
+| **E `2. 모의 도구`** | MCP 서버 3종(expense · mail · crm), 공유 비밀 헤더 검사(D19), `customer.lookup` 응답에 민감 필드, F-D5 인자 스키마 | A(완료) |
+| **F-C5 `.env` 권한 구멍** | `settings.json`의 Bash deny가 `Bash(* .env.*)` 하나뿐이라 **정확히 `.env`인 대상은 걸리지 않는다.** `guard_critical.py`에는 env 패턴이 아예 없고 `evidence.py`도 같은 구멍을 물려받는다. 규칙 · 훅 · `tests/test_harness_hooks.py` 세 곳을 함께 고친다. **사용자만 반영** | — |
+| F `3. 게이트웨이 뼈대` | MCP 서버 기동, `tools/list`, `tools/call`은 무조건 거부로 시작 | C(완료) · **E(대기)** |
+
+F-C5는 지금 하네스에 실제로 뚫려 있는 구멍이다. 검증은 `tests/test_harness_hooks.py` 안에서
+서브프로세스에 가짜 payload를 넘기는 방식으로만 하고, **Bash 명령 원문과 `-k` 패턴에 `.env` 조각을
+넣지 않는다**(넣으면 현행 규칙에 걸려 실행 전에 막힌다).
+
+**결정 대기 중인 하네스 개선안.** `.claude/harness-notes.md`의 `2026-09-29 1. 데이터 모델 (1차)
+(작업 C)` 절 — H1 · H8은 이미 반영했고(evidence.py 비밀 마스킹 · LF 고정), **H2–H7은 제안 상태로
+사용자 결정을 기다린다.** H4 · H5는 오늘 두 번 나온 "안전장치를 검증하는 테스트" 문제를 규칙으로
+올리는 것이라 다음 작업 전에 반영하면 바로 효과가 있다.
+
+**후속 항목.** `docs/plan.md`의 F-C1~F-C4(데이터 모델 절) · F-C5 · F-C6(하네스 후속 항목 절).
+F-C6은 예전 증거 328개의 MANIFEST가 CRLF 기준이라 저장소에서 검증되지 않는 문제다 —
+**해시를 다시 계산하지 않는다.** 상세: `docs/wiki/troubleshooting/evidence-manifest-crlf-hash-mismatch.md`.
+
+**남아 있는 자원 (사용자가 AC11로 "그대로 두세요" 확인함).** `docker compose` postgres 컨테이너가
+떠 있고, `broker_test` · `broker_test_mig` 데이터베이스와 `.claude/runs/20260929-data-model/`
+(증거 134개 · `mutbak/` · 계획 · 검증 문서 전부)가 남아 있다. run 폴더는 git 제외 대상이고, 이번
+작업의 증거 로그는 개발용 DB 비밀번호가 평문으로 남아 `.gitignore`로 커밋에서 뺐다. 다음 작업의
+증거부터는 `evidence.py`가 쓰기 전에 마스킹하므로 그대로 커밋된다.
+
+**환경.** 맥에 Python 3.13.7(uv 설치) · 저장소 루트 `.venv` 준비됨. 확인 명령은
+`sh .claude/tools/python.sh -m pytest -q`(현재 97 passed)와
+`sh .claude/tools/python.sh -m pytest -q tests/test_harness_hooks.py`(35 passed).
+
 | 항목 | 상태 |
 |---|---|
 | 하네스 (agents · skills · hooks) | 완료. 규칙: 권한 우회 금지, 증거 도구 `.claude/tools/evidence.py`(권한 필터 포함), 계획 검증 P10 · P11, 승인 기록 `00-approval.md`, 변이 확인 · 탐침 (`.claude/harness-notes.md`). **2026-09-29 맥 · 윈도우 공용화:** 훅은 `.claude/hooks/run_hook.sh`를 거치고(인터프리터를 못 찾으면 fail-closed 판정), python 호출은 `sh .claude/tools/python.sh`로 통일, ask · deny 규칙은 커밋되는 `settings.json` 한 곳, `tests/test_harness_hooks.py` 35개가 훅이 실제로 막는지 확인 |
@@ -98,7 +144,7 @@ A 0-a 개발 환경 ─┬─ B 0-b 테스트 · CI
 |---|---|---|---|---|
 | A | `0. 개발 환경 — 가상환경 · 버전 고정 · compose 기동` | venv, 미고정 패키지와 OPA 이미지 태그를 `==`/태그로 고정, compose 3종 healthy 확인 | — | 완료 (커밋 780b009) |
 | B | `0. 개발 환경 — pytest · CI` | pytest 설정(asyncio, Windows 루프, `integration` 마커), 최소 테스트, GitHub Actions(pytest + Docker로 `opa test`) | A | 완료 (커밋 7c0ad0d, Actions run #1 성공) |
-| C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | **완료** (2026-09-29, 단위 70 · 통합 27 통과, 변이 37종 정확 일치, 증거 134개. 원격 CI 확인 대기) |
+| C | `1. 데이터 모델 (1차)` | Alembic 초기화, 테이블 4개, 시드 스크립트 (에이전트 1 · 도구 3 · 작업 4 · 직원 2의 위임) | A | **완료** (2026-09-29, 커밋 `b0d7991`. 단위 70 · 통합 27 통과, 변이 37종 정확 일치, 증거 134개, 원격 CI 전 job 성공) |
 | D | `4. 정책 (Rego)` | 기본값 거부 · 낮은 위험 허용 · 건당 한도 초과 거부 · 높은 위험 거부(임시), 규칙별 `opa test` | A (C와 병렬 가능) | 완료 (커밋 d9b6b16, Actions opa-test · pytest 성공) |
 | E | `2. 모의 도구` | MCP 서버 3개, 공유 비밀 헤더 검사, `customer.lookup` 응답에 민감 필드 포함 | A | 대기 |
 | F | `3. 게이트웨이 — 뼈대` | MCP 서버 기동, `tools/list`, **`tools/call`은 무조건 거부**로 시작 | C, E | 대기 |
