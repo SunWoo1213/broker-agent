@@ -41,7 +41,7 @@ $ which python3
 
 1. 직접 원인: 훅 설정이 `command: python`이었고, 맥에는 그 이름의 실행 파일이 없다. `args`가 있으면 Claude Code는 셸을 거치지 않고 실행 파일을 직접 띄우므로(exec form), 이름이 PATH에 없으면 프로세스가 시작조차 하지 못한다.
 2. 왜 통과됐나? → Claude Code는 훅이 오류로 끝나면 차단 신호로 보지 않고 도구 호출을 계속 진행한다. [hook-cp949-fail-open.md](hook-cp949-fail-open.md)와 완전히 같은 성질의 fail-open이다.
-3. 두 번째 방어선이 왜 못 막았나? → `permissions.ask`의 `Bash(git push *)`는 **명령 앞부분만** 본다. `echo "... git push ..."`처럼 다른 명령 안에 들어 있거나 체인으로 이어진 형태는 규칙에 걸리지 않는다. 훅은 명령 문자열 전체를 보므로 둘의 범위가 다르다. 그리고 `guard_paths.py`가 하는 경로 제한은 `permissions`로 표현되어 있지 않아 애초에 두 번째 방어선이 없었다.
+3. 두 번째 방어선이 왜 못 막았나? → `permissions.ask`의 `Bash(git push *)`는 명령이 **그 앞부분으로 시작하는지**를 본다. `echo "... git push ..."`처럼 다른 명령의 인자 안에 들어 있는 형태는 규칙에 걸리지 않는다. 훅은 명령 문자열 전체를 보므로 둘의 범위가 다르다. 그리고 `guard_paths.py`가 하는 경로 제한은 `permissions`로 표현되어 있지 않아 애초에 두 번째 방어선이 없었다.
 4. 근본 원인: 하네스가 **한 OS에서만 만들어지고, 살아 있는지 확인하는 수단이 사람의 관찰뿐이었다.** 훅이 도는지 아닌지를 판정하는 테스트가 없었기 때문에, 환경이 바뀌자 아무 신호 없이 안전장치 전체가 꺼졌다. 이것은 "지키는 대상과 같은 기준으로 지키는 도구를 설계한다"는 교훈([subagent-permission-bypass.md](subagent-permission-bypass.md) 근본 원인)이 하네스의 또 다른 층(실행 환경)에서 재발한 것이다.
 
 ## 해결
